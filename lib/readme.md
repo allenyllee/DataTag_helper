@@ -76,9 +76,22 @@ install wine 5.9
 sudo apt install --install-recommends winehq-devel
 ```
 
+install wxpython, gooey, pyinstaller and other requirements
+```
+pip install wxpython
+pip install -c conda-forge gooey
+pip install -r project_requirements.txt
+pip install pyinstaller==3.5
+```
+
 build excutable
 ```
 wine pyinstaller -F --windowed build-win.spec
+```
+
+debug mode [Using PyInstaller — PyInstaller 3.6 documentation](https://pyinstaller.readthedocs.io/en/stable/usage.html#how-to-generate)
+```
+wine pyinstaller -F --windowed build-win.spec -d bootloader
 ```
 
 run on windows:
