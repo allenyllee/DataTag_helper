@@ -38,7 +38,7 @@ python AIClerk_helper.py
 
 Packing Gooey into a standalone executable is super straight forward thanks to PyInstaller. It is the only dependency you'll need and can be installed via the following.
 ```
-pip install pyinstaller
+pip install pyinstaller==3.5
 ```
 
 ### Running the .spec file
@@ -105,3 +105,8 @@ a = Analysis(...,
 ![](./assets/Deepin%20截圖_選取範圍_20200601201922.png)
 
 maybe the problem of pyinstaller under wine...
+
+- [PyInstaller 3.6 breaks WINE compatibility when using onefile · Issue #4628 · pyinstaller/pyinstaller](https://github.com/pyinstaller/pyinstaller/issues/4628)
+
+Just downgrade to pyinstaller 3.5 anything works fine, no matter on Wine or on Windows.
+
