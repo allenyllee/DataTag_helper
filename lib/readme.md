@@ -94,6 +94,14 @@ wine pip install -r project_requirements.txt
 wine pip install pyinstaller==3.5
 ```
 
+activate upx compression:
+[Releases · upx/upx](https://github.com/upx/upx/releases)
+```
+wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip
+unzip -j "upx-3.96-win64.zip" "upx-3.96-win64/upx.exe" -d "./"
+```
+
+
 build excutable
 ```
 wine pyinstaller -F --windowed build-win.spec
