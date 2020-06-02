@@ -32,8 +32,17 @@ import sys
 # import argparse
 from gooey import Gooey, GooeyParser
 
+## Non-ASCII output hangs execution in PyInstaller packaged app · Issue #520 · chriskiehl/Gooey
+## https://github.com/chriskiehl/Gooey/issues/520
+import codecs
 
-@Gooey(program_name="AI Clerk helper")
+if sys.stdout.encoding != 'UTF-8':
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+if sys.stderr.encoding != 'UTF-8':
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+
+
+@Gooey(program_name="AI Clerk helper v0.2")
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
