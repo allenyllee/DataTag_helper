@@ -76,12 +76,22 @@ install wine 5.9
 sudo apt install --install-recommends winehq-devel
 ```
 
+install python in wine
+[python - compiling .py into windows AND mac executables on Ubuntu - Stack Overflow](https://stackoverflow.com/questions/17709813/compiling-py-into-windows-and-mac-executables-on-ubuntu)
+```
+wine --version
+winecfg
+
+wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
+wine python-3.6.8-amd64.exe
+```
+
 install wxpython, gooey, pyinstaller and other requirements
 ```
-pip install wxpython
-pip install -c conda-forge gooey
-pip install -r project_requirements.txt
-pip install pyinstaller==3.5
+wine pip install wxpython
+wine pip install gooey
+wine pip install -r project_requirements.txt
+wine pip install pyinstaller==3.5
 ```
 
 build excutable
@@ -96,7 +106,7 @@ wine pyinstaller -F --windowed build-win.spec -d bootloader
 
 run on windows:
 ```
-wine AI_Clerk_helper.exe
+wine ./dist/AI_Clerk_helper.exe
 ```
 
 ![](./assets/Snipaste_2020-06-01_19-59-29.png)
