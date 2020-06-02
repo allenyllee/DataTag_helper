@@ -57,10 +57,25 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
         return {'Title': x.Title.tolist()[0], 'Content': x.Content.tolist()[0],
                 'Author': x.Author.tolist()[0], 'Time': x.Time.tolist()[0]}
 
+    print("number of entries: {}".format(len(dataframe)))
+
+    dup_id = dataframe.duplicated(['ID'], keep=False)
+    print("duplicated entries: {}".format(len(dataframe[dup_id])))
+    print(dataframe[dup_id])
+
     samples_dict = dataframe.groupby(['ID']).apply(to_article_dict).to_dict()
+    print("keep first, drop duplicated!")
+
+
+    content_length_lower_threshold = 100
+    long_id = dataframe['Content'].apply(lambda x: True if len(x) < content_length_lower_threshold else False)
+    print("number of entries which Content shorter then {} words: {}".format(content_length_lower_threshold, len(dataframe[long_id])))
+    print("no drop, just show information.")
 
     sample_articles = defaultdict(defaultdict)
     sample_articles['Articles'].update(samples_dict)
+
+    print("number of remaining entries: {}".format(len(sample_articles['Articles'])))
 
     # output articles.json
     with open(save_path, 'w', encoding='utf-8') as outfile:
@@ -78,8 +93,12 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
 
 # ### 清理資料格式
 def clean_data(df):
+    empty_entries = df["Content"].isnull()
+    print("number of empty content entries: {}".format(len(df[empty_entries])))
 
-    df_cleaned = df[~df["Content"].isnull()].copy()
+    df_cleaned = df[~empty_entries].copy()
+    if len(df[empty_entries]):
+        print("drop empty!")
 
     drop_columns = df_cleaned.columns.str.contains("Unnamed")
 
