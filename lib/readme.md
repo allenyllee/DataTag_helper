@@ -100,6 +100,11 @@ activate upx compression:
 wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip
 unzip -j "upx-3.96-win64.zip" "upx-3.96-win64/upx.exe" -d "./"
 ```
+note:
+upx may cause dll corruption, you may want to disable UPX, see:
+- [Onefile builds not working on Windows 10, Error loading Python dll · Issue #3600 · pyinstaller/pyinstaller](https://github.com/pyinstaller/pyinstaller/issues/3600)
+- [python - Error when creating executable file with pyinstaller - Stack Overflow](https://stackoverflow.com/questions/38811966/error-when-creating-executable-file-with-pyinstaller)
+
 
 
 build excutable
