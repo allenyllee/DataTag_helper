@@ -127,6 +127,21 @@ wine ./dist/AI_Clerk_helper.exe
 ![](./assets/Snipaste_2020-06-01_19-59-29.png)
 
 
+## changelog
+
+### v0.3
+
+
+- 將已標註檔案json 檔下載回來後，轉換成excel檔
+
+- 轉換後的 excel 內容分三頁：第一頁是contents，包含作者，標題、內文、標註者等；第二頁是document label，也就是類別標註；第三頁是sentence label 句子標註，因為句子有很多類，每類數量不一，我是將之橫向展開成不同欄
+
+![](./assets/Snipaste_2020-07-15_18-37-31.png)
+
+
+
+
+
 ## issue
 
 ### [setuptools 45.0.0 may cause PyInstaller 3.3 packaged executable fail to launch · Issue #1963 · pypa/setuptools](https://github.com/pypa/setuptools/issues/1963)
