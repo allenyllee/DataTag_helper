@@ -34,6 +34,9 @@ from gooey import Gooey, GooeyParser
 import copy
 from pathlib import Path
 import numpy as np
+from collections import OrderedDict
+from functools import reduce
+import re
 
 ## Non-ASCII output hangs execution in PyInstaller packaged app · Issue #520 · chriskiehl/Gooey
 ## https://github.com/chriskiehl/Gooey/issues/520
@@ -216,20 +219,60 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     # extract document label
     df_document_label = extract_dict(df2, 'TextID', 'Summary')
+
+    ## reduce multi-selection option into string
+    def multi_selection_to_string(option_columns):
+        return reduce(lambda a,b: a+', '+b, filter(lambda y: pd.notnull(y), option_columns))
+
+    ### use ordered set to keep columns order
+    od = OrderedDict(df_document_label.columns.to_flat_index())
+    option_columns_list = list(od.keys())
+
+    df_document_label_tmp = pd.DataFrame(columns=option_columns_list)
+    df_document_label_tmp['TextID'] = df_document_label['TextID']
+    option_columns_list.remove('TextID')
+
+    ### flatten all option columns
+    for option_column in option_columns_list:
+        df_document_label_tmp[option_column] = df_document_label[option_column].apply(lambda x: multi_selection_to_string(x), axis=1)
+
+    df_document_label = df_document_label_tmp
+
     # extract sentence label
     df_sentence_label = extract_dict(df2, 'TextID', 'TermTab')
+
+    sentence_label_index_dict = OrderedDict(df_sentence_label.columns.to_flat_index())
+    sent_label_column_list = list(sentence_label_index_dict.keys())
+    # print(sent_label_column_list)
+    sent_label_column_list.remove('TextID')
+
+    df_sentence_label_tmp = df_sentence_label.melt(id_vars=['TextID'], value_vars=sent_label_column_list, var_name='Sent_Label', value_name='Sentence')
+    df_sentence_label_tmp = df_sentence_label_tmp.dropna()
+    df_sentence_label_tmp = df_sentence_label_tmp.sort_values(['TextID', 'Sent_Label'])
+    df_sentence_label_tmp['Sent_Label'] = df_sentence_label_tmp['Sent_Label'].apply(lambda x: x.split('_')[0])
+    df_sentence_label_tmp.reset_index(drop=True, inplace=True)
+    df_sentence_label_tmp = pd.merge(df_document_label, df_sentence_label_tmp, how='left', on=['TextID'])
+
+    df_sentence_label = df_sentence_label_tmp
 
     # extract content
     drop_columns_list = reorder_column(columns_list, 'Summary', np.inf)
     drop_columns_list = reorder_column(drop_columns_list, 'TermTab', np.inf)
     print(drop_columns_list)
-    df_content = df2[drop_columns_list]
+
+    ## explicit copy to avoid SettingWithCopyWarning warning
+    df_content = df2[drop_columns_list].copy()
+
+    ## remove tags in content
+    df_content['Content(remove_tag)'] = df_content['Content'].apply(lambda x: re.sub('(＜(／)?＊(.+?)_\d{1,2}＊＞)', '', x))
 
     # write to excel
     with pd.ExcelWriter(save_path, options={'strings_to_urls': False}) as writer:
         df_content.to_excel(writer, sheet_name='contents')
         df_document_label.to_excel(writer, sheet_name='document_label')
         df_sentence_label.to_excel(writer, sheet_name='sentence_label')
+
+    return df_content, df_document_label, df_sentence_label
 
 
 def main():
