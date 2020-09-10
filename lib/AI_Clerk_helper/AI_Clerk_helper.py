@@ -222,7 +222,22 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     ## reduce multi-selection option into string
     def multi_selection_to_string(option_columns):
-        return reduce(lambda a,b: a+', '+b, filter(lambda y: pd.notnull(y), option_columns))
+        # print(option_columns)
+        option_columns_list = list(filter(lambda y: pd.notnull(y), option_columns))
+
+        # check if option_columns_list is empty or ['']
+        if len(option_columns_list) == 0:
+            result = np.nan
+        elif len(option_columns_list) == 1 and option_columns_list[0] == '':
+            result = np.nan
+        else:
+            result = reduce(lambda a,b: a+', '+b, option_columns_list)
+            if result == '':
+                # print(list(option_columns))
+                # print(len(option_columns_list))
+                result = np.nan
+
+        return result
 
     ### use ordered set to keep columns order
     od = OrderedDict(df_document_label.columns.to_flat_index())
