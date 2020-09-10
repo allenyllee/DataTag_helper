@@ -129,6 +129,19 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.4
+
+1. 新增原文欄位(移除tag 標籤)
+![](assets/Deepin%20截圖_選取範圍_20200910203302.png)
+
+2. 多選選項直接以文字格式用逗號分隔儲存在同一格中
+![](assets/Deepin%20截圖_選取範圍_20200910203330.png)
+
+3. 句子與其標註攤平成兩欄(Sent_Label, Sentence)，沒有句子標註的TextID 則此兩欄留空白
+![](assets/Deepin%20截圖_選取範圍_20200910203417.png)
+
+
+
 ### v0.3
 
 
