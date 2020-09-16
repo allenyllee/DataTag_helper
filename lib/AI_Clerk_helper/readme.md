@@ -129,6 +129,13 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.6
+
+- 新增合併檔案功能
+
+![](./assets/Deepin%20截圖_AI_Clerk_helper.py_20200916201632.png)
+
+
 ### v0.5
 
 - 新增 train/test 切割功能

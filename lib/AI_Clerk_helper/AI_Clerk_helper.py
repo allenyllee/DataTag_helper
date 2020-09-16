@@ -40,6 +40,7 @@ import re
 from collections import Counter
 from sklearn.model_selection import StratifiedShuffleSplit
 import os
+import platform
 
 
 
@@ -227,7 +228,7 @@ GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.5", navigation='TABBED')
+@Gooey(program_name="AI Clerk helper v0.6", navigation='TABBED')
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
@@ -253,13 +254,21 @@ def parse_args():
     sub_parser2.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
 
 
-    ### for random tran/test split
-    sub_parser3 = subs.add_parser('split', prog='split', help='split')
-
+    ### concat files
+    sub_parser3 = subs.add_parser('concat', prog='合併檔案', help='合併檔案')
     sub_parser3 = sub_parser3.add_argument_group('')
-    sub_parser3.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file',
+    sub_parser3.add_argument('-i', '--input_file', help='input filenames (excel)', dest='input_files',
+                            default=None, widget='MultiFileChooser')
+
+
+
+    ### for random tran/test split
+    sub_parser4 = subs.add_parser('split', prog='分割檔案', help='分割檔案')
+
+    sub_parser4 = sub_parser4.add_argument_group('')
+    sub_parser4.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file',
                             default=None, widget='FileChooser')
-    sub_parser3.add_argument('-y', '--y_column', help='y column', dest='y_col',
+    sub_parser4.add_argument('-y', '--y_column', help='y column', dest='y_col',
                             default=None, widget='Dropdown', choices=mydict['global_choies'])
     # parser.add_argument('--type', '-t', choices=getLob())
 
@@ -474,9 +483,9 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     # write to excel
     with pd.ExcelWriter(save_path, options={'strings_to_urls': False}) as writer:
-        df_content.to_excel(writer, sheet_name='contents')
-        df_document_label.to_excel(writer, sheet_name='document_label')
-        df_sentence_label.to_excel(writer, sheet_name='sentence_label')
+        df_content.to_excel(writer, sheet_name='contents', index=False)
+        df_document_label.to_excel(writer, sheet_name='document_label', index=False)
+        df_sentence_label.to_excel(writer, sheet_name='sentence_label', index=False)
 
     return df_content, df_document_label, df_sentence_label
 
@@ -510,6 +519,24 @@ def split_train_test_to_target(X, y, target):
             df_target_test.to_excel(writer, sheet_name='test{:02}'.format(index), index=False)
 
 
+def concat_files(files_list):
+    print(files_list)
+    df_content = pd.read_excel(files_list[0], sheet_name='contents')
+    df_document_label = pd.read_excel(files_list[0], sheet_name='document_label')
+    df_sentence_label = pd.read_excel(files_list[0], sheet_name='sentence_label')
+    for filepath in files_list[1:]:
+        df_content = df_content.append(pd.read_excel(filepath, sheet_name='contents'))
+        df_document_label = df_document_label.append(pd.read_excel(filepath, sheet_name='document_label'))
+        df_sentence_label = df_sentence_label.append(pd.read_excel(filepath, sheet_name='sentence_label'))
+
+    # write to excel
+    with pd.ExcelWriter('all_data.xlsx', options={'strings_to_urls': False}) as writer:
+        df_content.to_excel(writer, sheet_name='contents', index=False)
+        df_document_label.to_excel(writer, sheet_name='document_label', index=False)
+        df_sentence_label.to_excel(writer, sheet_name='sentence_label', index=False)
+
+    return df_content, df_document_label, df_sentence_label
+
 
 def main():
     # check if user pass any argument, if yes, use command line, otherwise use gooey
@@ -524,9 +551,12 @@ def main():
 
     # print(args.command)
 
-    common_filename = Path(args.input_file)
-    # common_filename = "".join(args.input_file.split(".")[:-1])
-    # print(common_filename)
+    try:
+        common_filename = Path(args.input_file)
+        # common_filename = "".join(args.input_file.split(".")[:-1])
+        # print(common_filename)
+    except:
+        pass
 
     if args.command == 'original':
         df = pd.read_excel(args.input_file)
@@ -555,10 +585,17 @@ def main():
         output_filename = common_filename.with_suffix(".xlsx")
         ### 輸出標記資料excel檔
         to_excel_AI_clerk_labeled_data(df, output_filename)
+    elif args.command == 'concat':
+        os_type = platform.system()
+        if os_type == 'Windows':
+            files_list = args.input_files.split(';')
+        else:
+            files_list = args.input_files.split(':')
+        concat_files(files_list)
     elif args.command == 'split':
-        # df_content = pd.read_excel(args.input_file, sheet_name='contents', index_col=0)
-        df_document = pd.read_excel(args.input_file, sheet_name='document_label', index_col=0)
-        df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label', index_col=0)
+        # df_content = pd.read_excel(args.input_file, sheet_name='contents')
+        df_document = pd.read_excel(args.input_file, sheet_name='document_label')
+        df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label')
 
         X = df_document['TextID']
         y = df_document[args.y_col]
