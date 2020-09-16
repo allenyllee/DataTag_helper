@@ -37,6 +37,11 @@ import numpy as np
 from collections import OrderedDict
 from functools import reduce
 import re
+from collections import Counter
+from sklearn.model_selection import StratifiedShuffleSplit
+import os
+
+
 
 ## Non-ASCII output hangs execution in PyInstaller packaged app · Issue #520 · chriskiehl/Gooey
 ## https://github.com/chriskiehl/Gooey/issues/520
@@ -47,8 +52,182 @@ if sys.stdout.encoding != 'UTF-8':
 if sys.stderr.encoding != 'UTF-8':
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
+# use sqlite db to share data between gui and cli
+# because gui will excute this file with cli args to finish its work,
+# it needs a way to know what data is change in gui screen.
+from sqlitedict import SqliteDict
+
+MY_DB_FILE='./my_db.sqlite'
+
+mydict = SqliteDict(MY_DB_FILE, autocommit=True)
+
+try:
+    mydict['global_choies']
+except KeyError:
+    mydict['global_choies'] = []
+
+# share args across different event callbacks
+global_args = defaultdict(list)
+
+
+import wx
+from gooey.gui.lang.i18n import _
+
+## [Feature request: Allow general callbacks for validation · Issue #293 · chriskiehl/Gooey]
+## (https://github.com/chriskiehl/Gooey/issues/293)
+# from gooey.gui.components.widgets.bases import TextContainer
+# oldGetValue = TextContainer.getValue
+
+# def newGetValue(self):
+#     result = oldGetValue(self)
+#     userValidator = self._options['validator']['callback']
+#     message = self._options['validator']['message']
+#     value = self.getWidgetValue()
+#     validates = userValidator(value)
+#     result['test'] = False
+#     result['error'] = 'test'
+#     return result
+
+# TextContainer.getValue = newGetValue
+
+# [Gooey/dropdown.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/dropdown.py)
+from gooey.gui.components.widgets.dropdown import Dropdown
+Dropdown_oldGetWidget = Dropdown.getWidget
+
+# from gooey.gui import formatters
+# def newFormatOutput(self, metadata, value):
+#     print("debug2")
+#     print("metadata", metadata)
+#     print("value", value)
+#     return formatters.dropdown(metadata, value)
+
+# def newSetValue(self, value):
+#     ## +1 to offset the default placeholder value
+#     index = self._meta['choices'].index(value) + 1
+#     print("debug", self._meta['choices'])
+#     self.widget.SetSelection(index)
+
+# def newGetWidgetValue(self):
+#     value = self.widget.GetValue()
+#     # filter out the extra default option that's
+#     # appended during creation
+#     print(value)
+#     if value == _('select_option'):
+#         return None
+#     return value
+
+def Dropdown_newGetWidget(self, parent, *args, **options):
+    widget = Dropdown_oldGetWidget(self, parent, *args, **options)
+    # [wxPython ComboBox & Choice类 - WxPython教程™]
+    # (https://www.yiibai.com/wxpython/wx_combobox_choice_class.html)
+    # [wx.ComboBox — wxPython Phoenix 4.1.1a1 documentation]
+    # (https://wxpython.org/Phoenix/docs/html/wx.ComboBox.html)
+    widget.Bind(wx.EVT_COMBOBOX_DROPDOWN, self.OnCombo)
+    return widget
+
+def Dropdown_newOnCombo(self, event):
+    def get_choices(input_file):
+        try:
+            new_choices = list(pd.read_excel(input_file , sheet_name='document_label', index_col=0, nrows=0))
+            message = ''
+            self.setErrorString(message)
+            self.showErrorString(False)
+            # force refresh parent screen
+            # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
+            # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
+            self.GetParent().Layout()
+        except:
+            message = "No sheet named 'document_label'"
+            # print(message)
+            self.setErrorString(message)
+            self.showErrorString(True)
+            # force refresh parent screen
+            # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
+            # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
+            self.GetParent().Layout()
+            new_choices = []
+
+        return new_choices
+
+    current_input_file = global_args['input_file']
+
+    try:
+        self.previous_input_file
+    except:
+        self.previous_input_file = ''
+
+    if self.previous_input_file != current_input_file:
+        self.new_choices = get_choices(current_input_file)
+        self.previous_input_file = current_input_file
+
+    # save self.new_choices into sqlite db for later access
+    mydict['global_choies'] = self.new_choices
+    # [python - Dynamically change the choices in a wx.ComboBox() - Stack Overflow]
+    # (https://stackoverflow.com/questions/682923/dynamically-change-the-choices-in-a-wx-combobox)
+    self.setOptions(self.new_choices)
+
+
+Dropdown.getWidget = Dropdown_newGetWidget
+Dropdown.OnCombo = Dropdown_newOnCombo
+# Dropdown.setValue = newSetValue
+# Dropdown.getWidgetValue = newGetWidgetValue
+# Dropdown.formatOutput = newFormatOutput
+
+# [Gooey/choosers.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/choosers.py)
+# [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L65)
+# [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L13)
+# [Gooey/text_input.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/text_input.py#L7)
+# [Gooey/bases.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/bases.py#L170)
+from gooey.gui.components.widgets.core.chooser import FileChooser
+FileChooser_old_init = FileChooser.__init__
+
+## monkey patch __init__
+def FileChooser_new_init(self, parent, *args, **kwargs):
+    FileChooser_old_init(self, parent, *args, **kwargs)
+    # bind event wx.EVT_TEXT to trigger self.OnFileChooser when text change
+    # [wx.TextCtrl — wxPython Phoenix 4.1.1a1 documentation]
+    # (https://wxpython.org/Phoenix/docs/html/wx.TextCtrl.html)
+    # [wxPython - TextCtrl Class - Tutorialspoint]
+    # (https://www.tutorialspoint.com/wxpython/wx_textctrl_class.htm)
+    self.widget.Bind(wx.EVT_TEXT, self.OnFileChooser)
+
+## monkey patch OnFileChooser
+def FileChooser_newOnFileChooser(self, event):
+    # read text area value to global_args
+    global_args['input_file'] = self.widget.getValue()
+    # print(global_args)
+
+
+FileChooser.__init__ = FileChooser_new_init
+FileChooser.OnFileChooser = FileChooser_newOnFileChooser
+
+# [Gooey/application.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/containers/application.py#L29)
+from gooey.gui.containers.application import GooeyApplication
+
+## monkey patch onClose
+def newOnClose(self, *args, **kwargs):
+    """Cleanup the top level WxFrame and shutdown the process"""
+    self.Destroy()
+    # print("onClose")
+    # remove db file when close
+    # [sqlite - Python PermissionError: [WinError 32] The process cannot access the file..... but my file is closed - Stack Overflow]
+    # (https://stackoverflow.com/questions/59482990/python-permissionerror-winerror-32-the-process-cannot-access-the-file-bu)
+    mydict.close()
+    os.remove(MY_DB_FILE)
+    sys.exit()
+
+GooeyApplication.onClose = newOnClose
+
+
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.3", navigation='TABBED')
+@Gooey(program_name="AI Clerk helper v0.5", navigation='TABBED')
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
@@ -72,6 +251,18 @@ def parse_args():
 
     sub_parser2 = sub_parser2.add_argument_group('')
     sub_parser2.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
+
+
+    ### for random tran/test split
+    sub_parser3 = subs.add_parser('split', prog='split', help='split')
+
+    sub_parser3 = sub_parser3.add_argument_group('')
+    sub_parser3.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file',
+                            default=None, widget='FileChooser')
+    sub_parser3.add_argument('-y', '--y_column', help='y column', dest='y_col',
+                            default=None, widget='Dropdown', choices=mydict['global_choies'])
+    # parser.add_argument('--type', '-t', choices=getLob())
+
 
 
     # args, unknown = parser.parse_known_args()
@@ -290,6 +481,36 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
     return df_content, df_document_label, df_sentence_label
 
 
+def split_train_test_to_target(X, y, target):
+    sss = StratifiedShuffleSplit(n_splits=5, test_size=0.2, random_state=1234)
+
+    for index, (train_index, test_index) in enumerate(sss.split(X, y)):
+    #     print("TRAIN:", train_index, "TEST:", test_index)
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+        print("split {}".format(index))
+        print("train:", Counter(y_train))
+        print("test:", Counter(y_test))
+
+        df_train = pd.DataFrame({'TextID':X_train}).reset_index(drop=True)
+        df_test = pd.DataFrame({'TextID':X_test}).reset_index(drop=True)
+
+        df_target_train = pd.merge(df_train, target, how='left', on=['TextID'])
+        df_target_test = pd.merge(df_test, target, how='left', on=['TextID'])
+
+        filename = 'train_test_split.xlsx'
+        # if file does not exist write header
+        if index != 0 and os.path.isfile(filename):
+            mode = 'a'
+        else:
+            mode = 'w'
+
+        with pd.ExcelWriter(filename, options={'strings_to_urls': False}, mode=mode, engine='openpyxl') as writer:
+            df_target_train.to_excel(writer, sheet_name='train{:02}'.format(index), index=False)
+            df_target_test.to_excel(writer, sheet_name='test{:02}'.format(index), index=False)
+
+
+
 def main():
     # check if user pass any argument, if yes, use command line, otherwise use gooey
     ## python - Argparse: Check if any arguments have been passed - Stack Overflow
@@ -334,6 +555,19 @@ def main():
         output_filename = common_filename.with_suffix(".xlsx")
         ### 輸出標記資料excel檔
         to_excel_AI_clerk_labeled_data(df, output_filename)
+    elif args.command == 'split':
+        # df_content = pd.read_excel(args.input_file, sheet_name='contents', index_col=0)
+        df_document = pd.read_excel(args.input_file, sheet_name='document_label', index_col=0)
+        df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label', index_col=0)
+
+        X = df_document['TextID']
+        y = df_document[args.y_col]
+        target = df_sentence
+
+        split_train_test_to_target(X, y, target)
+
+
+
 
 
 

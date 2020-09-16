@@ -129,6 +129,15 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.5
+
+- 新增 train/test 切割功能
+
+![](./assets/Deepin%20截圖_選取範圍_20200916175230.png)
+
+![](./assets/Deepin%20截圖_選取範圍_20200916175730.png)
+
+
 ### v0.4.1
 
 - 修正當某個欄位漏標時，會產生error而停止輸出
@@ -182,3 +191,33 @@ maybe the problem of pyinstaller under wine...
 
 Just downgrade to pyinstaller 3.5 anything works fine, no matter on Wine or on Windows.
 
+
+### How do you resolve 'hidden imports not found!' warnings in pyinstaller for scipy?
+
+- [python - How do you resolve 'hidden imports not found!' warnings in pyinstaller for scipy? - Stack Overflow](https://stackoverflow.com/questions/49559770/how-do-you-resolve-hidden-imports-not-found-warnings-in-pyinstaller-for-scipy])
+
+    > You need to go into the hook-scipy.py (or create one) and have it look like this:
+    >
+    > ```
+    > from PyInstaller.utils.hooks import collect_submodules
+    > from PyInstaller.utils.hooks import collect_data_files
+    > hiddenimports = collect_submodules('scipy')
+    >
+    > datas = collect_data_files('scipy')
+    > ```
+    >
+    > then go into the hook-sklearn.metrics.cluster.py file and modify it to look like this:
+    >
+    > ```
+    > from PyInstaller.utils.hooks import collect_data_files
+    >
+    > hiddenimports = ['sklearn.utils.sparsetools._graph_validation',
+    >                  'sklearn.utils.sparsetools._graph_tools',
+    >                  'sklearn.utils.lgamma',
+    >                  'sklearn.utils.weight_vector']
+    >
+    > datas = collect_data_files('sklearn')
+    > ```
+    >
+    > ---
+    > you can specify hooks file dir used in --additional-hooks-dir in the spec file's hookspath -- [allenyllee](https://stackoverflow.com/users/1851492/allenyllee "399 reputation")
