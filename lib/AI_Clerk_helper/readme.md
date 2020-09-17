@@ -129,6 +129,105 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.6.1
+
+Symptom1: 修復 Windows 下合併檔案出現 openpyxl.utils.exceptions.IllegalCharacterError
+
+Rootcause: The previous generated excel file contains illegal character \_x0008\_, which is an OOXML escape character[1].
+
+Solution: remove these illegal characters before write to excel[2].
+
+---
+
+Symptom2: 修復當 json 檔中有 \_xHHHH\_ 這類字串(以純文字形式出現)時，輸出的 excel 檔會自動轉換成 \_xHHHH\_ 的 unicode 字元(僅在 Windows 下發生，在 linux 下會將純文字的底線(underscore, _) 再跳脫一次，轉換成 \_x005F_x0008\_ [1] 儲存到 excel)
+
+Rootcause: maybe openpyxl bug?
+
+Solution: this is a workaround. when dataframe read from json file by read_json(), look for \_xHHHH\_ pattern in this dataframe, and unescape it[3] before write to excel.
+
+---
+
+[1]:[VTBString Class (DocumentFormat.OpenXml.VariantTypes) | Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.varianttypes.vtbstring?view=openxml-2.8.1)
+
+> [ISO/IEC 29500-1 1st Edition]
+>
+> **bstr (Basic String)**
+>
+> This element defines a binary basic string variant type, which can store any valid Unicode character. Unicode characters that cannot be directly represented in XML as defined by the XML 1.0 specification, shall be escaped using the Unicode numerical character representation escape character format \_xHHHH\_, where H represents a hexadecimal character in the character's value. [*Example*: The Unicode character 8 is not permitted in an XML 1.0 document, so it shall be escaped as \_x0008\_. *end example*] To store the literal form of an escape sequence, the initial underscore shall itself be escaped (i.e. stored as \_x005F\_). [*Example*: The string literal *\_x0008\_* would be stored as *\_x005F_x0008\_*. *end example*]
+>
+> The possible values for this element are defined by the W3C XML Schema *string* datatype.
+
+
+[2]:[(1条消息)openpyxl.utils.exceptions.IllegalCharacterError 错误原因分析及解决办法_村中少年的专栏-CSDN博客](https://blog.csdn.net/javajiawei/article/details/97147219)
+
+> 进入python命令行模式，输入如下：
+>
+> ```
+> >>> import sys
+> >>> help('openpyxl')
+>
+> ```
+>
+> 可得openpyxl模块的路径如下`/usr/local/lib/python2.7/site-packages/openpyxl`，查看该目录下的cell子目录中的cell.py文件，定位到具体错误代码为：
+>
+> ```
+> def check_string(self, value):
+>     """Check string coding, length, and line break character"""
+>     if value is None:
+>         return
+>     # convert to unicode string
+>     if not isinstance(value, unicode):
+>         value = unicode(value, self.encoding)
+>     value = unicode(value)
+>     # string must never be longer than 32,767 characters
+>     # truncate if necessary
+>     value = value[:32767]
+>     if next(ILLEGAL_CHARACTERS_RE.finditer(value), None):
+>         raise IllegalCharacterError
+>     return value
+>
+> ```
+>
+> 其中`ILLEGAL_CHARACTERS_RE`的定义在文件的开头，如下：
+>
+> ```
+> ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
+>
+> ```
+>
+> 这里面的非法字符都是八进制，可以到对应的ASCII表中查看，的确都是不常见的不可显示字符，例如退格，响铃等，在此处被定义为excel中的非法字符。\
+> 解决上述错误有两种方法，如下：\
+> 1，既然检测到excel中存在`[\000-\010]|[\013-\014]|[\016-\037]`这些非法的字符，因此可以将字符串中的非法字符替换掉即可，在重新写入excel即可。如下：
+>
+> ```
+> text= ILLEGAL_CHARACTERS_RE.sub(r'', text)
+> ```
+>
+
+[3]:[openpyxl.utils.escape — openpyxl 3.0.5 documentation](https://openpyxl.readthedocs.io/en/stable/_modules/openpyxl/utils/escape.html)
+
+> ```
+> def unescape(value):
+>     r"""
+>     Convert escaped strings to ASCIII: _x000a_ == \n
+>     """
+>
+>
+>     ESCAPED_REGEX = re.compile("_x([0-9A-Fa-f]{4})_")
+>
+>     def _sub(match):
+>         """
+>         Callback to unescape chars
+>         """
+>         return chr(int(match.group(1), 16))
+>
+>     if "_x" in value:
+>         value = ESCAPED_REGEX.sub(_sub, value)
+>
+>     return value
+> ```
+
+
 ### v0.6
 
 - 新增合併檔案功能

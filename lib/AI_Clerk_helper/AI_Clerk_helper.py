@@ -228,7 +228,7 @@ GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.6", navigation='TABBED')
+@Gooey(program_name="AI Clerk helper v0.6.1", navigation='TABBED')
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
@@ -402,6 +402,58 @@ def extract_dict(df, id_column, dict_column):
     return df_tmp
 
 
+
+# these illegal characters is represented by octal escape
+# [Regular Expressions Reference: Special and Non-Printable Characters]
+# (https://www.regular-expressions.info/refcharacters.html)
+# [(1条消息)openpyxl.utils.exceptions.IllegalCharacterError 错误原因分析及解决办法_村中少年的专栏-CSDN博客]
+# (https://blog.csdn.net/javajiawei/article/details/97147219)
+ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
+
+# [openpyxl.utils.escape — openpyxl 3.0.5 documentation]
+# (https://openpyxl.readthedocs.io/en/stable/_modules/openpyxl/utils/escape.html)
+ESCAPED_REGEX = re.compile("_x([0-9A-Fa-f]{4})_")
+
+def unescape_OOXML(string):
+
+    def remove_character(char):
+        print("removed illegal char!")
+        return r''
+
+    def _sub(match):
+        """
+        Callback to unescape chars
+        """
+        char = chr(int(match.group(1), 16))
+        # [Convert regular Python string to raw string - Stack Overflow]
+        # (https://stackoverflow.com/questions/4415259/convert-regular-python-string-to-raw-string)
+        # [python - Pythonic way to do base conversion - Stack Overflow]
+        # (https://stackoverflow.com/questions/28824874/pythonic-way-to-do-base-conversion)
+        print("found char {}, which int in octal number is: {}".format(char.encode('unicode_escape'), oct(ord(char))))
+
+        # remove carriage return
+        if char == '\r':
+            print("removed!")
+            char = ''
+        else:
+            # remove illegal characters
+            char = ILLEGAL_CHARACTERS_RE.sub(remove_character, char)
+
+        return char
+
+    string = ESCAPED_REGEX.sub(_sub, string)
+
+    return string
+
+
+## [pandas - How to remove illegal characters so a dataframe can write to Excel - Stack Overflow]
+## (https://stackoverflow.com/questions/42306755/how-to-remove-illegal-characters-so-a-dataframe-can-write-to-excel)
+def remove_illegal_characters(dataframe):
+    # dataframe = dataframe.applymap(lambda x: x.encode('unicode_escape').decode('utf-8') if isinstance(x, str) else x)
+    dataframe = dataframe.applymap(lambda x: ILLEGAL_CHARACTERS_RE.sub(r'', x) if isinstance(x, str) else x)
+    return dataframe
+
+
 def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     df1 = dataframe.T.sort_values(['TextID', 'Annotator']).reset_index(drop=True)
@@ -524,12 +576,23 @@ def concat_files(files_list):
     df_content = pd.read_excel(files_list[0], sheet_name='contents')
     df_document_label = pd.read_excel(files_list[0], sheet_name='document_label')
     df_sentence_label = pd.read_excel(files_list[0], sheet_name='sentence_label')
+
     for filepath in files_list[1:]:
         df_content = df_content.append(pd.read_excel(filepath, sheet_name='contents'))
         df_document_label = df_document_label.append(pd.read_excel(filepath, sheet_name='document_label'))
         df_sentence_label = df_sentence_label.append(pd.read_excel(filepath, sheet_name='sentence_label'))
 
+    ## unescape OOXML string
+    df_content = df_content.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+    df_document_label = df_document_label.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+    df_sentence_label = df_sentence_label.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+
     # write to excel
+    ## remove illegal characters
+    df_content = remove_illegal_characters(df_content)
+    df_document_label = remove_illegal_characters(df_document_label)
+    df_sentence_label = remove_illegal_characters(df_sentence_label)
+
     with pd.ExcelWriter('all_data.xlsx', options={'strings_to_urls': False}) as writer:
         df_content.to_excel(writer, sheet_name='contents', index=False)
         df_document_label.to_excel(writer, sheet_name='document_label', index=False)
@@ -571,6 +634,10 @@ def main():
             # print(args.input_file.split(".")[:-1])
             df = clean_data(df)
 
+        ## unescape OOXML string
+        df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+        ## remove illegal characters
+        df = remove_illegal_characters(df)
 
         if args.to_excel:
             output_filename = new_filename.with_suffix(".xlsx")
@@ -582,8 +649,13 @@ def main():
 
     elif args.command == 'labeled':
         df = pd.read_json(args.input_file)
-        output_filename = common_filename.with_suffix(".xlsx")
+        ## unescape OOXML string
+        df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+        ## remove illegal characters
+        df = remove_illegal_characters(df)
+
         ### 輸出標記資料excel檔
+        output_filename = common_filename.with_suffix(".xlsx")
         to_excel_AI_clerk_labeled_data(df, output_filename)
     elif args.command == 'concat':
         os_type = platform.system()
@@ -596,6 +668,17 @@ def main():
         # df_content = pd.read_excel(args.input_file, sheet_name='contents')
         df_document = pd.read_excel(args.input_file, sheet_name='document_label')
         df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label')
+
+        ## unescape OOXML string
+        # df_content = df_content.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+        df_document = df_document.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+        df_sentence = df_sentence.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+
+        ## remove illegal characters
+        # df_content = remove_illegal_characters(df_content)
+        df_document = remove_illegal_characters(df_document)
+        df_sentence = remove_illegal_characters(df_sentence)
+
 
         X = df_document['TextID']
         y = df_document[args.y_col]
