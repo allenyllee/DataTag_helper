@@ -55,9 +55,43 @@ pyinstaller -F --windowed build-win.spec
 
 And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-alone executable that you can distribute to your users.
 
-### issue
 
-- [setuptools 45.0.0 may cause PyInstaller 3.3 packaged executable fail to launch · Issue #1963 · pypa/setuptools](https://github.com/pypa/setuptools/issues/1963)
+## build window binary under linux
+
+add wine apt repository [Ubuntu - WineHQ Wiki](https://wiki.winehq.org/Ubuntu)
+```
+sudo dpkg --add-architecture i386
+wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
+```
+
+Install unmet dependence: `faudio`
+```
+sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
+```
+
+install wine 5.9
+[How to Install Wine Devel 4.8 in Ubuntu 19.04 / 18.04 | UbuntuHandbook](http://ubuntuhandbook.org/index.php/2019/05/nstall-wine-4-8-ubuntu-19-04-18-04/)
+```
+sudo apt install --install-recommends winehq-devel
+```
+
+build excutable
+```
+wine pyinstaller -F --windowed build-win.spec
+```
+
+run on windows:
+```
+wine AI_Clerk_helper.exe
+```
+
+![](./assets/Snipaste_2020-06-01_19-59-29.png)
+
+
+## issue
+
+### [setuptools 45.0.0 may cause PyInstaller 3.3 packaged executable fail to launch · Issue #1963 · pypa/setuptools](https://github.com/pypa/setuptools/issues/1963)
 
 Fixed by adding a hidden import:
 ```
@@ -66,3 +100,8 @@ a = Analysis(...,
              ...)
 ```
 
+### INTERNAL ERROR: cannot create temporary directory!
+
+![](./assets/Deepin%20截圖_選取範圍_20200601201922.png)
+
+maybe the problem of pyinstaller under wine...

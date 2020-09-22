@@ -63,17 +63,17 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
     sample_articles['Articles'].update(samples_dict)
 
     # output articles.json
-    with open(save_path, 'w') as outfile:
+    with open(save_path, 'w', encoding='utf-8') as outfile:
         json.dump(sample_articles, outfile, ensure_ascii=False, indent=4)
 
     # read ouputed samples to test
-    with open('./suicide_text_sample.json', 'r') as outfile:
-        temp_dict = json.load(outfile)
+    # with open('./suicide_text_sample.json', 'r') as outfile:
+    #     temp_dict = json.load(outfile)
 
-    try:
-        display(temp_dict)
-    except:
-        pass
+    # try:
+    #     display(temp_dict)
+    # except:
+    #     pass
 
 
 # ### 清理資料格式
