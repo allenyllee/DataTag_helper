@@ -23,28 +23,36 @@ import json
 from collections import defaultdict
 
 import pandas as pd
-from sklearn.utils import shuffle
+# from sklearn.utils import shuffle
 import emoji
 import hashlib
-# from lib.AIClerk_helper import to_AIclerk_batch_upload_json
+# from lib.AIClerk_helper import to_AI_clerk_batch_upload_json
 
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None)
-parser.add_argument('-o', '--output_file', help='output filename (json)', dest='output_file', default=None)
-
-parser.add_argument('--emojilize', dest='emojilize', action='store_true')
-parser.add_argument('--no-emojilize', dest='emojilize', action='store_false')
-parser.set_defaults(emojilize=False)
-
-parser.add_argument('--to-json', dest='to_json', action='store_true')
-parser.add_argument('--to-excel', dest='to_json', action='store_false')
-parser.set_defaults(to_json=True)
-
-args, unknown = parser.parse_known_args()
+import sys
+# import argparse
+from gooey import Gooey, GooeyParser
 
 
-def to_AIclerk_batch_upload_json(dataframe, save_path):
+@Gooey(program_name="AI Clerk helper")
+def parse_args():
+    # parser = argparse.ArgumentParser()
+    parser = GooeyParser()
+    parser.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None, widget='FileChooser')
+
+    parser.add_argument('--emojilize', help='turn text to emoji (uncheck to reverse)', dest='emojilize', action='store_true')
+    parser.set_defaults(emojilize=False)
+
+    parser.add_argument('--to-excel', help='output excel file (uncheck to output json)', dest='to_excel', action='store_true')
+    parser.set_defaults(to_excel=False)
+
+    # args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
+
+    return args
+
+
+
+def to_AI_clerk_batch_upload_json(dataframe, save_path):
     def to_article_dict(x):
         return {'Title': x.Title.tolist()[0], 'Content': x.Content.tolist()[0],
                 'Author': x.Author.tolist()[0], 'Time': x.Time.tolist()[0]}
@@ -74,11 +82,15 @@ def clean_data(df):
     df_cleaned = df[~df["Content"].isnull()].copy()
 
     drop_columns = df_cleaned.columns.str.contains("Unnamed")
-    leave_columns = ['ID'] + df_cleaned.columns[~drop_columns].tolist()
-    df_cleaned['ID'] = df_cleaned[["Content"]].apply(lambda x: hashlib.md5(x[0].encode('utf-8')).hexdigest()[:10],axis=1)
-    df_cleaned = df_cleaned[leave_columns]
 
-    df_cleaned = df_cleaned.sort_values("ID").reset_index(drop=True)
+    # print(any(df_cleaned.columns.str.contains("^ID$")))
+    if not any(df_cleaned.columns.str.contains("^ID$")):
+        leave_columns = ['ID'] + df_cleaned.columns[~drop_columns].tolist()
+        df_cleaned['ID'] = df_cleaned[["Content"]].apply(lambda x: hashlib.md5(x[0].encode('utf-8')).hexdigest()[:10],axis=1)
+        df_cleaned = df_cleaned[leave_columns]
+
+        # print(df_cleaned.head())
+        df_cleaned = df_cleaned.sort_values("ID").reset_index(drop=True)
 
     df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + '/' + x.Gender, axis=1)
     df_cleaned["Time"] = df_cleaned.apply(lambda x: str(x.Date) + '/' + str(x.Time), axis=1)
@@ -107,8 +119,18 @@ def text_to_emoji(df):
     return df_emojilized
 
 
+def main():
+    # check if user pass any argument, if yes, use command line, otherwise use gooey
+    ## python - Argparse: Check if any arguments have been passed - Stack Overflow
+    ## https://stackoverflow.com/questions/10698468/argparse-check-if-any-arguments-have-been-passed
+    if len(sys.argv) > 1:
+        ## How to strip decorators from a function in Python - Stack Overflow
+        ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
+        args = parse_args.__closure__[0].cell_contents()
+    else:
+        args = parse_args()
 
-if __name__ == '__main__':
+
     df = pd.read_excel(args.input_file)
 
     if args.emojilize:
@@ -121,10 +143,15 @@ if __name__ == '__main__':
         # print(args.input_file.split(".")[:-1])
         df = clean_data(df)
 
-    if args.to_json:
-        output_filename = new_filename + ".json"
-        # ### 輸出工研院文章 json檔
-        to_AIclerk_batch_upload_json(df, output_filename)
-    else:
+
+    if args.to_excel:
         output_filename = new_filename+ ".xlsx"
         df.to_excel(output_filename)
+    else:
+        output_filename = new_filename + ".json"
+        # ### 輸出工研院文章 json檔
+        to_AI_clerk_batch_upload_json(df, output_filename)
+
+
+if __name__ == '__main__':
+    main()
