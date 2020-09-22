@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Monday, May 4th 2020, 4:34:06 pm
+# Last Modified: Wednesday, July 1st 2020, 4:43:37 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -31,6 +31,9 @@ import hashlib
 import sys
 # import argparse
 from gooey import Gooey, GooeyParser
+import copy
+from pathlib import Path
+import numpy as np
 
 ## Non-ASCII output hangs execution in PyInstaller packaged app · Issue #520 · chriskiehl/Gooey
 ## https://github.com/chriskiehl/Gooey/issues/520
@@ -42,17 +45,31 @@ if sys.stderr.encoding != 'UTF-8':
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-@Gooey(program_name="AI Clerk helper v0.2")
+@Gooey(program_name="AI Clerk helper v0.3", navigation='TABBED')
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
-    parser.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None, widget='FileChooser')
+    subs = parser.add_subparsers(help='commands', dest='command')
 
-    parser.add_argument('--emojilize', help='turn text to emoji (uncheck to reverse)', dest='emojilize', action='store_true')
-    parser.set_defaults(emojilize=False)
+    ### for original file
+    sub_parser1 = subs.add_parser('original', prog='未標註原始檔案', help='未標註原始檔案')
 
-    parser.add_argument('--to-excel', help='output excel file (uncheck to output json)', dest='to_excel', action='store_true')
-    parser.set_defaults(to_excel=False)
+    sub_parser1 = sub_parser1.add_argument_group('')
+
+    sub_parser1.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None, widget='FileChooser')
+
+    sub_parser1.add_argument('--emojilize', help='turn text to emoji (uncheck to reverse)', dest='emojilize', action='store_true')
+    sub_parser1.set_defaults(emojilize=False)
+
+    sub_parser1.add_argument('--to-excel', help='output excel file (uncheck to output json)', dest='to_excel', action='store_true')
+    sub_parser1.set_defaults(to_excel=False)
+
+    ### for unlabeled file
+    sub_parser2 = subs.add_parser('labeled', prog='已標註檔案', help='已標註檔案')
+
+    sub_parser2 = sub_parser2.add_argument_group('')
+    sub_parser2.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
+
 
     # args, unknown = parser.parse_known_args()
     args = parser.parse_args()
@@ -147,6 +164,74 @@ def text_to_emoji(df):
     return df_emojilized
 
 
+def reorder_column(columns_list, selected_column_name, insert_before_column_name=None):
+    columns_list = copy.copy(columns_list)
+    selected_index = columns_list.index(selected_column_name)
+    selected_item = columns_list.pop(selected_index)
+
+    # drop selected column when insert_before_column_name is infinity
+    if insert_before_column_name is np.inf:
+        return columns_list
+
+    # print(insert_before_column_name is float('inf'))
+
+    # insert to the end of column list when insert_before_column_name is None
+    if insert_before_column_name is None:
+        insert_point_index = len(columns_list)
+    else:
+        insert_point_index = columns_list.index(insert_before_column_name)
+
+    columns_list.insert(insert_point_index, selected_item)
+
+    return columns_list
+
+
+def extract_dict(df, id_column, dict_column):
+    df_tmp = df[[id_column, dict_column]].set_index(id_column)
+    df_tmp = pd.DataFrame(df_tmp.apply(
+        lambda x: {'empty': float('nan')} if len(x[0]) == 0 else x[0], axis=1))
+
+    df_tmp = df_tmp.apply(
+        lambda x: pd.DataFrame.from_dict(x[0], orient='index').stack(), axis=1)
+
+    df_tmp = df_tmp.reset_index(level=0)
+
+    return df_tmp
+
+
+def to_excel_AI_clerk_labeled_data(dataframe, save_path):
+
+    df1 = dataframe.T.sort_values(['TextID', 'Annotator']).reset_index(drop=True)
+    df1 = df1[sorted(df1.columns)]
+
+    columns_list = list(df1.columns)
+    print(columns_list)
+    columns_list = reorder_column(columns_list, 'TextID', 'Annotator')
+    columns_list = reorder_column(columns_list, 'Title', 'Content')
+    columns_list = reorder_column(columns_list, 'Author', 'Title')
+    columns_list = reorder_column(columns_list, 'TextTime', 'Comment')
+    print(columns_list)
+
+    df2 = df1[columns_list]
+
+    # extract document label
+    df_document_label = extract_dict(df2, 'TextID', 'Summary')
+    # extract sentence label
+    df_sentence_label = extract_dict(df2, 'TextID', 'TermTab')
+
+    # extract content
+    drop_columns_list = reorder_column(columns_list, 'Summary', np.inf)
+    drop_columns_list = reorder_column(drop_columns_list, 'TermTab', np.inf)
+    print(drop_columns_list)
+    df_content = df2[drop_columns_list]
+
+    # write to excel
+    with pd.ExcelWriter(save_path, options={'strings_to_urls': False}) as writer:
+        df_content.to_excel(writer, sheet_name='contents')
+        df_document_label.to_excel(writer, sheet_name='document_label')
+        df_sentence_label.to_excel(writer, sheet_name='sentence_label')
+
+
 def main():
     # check if user pass any argument, if yes, use command line, otherwise use gooey
     ## python - Argparse: Check if any arguments have been passed - Stack Overflow
@@ -158,27 +243,40 @@ def main():
     else:
         args = parse_args()
 
+    # print(args.command)
 
-    df = pd.read_excel(args.input_file)
+    common_filename = Path(args.input_file)
+    # common_filename = "".join(args.input_file.split(".")[:-1])
+    # print(common_filename)
 
-    if args.emojilize:
-        df = clean_data(df)
-        df = text_to_emoji(df)
-        new_filename = "".join(args.input_file.split(".")[:-1]) + "_emojilized"
-        print(args.input_file.split("."))
-    else:
-        new_filename = "".join(args.input_file.split(".")[:-1]) + "_demojilized"
-        # print(args.input_file.split(".")[:-1])
-        df = clean_data(df)
+    if args.command == 'original':
+        df = pd.read_excel(args.input_file)
+
+        if args.emojilize:
+            df = clean_data(df)
+            df = text_to_emoji(df)
+            new_filename = common_filename.with_name(common_filename.stem + "_emojilized")
+            print(args.input_file.split("."))
+        else:
+            new_filename = common_filename.with_name(common_filename.stem + "_demojilized")
+            # print(args.input_file.split(".")[:-1])
+            df = clean_data(df)
 
 
-    if args.to_excel:
-        output_filename = new_filename+ ".xlsx"
-        df.to_excel(output_filename)
-    else:
-        output_filename = new_filename + ".json"
-        # ### 輸出工研院文章 json檔
-        to_AI_clerk_batch_upload_json(df, output_filename)
+        if args.to_excel:
+            output_filename = new_filename.with_suffix(".xlsx")
+            df.to_excel(output_filename)
+        else:
+            output_filename = new_filename.with_suffix(".json")
+            # ### 輸出工研院文章 json檔
+            to_AI_clerk_batch_upload_json(df, output_filename)
+
+    elif args.command == 'labeled':
+        df = pd.read_json(args.input_file)
+        output_filename = common_filename.with_suffix(".xlsx")
+        ### 輸出標記資料excel檔
+        to_excel_AI_clerk_labeled_data(df, output_filename)
+
 
 
 if __name__ == '__main__':
