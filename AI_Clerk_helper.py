@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Wednesday, July 1st 2020, 4:43:37 pm
+# Last Modified: Tuesday, September 22nd 2020, 11:43:24 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -581,6 +581,11 @@ def concat_files(files_list):
         df_content = df_content.append(pd.read_excel(filepath, sheet_name='contents'))
         df_document_label = df_document_label.append(pd.read_excel(filepath, sheet_name='document_label'))
         df_sentence_label = df_sentence_label.append(pd.read_excel(filepath, sheet_name='sentence_label'))
+
+    ## sort data by TextID
+    df_content = df_content.sort_values(by=['TextID'])
+    df_document_label = df_document_label.sort_values(by=['TextID'])
+    df_sentence_label = df_sentence_label.sort_values(by=['TextID'])
 
     ## unescape OOXML string
     df_content = df_content.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
