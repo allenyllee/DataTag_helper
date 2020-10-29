@@ -389,15 +389,15 @@ def reorder_column(columns_list, selected_column_name, insert_before_column_name
     return columns_list
 
 
-def extract_dict(df, id_column, dict_column):
-    df_tmp = df[[id_column, dict_column]].set_index(id_column)
+def extract_dict(df, id_column_list, dict_column):
+    df_tmp = df[id_column_list + [dict_column]].set_index(id_column_list)
     df_tmp = pd.DataFrame(df_tmp.apply(
-        lambda x: {'empty': float('nan')} if len(x[0]) == 0 else x[0], axis=1))
+        lambda x: {'empty': 'nan'} if len(x[0]) == 0 else x[0], axis=1))
 
     df_tmp = df_tmp.apply(
         lambda x: pd.DataFrame.from_dict(x[0], orient='index').stack(), axis=1)
 
-    df_tmp = df_tmp.reset_index(level=0)
+    df_tmp = df_tmp.reset_index(level=id_column_list)
 
     return df_tmp
 
@@ -469,8 +469,8 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     df2 = df1[columns_list]
 
-    # extract document label
-    df_document_label = extract_dict(df2, 'TextID', 'Summary')
+    ########### extract document label #############
+    df_document_label = extract_dict(df2, ['TextID', 'Annotator'], 'Summary')
 
     ## reduce multi-selection option into string
     def multi_selection_to_string(option_columns):
@@ -497,32 +497,137 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     df_document_label_tmp = pd.DataFrame(columns=option_columns_list)
     df_document_label_tmp['TextID'] = df_document_label['TextID']
+    df_document_label_tmp['Annotator'] = df_document_label['Annotator']
     option_columns_list.remove('TextID')
+    option_columns_list.remove('Annotator')
 
     ### flatten all option columns
     for option_column in option_columns_list:
         df_document_label_tmp[option_column] = df_document_label[option_column].apply(lambda x: multi_selection_to_string(x), axis=1)
 
-    df_document_label = df_document_label_tmp
+    df_document_label = pd.merge(df2[['TextID', 'Annotator']], df_document_label_tmp, how='left', on=['TextID', 'Annotator'])
 
-    # extract sentence label
-    df_sentence_label = extract_dict(df2, 'TextID', 'TermTab')
 
-    sentence_label_index_dict = OrderedDict(df_sentence_label.columns.to_flat_index())
+    ########## create doc label compare view ##########
+    df_doc_label_cmp = pd.pivot_table(df_document_label, values=option_columns_list,
+                                        index=['TextID'], columns=['Annotator'], aggfunc=lambda x: x.iloc[0])
+
+    df_doc_label_cmp = df_doc_label_cmp.reset_index()
+
+
+    ########## extract sentence label ############
+    df_sentence_label_tmp = extract_dict(df2, ['TextID', 'Annotator'], 'TermTab')
+    sentence_label_index_dict = OrderedDict(df_sentence_label_tmp.columns.to_flat_index())
     sent_label_column_list = list(sentence_label_index_dict.keys())
     # print(sent_label_column_list)
     sent_label_column_list.remove('TextID')
+    sent_label_column_list.remove('Annotator')
 
-    df_sentence_label_tmp = df_sentence_label.melt(id_vars=['TextID'], value_vars=sent_label_column_list, var_name='Sent_Label', value_name='Sentence')
+    df_sentence_label_tmp = df_sentence_label_tmp.melt(id_vars=['TextID', 'Annotator'], value_vars=sent_label_column_list, var_name='Sent_Label', value_name='Sentence')
     df_sentence_label_tmp = df_sentence_label_tmp.dropna()
-    df_sentence_label_tmp = df_sentence_label_tmp.sort_values(['TextID', 'Sent_Label'])
     df_sentence_label_tmp['Sent_Label'] = df_sentence_label_tmp['Sent_Label'].apply(lambda x: x.split('_')[0])
     df_sentence_label_tmp.reset_index(drop=True, inplace=True)
-    df_sentence_label_tmp = pd.merge(df_document_label, df_sentence_label_tmp, how='left', on=['TextID'])
+    df_sentence_label = pd.merge(df_document_label, df_sentence_label_tmp, how='left', on=['TextID', 'Annotator'])
+    df_sentence_label = df_sentence_label.sort_values(['TextID', 'Annotator', 'Sent_Label'])
 
-    df_sentence_label = df_sentence_label_tmp
 
-    # extract content
+    ######### create sent label cmp long view ########
+    # this will group sentence by 'TextID', 'Annotator' and 'Sent_Label'
+    df_sentence_sector = df_sentence_label_tmp.groupby(['TextID', 'Annotator', 'Sent_Label'])
+
+    # because there may be many sentences belong to one Sent_Label,
+    # when arragate, save these sentence into a list
+    df_sent_label_cmp_long_tmp = df_sentence_sector.agg(lambda x: [y for y in x])
+
+    # this will separate each sentence into columns,
+    # so if there are 21 sentence, column's name will be a list of 0-20
+    df_sent_label_cmp_long_tmp = df_sent_label_cmp_long_tmp['Sentence'].apply(lambda x: pd.Series(x))
+
+    # add new column level: Sentence
+    column_level_list =  [['Sentence'], df_sent_label_cmp_long_tmp.columns]
+    df_sent_label_cmp_long_tmp.columns = pd.MultiIndex.from_product(column_level_list, names=['', 'Sent_num'])
+    # stack 'Sent_num' column as row index
+    df_sent_label_cmp_long_tmp = df_sent_label_cmp_long_tmp.stack()
+    # reset_index will turn all row index into columns
+    df_sent_label_cmp_long_tmp = df_sent_label_cmp_long_tmp.reset_index()
+    # set multilevel index with this order: 'TextID', 'Annotator', 'Sent_Label', 'Sent_num'
+    df_sent_label_cmp_long_tmp = df_sent_label_cmp_long_tmp.set_index(['TextID', 'Annotator', 'Sent_Label', 'Sent_num'])
+
+
+    def merge(x, y):
+        if isinstance(x, list):
+            new_x = x + y
+        else:
+            new_x = 'error'
+        return new_x
+
+    # use 'TextID', 'Sent_Label', 'Sent_num' as index,
+    # and turn 'Annotator''s value into columns, eg.
+    # if there were four possible values of Annotator: A,B,C,D
+    # then use A,B,C,B as new column names, pivot under value column 'Sentence'
+    # in case there are multiple items with same index, aggfunc will be used.
+    # it will pass a pd.Series object into aggfunc,
+    # we cae use reduce to return sum over the series,
+    # if each item in series is a list object,
+    # we can define a merge function to sum these list up into one list.
+    df_sent_label_cmp_long = pd.pivot_table(df_sent_label_cmp_long_tmp, values=['Sentence'],
+                                        index=['TextID', 'Sent_Label', 'Sent_num'], columns=['Annotator'], aggfunc=lambda x: reduce(merge, x))
+
+    # add additional level in the multiindex: 'Sent'
+    # for sent_doc_cmp use
+    col_index_names = list(df_sent_label_cmp_long.columns.names)
+    df_sent_label_cmp_long.columns = pd.MultiIndex.from_tuples(map(lambda x: (x[0], 'Sent', x[1]), df_sent_label_cmp_long.columns), names=[col_index_names[0], '', col_index_names[1]])
+
+
+    ######### create sentence label wide view ##########
+    df_sentence_label_wide = df_sent_label_cmp_long.unstack().unstack()
+    df_sentence_label_wide.columns = df_sentence_label_wide.columns.swaplevel(3, 4)
+    df_sentence_label_wide.sort_index(axis=1, level=3, inplace=True)
+    df_sentence_label_wide.columns = pd.MultiIndex.from_tuples(map(lambda x: (x[2], str(x[3]) + '_' + '{:0>2d}'.format(x[4])), df_sentence_label_wide.columns))
+    df_sentence_label_wide = df_sentence_label_wide.stack(level=0)
+    df_sentence_label_wide.index = df_sentence_label_wide.index.rename(['TextID', 'Annotator'])
+    df_sentence_label_wide = df_sentence_label_wide.reset_index()
+
+    df_sentence_label_wide = pd.merge(df_document_label, df_sentence_label_wide, how='left', on=['TextID', 'Annotator'])
+
+    empty_cols_exclude_first = df_sentence_label_wide.columns[df_sentence_label_wide.columns.str.contains('empty_(?:[0][1-9]|[1-9][0-9])')]
+    df_sentence_label_wide = df_sentence_label_wide.drop(empty_cols_exclude_first ,axis=1)
+
+
+
+    ######### create sent label cmp wide views ##########
+    df_sent_label_cmp_wide = df_sent_label_cmp_long.unstack()
+    df_sent_label_cmp_wide.columns = df_sent_label_cmp_wide.columns.swaplevel(2, 3)
+    df_sent_label_cmp_wide.sort_index(axis=1, level=2, inplace=True)
+
+
+
+    ######## create sent_doc_cmp views #########
+    df_doc_tmp = df_doc_label_cmp.set_index('TextID')
+    df_doc_tmp = pd.concat({'Doc_Label': df_doc_tmp}, names=['label_kind'], axis=1)
+
+    df_sent_tmp = df_sent_label_cmp_long.reset_index()
+    # to prevent warning: PerformanceWarning: dropping on a non-lexsorted multi-index without a level parameter may impact performance.
+    # need to sort multi-index
+    # see: [python - What exactly is the lexsort_depth of a multi-index Dataframe? - Stack Overflow](https://stackoverflow.com/questions/27116739/what-exactly-is-the-lexsort-depth-of-a-multi-index-dataframe)
+    df_sent_tmp.sort_index(axis=1, level=0, inplace=True)
+
+
+    df_sent_doc_cmp_tmp = pd.merge(df_doc_tmp, df_sent_tmp, how='left', on=['TextID'])
+
+    df_sent_doc_cmp_tmp.columns = df_sent_doc_cmp_tmp.columns.swaplevel(1, 2)
+    df_sent_doc_cmp_tmp.columns = df_sent_doc_cmp_tmp.columns.swaplevel(0, 1)
+
+    df_sent_doc_cmp_tmp.sort_index(axis=1, level=0, inplace=True)
+
+    sent_doc_cols = list(df_sent_doc_cmp_tmp.columns)
+    new_sent_doc_cols = reorder_column(sent_doc_cols, ('', 'TextID', ''), ('', 'Sent_Label', ''))
+    df_sent_doc_cmp = df_sent_doc_cmp_tmp[new_sent_doc_cols]
+    df_sent_doc_cmp = df_sent_doc_cmp.set_index([('', 'TextID', ''), ('', 'Sent_Label', ''), ('', 'Sent_num', '')])
+    df_sent_doc_cmp.index = df_sent_doc_cmp.index.rename(['TextID', 'Sent_Label', 'Sent_num'])
+
+
+    ########## extract content ##########
     drop_columns_list = reorder_column(columns_list, 'Summary', np.inf)
     drop_columns_list = reorder_column(drop_columns_list, 'TermTab', np.inf)
     print(drop_columns_list)
@@ -535,11 +640,18 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     # write to excel
     with pd.ExcelWriter(save_path, options={'strings_to_urls': False}) as writer:
+        df_sent_doc_cmp.to_excel(writer, sheet_name='sent_doc_cmp', index=True)
+        df_doc_label_cmp.to_excel(writer, sheet_name='doc_label_cmp', index=True)
+        df_sent_label_cmp_long.to_excel(writer, sheet_name='sent_label_cmp(long)', index=True)
+        df_sent_label_cmp_wide.to_excel(writer, sheet_name='sent_label_cmp(wide)', index=True)
+        df_sentence_label_wide.to_excel(writer, sheet_name='sentence_label(wide)', index=False)
         df_content.to_excel(writer, sheet_name='contents', index=False)
         df_document_label.to_excel(writer, sheet_name='document_label', index=False)
         df_sentence_label.to_excel(writer, sheet_name='sentence_label', index=False)
 
-    return df_content, df_document_label, df_sentence_label
+
+
+    return df_content, df_document_label, df_sentence_label, df_sentence_label_wide, df_doc_label_cmp, df_sent_label_cmp_long, df_sent_label_cmp_wide, df_sent_doc_cmp
 
 
 def split_train_test_to_target(X, y, target):
