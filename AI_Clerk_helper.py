@@ -288,11 +288,11 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
 
     print("number of entries: {}".format(len(dataframe)))
 
-    dup_id = dataframe.duplicated(['ID'], keep=False)
+    dup_id = dataframe.duplicated(['TextID'], keep=False)
     print("duplicated entries: {}".format(len(dataframe[dup_id])))
     print(dataframe[dup_id])
 
-    samples_dict = dataframe.groupby(['ID']).apply(to_article_dict).to_dict()
+    samples_dict = dataframe.groupby(['TextID']).apply(to_article_dict).to_dict()
     print("keep first, drop duplicated!")
 
 
@@ -319,6 +319,8 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
     # except:
     #     pass
 
+def get_TextID(df):
+    return df.apply(lambda x: hashlib.md5(x[0].encode('utf-8')).hexdigest()[:10],axis=1)
 
 # ### 清理資料格式
 def clean_data(df):
@@ -332,18 +334,16 @@ def clean_data(df):
     drop_columns = df_cleaned.columns.str.contains("Unnamed")
 
     # print(any(df_cleaned.columns.str.contains("^ID$")))
-    if not any(df_cleaned.columns.str.contains("^ID$")):
-        leave_columns = ['ID'] + df_cleaned.columns[~drop_columns].tolist()
-        df_cleaned['ID'] = df_cleaned[["Content"]].apply(lambda x: hashlib.md5(x[0].encode('utf-8')).hexdigest()[:10],axis=1)
-        df_cleaned = df_cleaned[leave_columns]
+    # if not any(df_cleaned.columns.str.contains("^TextID$")):
+    leave_columns = df_cleaned.columns[~drop_columns].tolist()
+    # df_cleaned['ID'] = df_cleaned[["Content"]].apply(lambda x: hashlib.md5(x[0].encode('utf-8')).hexdigest()[:10],axis=1)
+    df_cleaned = df_cleaned[leave_columns]
 
-        # print(df_cleaned.head())
-        df_cleaned = df_cleaned.sort_values("ID").reset_index(drop=True)
+    # print(df_cleaned.head())
+    df_cleaned = df_cleaned.sort_values("TextID").reset_index(drop=True)
 
     df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + '/' + x.Gender, axis=1)
     df_cleaned["Time"] = df_cleaned.apply(lambda x: str(x.Date) + '/' + str(x.Time), axis=1)
-
-    df_cleaned = emoji_to_text(df_cleaned)
 
     return df_cleaned
 
@@ -740,29 +740,53 @@ def main():
 
     if args.command == 'original':
         df = pd.read_excel(args.input_file)
+        df['TextID'] = get_TextID(df[["Content"]])
 
         if args.emojilize:
-            df = clean_data(df)
+            # df = clean_data(df)
             df = text_to_emoji(df)
             new_filename = common_filename.with_name(common_filename.stem + "_emojilized")
             print(args.input_file.split("."))
         else:
             new_filename = common_filename.with_name(common_filename.stem + "_demojilized")
             # print(args.input_file.split(".")[:-1])
-            df = clean_data(df)
+            # df = clean_data(df)
+            df = emoji_to_text(df)
+
 
         ## unescape OOXML string
         df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
         ## remove illegal characters
         df = remove_illegal_characters(df)
 
+        ######## calculate processed TextID ########
+        ## remove emoji text for calculate TextID
+        delimiters = (':', ':')
+        pattern = re.compile(u'(%s[a-zA-Z0-9\\+\\-_&.ô’Åéãíç()!#*]+%s)' % delimiters)
+
+        df_remove_emoji_text = df.applymap(lambda x: pattern.sub('', x) if isinstance(x, str) else x)
+
+        ## replace strange characters for calculate TextID
+        pattern2 = re.compile(u'\\\\\\\\%')
+        df_remove_emoji_text = df_remove_emoji_text.applymap(lambda x: pattern2.sub('%', x) if isinstance(x, str) else x)
+        df['TextID(processed)'] = get_TextID(df_remove_emoji_text[["Content"]])
+
+
         if args.to_excel:
             output_filename = new_filename.with_suffix(".xlsx")
-            df.to_excel(output_filename)
+            with pd.ExcelWriter(output_filename, options={'strings_to_urls': False}) as writer:
+                df.to_excel(writer, index=False)
         else:
             output_filename = new_filename.with_suffix(".json")
             # ### 輸出工研院文章 json檔
+            df = clean_data(df)
             to_AI_clerk_batch_upload_json(df, output_filename)
+
+        id_mapping_filename = common_filename.with_name(common_filename.stem + "_TextID_mapping").with_suffix(".xlsx")
+        with pd.ExcelWriter(id_mapping_filename, options={'strings_to_urls': False}) as writer:
+            reserved_columns = df.columns.str.contains('^TextID.*')
+            reserved_columns = df.columns[reserved_columns].tolist()
+            df[reserved_columns].to_excel(writer, index=False)
 
     elif args.command == 'labeled':
         df = pd.read_json(args.input_file)
