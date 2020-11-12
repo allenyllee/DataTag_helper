@@ -1,3 +1,5 @@
 build/
 __pycache__/
 dist/
+**/.ipynb_checkpoints/**
+**/my_db.sqlite
