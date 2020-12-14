@@ -3,3 +3,5 @@ __pycache__/
 dist/
 **/.ipynb_checkpoints/**
 **/my_db.sqlite
+.history/
+.vscode/settings.json
