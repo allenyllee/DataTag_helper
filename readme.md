@@ -135,6 +135,10 @@ wine ./dist/AI_Clerk_helper.exe
 
 ![](./assets/Deepin%20截圖_AI_Clerk_helper.py_20201214223220.png)
 
+注意：第一層的txt會自動忽略，只會加入第二層以下的txt
+
+![](assets/Deepin%20截圖_選取範圍_20201214234918.png)
+
 ---
 
 - 已標註資料轉換輸出之 excel檔新增多種視圖：
