@@ -129,6 +129,51 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.7.0
+
+- 新增批次處理txt檔功能
+
+![](./assets/Deepin%20截圖_AI_Clerk_helper.py_20201214223220.png)
+
+---
+
+- 已標註資料轉換輸出之 excel檔新增多種視圖：
+
+a. 以標註者為單位，一次呈現多位標著者之選項及句子標註結果
+![](./assets/Deepin%20截圖_libreoffice_20201214225512.png)
+
+b. 以選項為單位，比較多位標註者之結果
+![](./assets/Deepin%20截圖_libreoffice_20201214224606.png)
+
+c. 以句子為單位，比較不同標註者結果
+![](./assets/Deepin%20截圖_libreoffice_20201214224717.png)
+
+d. 以句子編號為單位，比較不同標註者結果
+![](./assets/Deepin%20截圖_libreoffice_20201214224838.png)
+
+e. 將句子按類別及編號水平展開呈現
+![](./assets/Deepin%20截圖_libreoffice_20201214225322.png)
+
+f. 將句子按類別水平展開呈現
+![](./assets/Deepin%20截圖_libreoffice_20201214225227.png)
+
+---
+
+- 未標註 excel 檔轉換成json 時，輸出 TextID mapping
+
+原本的 TextID 是從 excel 中的 Content 全文計算md5 hash得到，
+但是因為excel中可能存在非法字元及表情符號，
+後來輸出的文章會經過移除非法字元及將表情符號轉成文字的處理，
+因此有可能無法還原成原始的全文，造成無法計算得到原始的TextID。
+所以另外計算一個TextID 是透過將全文移除非法字元及表情符號後再計算md5，
+並且輸出處理後的TextID 與原始TextID 的對應表，
+如此當文章同一篇文章經過處理後，因原始 TextID不同而對不上時，
+可透過 TextID mapping 比較處理後的TextID，
+應該就能對回同一篇文章。
+
+![](assets/Deepin%20截圖_選取範圍_20201214232728.png)
+
+
 ### v0.6.1
 
 Symptom1: 修復 Windows 下合併檔案出現 openpyxl.utils.exceptions.IllegalCharacterError
