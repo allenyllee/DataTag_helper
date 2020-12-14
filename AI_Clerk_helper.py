@@ -228,7 +228,7 @@ GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.6.1", navigation='TABBED')
+@Gooey(program_name="AI Clerk helper v0.6.1", navigation='TABBED', tabbed_groups=False, default_size=(525, 670))
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
@@ -237,15 +237,36 @@ def parse_args():
     ### for original file
     sub_parser1 = subs.add_parser('original', prog='未標註原始檔案', help='未標註原始檔案')
 
-    sub_parser1 = sub_parser1.add_argument_group('')
+    sub_parser1_1 = sub_parser1.add_argument_group('input file(s)', 'choose unlabeled file(s)', gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns':1
+                                })
 
-    sub_parser1.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None, widget='FileChooser')
+    mutex_sub_parser1 = sub_parser1_1.add_mutually_exclusive_group(required=True, gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns':1
+                                })
 
-    sub_parser1.add_argument('--emojilize', help='turn text to emoji (uncheck to reverse)', dest='emojilize', action='store_true')
-    sub_parser1.set_defaults(emojilize=False)
+    #### input excel files
+    mutex_sub_parser1.add_argument('-i', '--input_file', help='input filename (excel)', dest='input_file', default=None, widget='FileChooser')
 
-    sub_parser1.add_argument('--to-excel', help='output excel file (uncheck to output json)', dest='to_excel', action='store_true')
-    sub_parser1.set_defaults(to_excel=False)
+    sub_parser1_2 = sub_parser1.add_argument_group('options', 'only works for input excel file', gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns':2
+                                })
+
+    sub_parser1_2.add_argument('--emojilize', help='turn text to emoji (uncheck to reverse)', dest='emojilize', action='store_true')
+    sub_parser1_2.set_defaults(emojilize=False)
+
+    sub_parser1_2.add_argument('--to-excel', help='output excel file (uncheck to output json)', dest='to_excel', action='store_true')
+    sub_parser1_2.set_defaults(to_excel=False)
+
+    #### input txt files
+    mutex_sub_parser1.add_argument('-d', '--input-dir', help='dir that contains input files(.txt)', dest='input_dir', default=None, widget="DirChooser")
+
 
     ### for unlabeled file
     sub_parser2 = subs.add_parser('labeled', prog='已標註檔案', help='已標註檔案')
@@ -731,64 +752,115 @@ def main():
 
     # print(args.command)
 
-    try:
-        common_filename = Path(args.input_file)
-        # common_filename = "".join(args.input_file.split(".")[:-1])
-        # print(common_filename)
-    except:
-        pass
+    # try:
+    #     common_filename = Path(args.input_file)
+    #     # common_filename = "".join(args.input_file.split(".")[:-1])
+    #     # print(common_filename)
+    # except:
+    #     pass
 
     if args.command == 'original':
-        df = pd.read_excel(args.input_file)
-        df['TextID'] = get_TextID(df[["Content"]])
+        if args.input_file:
+            common_filename = Path(args.input_file)
+            df = pd.read_excel(args.input_file)
+            df['TextID'] = get_TextID(df[["Content"]])
 
-        if args.emojilize:
-            # df = clean_data(df)
-            df = text_to_emoji(df)
-            new_filename = common_filename.with_name(common_filename.stem + "_emojilized")
-            print(args.input_file.split("."))
-        else:
-            new_filename = common_filename.with_name(common_filename.stem + "_demojilized")
-            # print(args.input_file.split(".")[:-1])
-            # df = clean_data(df)
-            df = emoji_to_text(df)
-
-
-        ## unescape OOXML string
-        df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
-        ## remove illegal characters
-        df = remove_illegal_characters(df)
-
-        ######## calculate processed TextID ########
-        ## remove emoji text for calculate TextID
-        delimiters = (':', ':')
-        pattern = re.compile(u'(%s[a-zA-Z0-9\\+\\-_&.ô’Åéãíç()!#*]+%s)' % delimiters)
-
-        df_remove_emoji_text = df.applymap(lambda x: pattern.sub('', x) if isinstance(x, str) else x)
-
-        ## replace strange characters for calculate TextID
-        pattern2 = re.compile(u'\\\\\\\\%')
-        df_remove_emoji_text = df_remove_emoji_text.applymap(lambda x: pattern2.sub('%', x) if isinstance(x, str) else x)
-        df['TextID(processed)'] = get_TextID(df_remove_emoji_text[["Content"]])
+            if args.emojilize:
+                # df = clean_data(df)
+                df = text_to_emoji(df)
+                new_filename = common_filename.with_name(common_filename.stem + "_emojilized")
+                print(args.input_file.split("."))
+            else:
+                new_filename = common_filename.with_name(common_filename.stem + "_demojilized")
+                # print(args.input_file.split(".")[:-1])
+                # df = clean_data(df)
+                df = emoji_to_text(df)
 
 
-        if args.to_excel:
-            output_filename = new_filename.with_suffix(".xlsx")
-            with pd.ExcelWriter(output_filename, options={'strings_to_urls': False}) as writer:
-                df.to_excel(writer, index=False)
-        else:
-            output_filename = new_filename.with_suffix(".json")
-            # ### 輸出工研院文章 json檔
-            df = clean_data(df)
-            to_AI_clerk_batch_upload_json(df, output_filename)
+            ## unescape OOXML string
+            df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+            ## remove illegal characters
+            df = remove_illegal_characters(df)
 
-        id_mapping_filename = common_filename.with_name(common_filename.stem + "_TextID_mapping").with_suffix(".xlsx")
-        with pd.ExcelWriter(id_mapping_filename, options={'strings_to_urls': False}) as writer:
-            reserved_columns = df.columns.str.contains('^TextID.*')
-            reserved_columns = df.columns[reserved_columns].tolist()
-            df[reserved_columns].to_excel(writer, index=False)
+            ######## calculate processed TextID ########
+            ## remove emoji text for calculate TextID
+            delimiters = (':', ':')
+            pattern = re.compile(u'(%s[a-zA-Z0-9\\+\\-_&.ô’Åéãíç()!#*]+%s)' % delimiters)
+
+            df_remove_emoji_text = df.applymap(lambda x: pattern.sub('', x) if isinstance(x, str) else x)
+
+            ## replace strange characters for calculate TextID
+            pattern2 = re.compile(u'\\\\\\\\%')
+            df_remove_emoji_text = df_remove_emoji_text.applymap(lambda x: pattern2.sub('%', x) if isinstance(x, str) else x)
+            df['TextID(processed)'] = get_TextID(df_remove_emoji_text[["Content"]])
+
+
+            if args.to_excel:
+                output_filename = new_filename.with_suffix(".xlsx")
+                with pd.ExcelWriter(output_filename, options={'strings_to_urls': False}) as writer:
+                    df.to_excel(writer, index=False)
+            else:
+                output_filename = new_filename.with_suffix(".json")
+                # ### 輸出工研院文章 json檔
+                df = clean_data(df)
+                to_AI_clerk_batch_upload_json(df, output_filename)
+
+            id_mapping_filename = common_filename.with_name(common_filename.stem + "_TextID_mapping").with_suffix(".xlsx")
+            with pd.ExcelWriter(id_mapping_filename, options={'strings_to_urls': False}) as writer:
+                reserved_columns = df.columns.str.contains('^TextID.*')
+                reserved_columns = df.columns[reserved_columns].tolist()
+                df[reserved_columns].to_excel(writer, index=False)
+
+        elif args.input_dir:
+            common_path = Path(args.input_dir)
+            print("input path:", common_path)
+
+            filename_pattern = '*/**/*.txt'
+            save_path = Path(common_path).with_name(Path(common_path).stem).with_suffix(".json")
+            print("output path:", save_path)
+
+            glob_path = Path(common_path)
+            filepathes=glob_path.glob(filename_pattern)
+
+            articles_dict = defaultdict(dict)
+
+            for filepath in filepathes:
+                content_dict = {}
+                content_dict['Title'] = filepath.stem
+                content_dict['Content'] = ''
+                content_dict['Author'] = ''
+                content_dict['Time'] = ''
+
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    content_dict['Content'] = f.read()
+                    text_id = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+
+                articles_dict['Articles'].update({text_id: content_dict})
+
+
+            # read into dataframe will automatically sort by index
+            dataframe = pd.DataFrame.from_dict(articles_dict)
+
+            # because articles_dict['Articles'] use text_id as key to update,
+            # if there were duplicate text_id, it'll replace by later items.
+            # so no need to check duplicate.
+            ###
+            # dataframe.reset_index(inplace=True)
+            # dup_id = dataframe.duplicated(['index'], keep=False)
+            # print("duplicated entries: {}".format(len(dataframe[dup_id])))
+            # print(dataframe[dup_id])
+
+            # dataframe = dataframe.groupby(['index']).apply(lambda x: x.iloc[0])
+            # print("keep first, drop duplicated!")
+
+            # dataframe.set_index('index', inplace=True)
+
+            with open(save_path, 'w', encoding='utf-8') as outfile:
+                json.dump(dataframe.to_dict(), outfile, ensure_ascii=False, indent=4)
+
 
     elif args.command == 'labeled':
+        common_filename = Path(args.input_file)
         df = pd.read_json(args.input_file)
         ## unescape OOXML string
         df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
