@@ -15,6 +15,7 @@ conda activate AI_Clerk_helper
 ```
 
 must first install wxpython before Gooey to avoid strange error
+
 [Installation via pip fails needing pathlib2 · Issue #474 · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/issues/474)
 
 ```shell
@@ -35,7 +36,7 @@ python AIClerk_helper.py
 
 ### Install pyinstaller
 
-- [Gooey/Packaging-Gooey.md at master · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/blob/master/docs/packaging/Packaging-Gooey.md)
+[Gooey/Packaging-Gooey.md at master · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/blob/master/docs/packaging/Packaging-Gooey.md)
 
 Packing Gooey into a standalone executable is super straight forward thanks to PyInstaller. It is the only dependency you'll need and can be installed via the following.
 
@@ -128,7 +129,9 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
 wine pyinstaller -F --windowed build-win.spec
 ```
 
-debug mode [Using PyInstaller — PyInstaller 3.6 documentation](https://pyinstaller.readthedocs.io/en/stable/usage.html#how-to-generate)
+debug mode
+
+[Using PyInstaller — PyInstaller 3.6 documentation](https://pyinstaller.readthedocs.io/en/stable/usage.html#how-to-generate)
 
 ```shell
 wine pyinstaller -F --windowed build-win.spec -d bootloader
