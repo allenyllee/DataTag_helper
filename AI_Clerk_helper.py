@@ -41,6 +41,7 @@ from collections import Counter
 from sklearn.model_selection import StratifiedShuffleSplit
 import os
 import platform
+from openpyxl.styles import Font
 
 
 
@@ -476,6 +477,10 @@ def remove_illegal_characters(dataframe):
 
 
 def to_excel_AI_clerk_labeled_data(dataframe, save_path):
+    ## unescape OOXML string
+    dataframe = dataframe.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
+    ## remove illegal characters
+    dataframe = remove_illegal_characters(dataframe)
 
     df1 = dataframe.T.sort_values(['TextID', 'Annotator']).reset_index(drop=True)
     df1 = df1[sorted(df1.columns)]
@@ -543,6 +548,8 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
     # print(sent_label_column_list)
     sent_label_column_list.remove('TextID')
     sent_label_column_list.remove('Annotator')
+    ## drop unused level of multi index to avoid KeyError
+    df_sentence_label_tmp = df_sentence_label_tmp.droplevel(1, axis=1)
 
     df_sentence_label_tmp = df_sentence_label_tmp.melt(id_vars=['TextID', 'Annotator'], value_vars=sent_label_column_list, var_name='Sent_Label', value_name='Sentence')
     df_sentence_label_tmp = df_sentence_label_tmp.dropna()
@@ -660,7 +667,7 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
     df_content['Content(remove_tag)'] = df_content['Content'].apply(lambda x: re.sub('(＜(／)?＊(.+?)_\d{1,2}＊＞)', '', x))
 
     # write to excel
-    with pd.ExcelWriter(save_path, options={'strings_to_urls': False}) as writer:
+    with pd.ExcelWriter(save_path, options={'strings_to_urls': False}, engine='openpyxl') as writer:
         df_sent_doc_cmp.to_excel(writer, sheet_name='sent_doc_cmp', index=True)
         df_doc_label_cmp.to_excel(writer, sheet_name='doc_label_cmp', index=True)
         df_sent_label_cmp_long.to_excel(writer, sheet_name='sent_label_cmp(long)', index=True)
@@ -670,6 +677,23 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
         df_document_label.to_excel(writer, sheet_name='document_label', index=False)
         df_sentence_label.to_excel(writer, sheet_name='sentence_label', index=False)
 
+        for ws in writer.sheets.values():
+            """
+            fix column headers and row headers no font name issue
+            need to use engine='openpyxl'
+            """
+            # row_level = df_sent_doc_cmp.index.nlevels
+            # print(row_level)
+            for row in ws.iter_rows(min_row=1, max_row=1):
+                """
+                walk through each cell of first row to assign font name
+                """
+                for cell in row:
+                    # print(cell)
+                    font_params = cell.font.__dict__
+                    if font_params["name"] is None:
+                        font_params["name"] = "Calibri"
+                        cell.font = Font(**font_params)
 
 
     return df_content, df_document_label, df_sentence_label, df_sentence_label_wide, df_doc_label_cmp, df_sent_label_cmp_long, df_sent_label_cmp_wide, df_sent_doc_cmp
@@ -731,7 +755,7 @@ def concat_files(files_list):
     df_document_label = remove_illegal_characters(df_document_label)
     df_sentence_label = remove_illegal_characters(df_sentence_label)
 
-    with pd.ExcelWriter('all_data.xlsx', options={'strings_to_urls': False}) as writer:
+    with pd.ExcelWriter('all_data.xlsx', options={'strings_to_urls': False}, engine='openpyxl') as writer:
         df_content.to_excel(writer, sheet_name='contents', index=False)
         df_document_label.to_excel(writer, sheet_name='document_label', index=False)
         df_sentence_label.to_excel(writer, sheet_name='sentence_label', index=False)
@@ -797,7 +821,7 @@ def main():
 
             if args.to_excel:
                 output_filename = new_filename.with_suffix(".xlsx")
-                with pd.ExcelWriter(output_filename, options={'strings_to_urls': False}) as writer:
+                with pd.ExcelWriter(output_filename, options={'strings_to_urls': False}, engine='openpyxl') as writer:
                     df.to_excel(writer, index=False)
             else:
                 output_filename = new_filename.with_suffix(".json")
@@ -806,7 +830,7 @@ def main():
                 to_AI_clerk_batch_upload_json(df, output_filename)
 
             id_mapping_filename = common_filename.with_name(common_filename.stem + "_TextID_mapping").with_suffix(".xlsx")
-            with pd.ExcelWriter(id_mapping_filename, options={'strings_to_urls': False}) as writer:
+            with pd.ExcelWriter(id_mapping_filename, options={'strings_to_urls': False}, engine='openpyxl') as writer:
                 reserved_columns = df.columns.str.contains('^TextID.*')
                 reserved_columns = df.columns[reserved_columns].tolist()
                 df[reserved_columns].to_excel(writer, index=False)
@@ -862,10 +886,6 @@ def main():
     elif args.command == 'labeled':
         common_filename = Path(args.input_file)
         df = pd.read_json(args.input_file)
-        ## unescape OOXML string
-        df = df.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
-        ## remove illegal characters
-        df = remove_illegal_characters(df)
 
         ### 輸出標記資料excel檔
         output_filename = common_filename.with_suffix(".xlsx")
