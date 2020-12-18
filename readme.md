@@ -147,6 +147,12 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.7.1
+
+1. fix numpy issue
+2. remove xlrd
+3. fix KeyError issue
+
 ### v0.7.0
 
 - 新增批次處理txt檔功能

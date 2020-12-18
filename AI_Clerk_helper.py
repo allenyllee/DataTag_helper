@@ -229,7 +229,7 @@ GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.7.0", navigation='TABBED', tabbed_groups=False, default_size=(525, 670))
+@Gooey(program_name="AI Clerk helper v0.7.1", navigation='TABBED', tabbed_groups=False, default_size=(525, 670))
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
