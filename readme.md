@@ -147,6 +147,13 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.7.2
+
+1. add SerialID column in contents tab
+
+![Screenshot-of-SerialID](./assets/Deepin%20截圖_選取範圍_20210326162722.png)
+
+
 ### v0.7.1
 
 1. fix numpy issue

@@ -229,7 +229,7 @@ GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
-@Gooey(program_name="AI Clerk helper v0.7.1", navigation='TABBED', tabbed_groups=False, default_size=(525, 670))
+@Gooey(program_name="AI Clerk helper v0.7.2", navigation='TABBED', tabbed_groups=False, default_size=(525, 670))
 def parse_args():
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
@@ -390,6 +390,11 @@ def text_to_emoji(df):
 
 
 def reorder_column(columns_list, selected_column_name, insert_before_column_name=None):
+    """
+    columns_list: the list of columns to be reordered
+    selected_column_name: the column name which wants to be inserted to the point before column `insert_before_column_name`
+    insert_before_column_name: the column name which act as fix point relative to the `selected_column_name`
+    """
     columns_list = copy.copy(columns_list)
     selected_index = columns_list.index(selected_column_name)
     selected_item = columns_list.pop(selected_index)
@@ -482,12 +487,13 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
     ## remove illegal characters
     dataframe = remove_illegal_characters(dataframe)
 
-    df1 = dataframe.T.sort_values(['TextID', 'Annotator']).reset_index(drop=True)
+    df1 = dataframe.T.sort_values(['TextID', 'Annotator']).rename_axis('SerialID').reset_index()
     df1 = df1[sorted(df1.columns)]
 
     columns_list = list(df1.columns)
     print(columns_list)
     columns_list = reorder_column(columns_list, 'TextID', 'Annotator')
+    columns_list = reorder_column(columns_list, 'SerialID', 'TextID')
     columns_list = reorder_column(columns_list, 'Title', 'Content')
     columns_list = reorder_column(columns_list, 'Author', 'Title')
     columns_list = reorder_column(columns_list, 'TextTime', 'Comment')

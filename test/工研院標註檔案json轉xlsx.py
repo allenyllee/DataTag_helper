@@ -12,6 +12,7 @@ import pandas as pd
 
 # filepath = './A1_labeled.json'
 filepath = '工研院標註檔案_test.json'
+# filepath = '完整_二次標註_1091014.json'
 
 df0 = pd.read_json(filepath)
 df0
@@ -19,7 +20,7 @@ df0
 
 # ## 輸出excel
 
-# In[3]:
+# In[2]:
 
 
 import sys
@@ -28,35 +29,36 @@ from AI_Clerk_helper import to_excel_AI_clerk_labeled_data
 
 # filepath2 = './A1_labeled.xlsx'
 filepath2 = './工研院標註檔案_test_labeled.xlsx'
+# filepath2 = './完整_二次標註_1091014_labeled.xlsx'
 
 df_content, df_document_label, df_sentence_label, df_sentence_label_wide, df_doc_label_cmp, df_sent_label_cmp_long, df_sent_label_cmp_wide, df_sent_doc_cmp = to_excel_AI_clerk_labeled_data(df0, filepath2)
 
 
-# In[4]:
+# In[3]:
 
 
 df_content
 
 
-# In[5]:
+# In[4]:
 
 
 df_document_label
 
 
-# In[6]:
+# In[5]:
 
 
 df_sentence_label
 
 
-# In[7]:
+# In[6]:
 
 
 df_document_label[pd.isnull(df_document_label['Crisis_Level'])]
 
 
-# In[8]:
+# In[7]:
 
 
 df_sentence_label[pd.isnull(df_sentence_label['Crisis_Level'])]
