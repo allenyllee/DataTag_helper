@@ -147,6 +147,16 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.8.0
+
+1. add second_upload function
+
+    ![Screenshot-of-second_upload](./assets/Deepin%20截圖_AI_Clerk_helper.py_20210503171532.png)
+
+2. add second labeled json cleaner and converter
+
+    ![Screenshot-of-second_labeled](./assets/Deepin%20截圖_AI_Clerk_helper.py_20210503171946.png)
+
 ### v0.7.2
 
 1. add SerialID column in contents tab
