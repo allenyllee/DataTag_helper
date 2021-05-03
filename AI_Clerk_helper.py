@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Tuesday, September 22nd 2020, 11:43:24 am
+# Last Modified: Monday, May 3rd 2021, 2:10:13 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -269,11 +269,27 @@ def parse_args():
     mutex_sub_parser1.add_argument('-d', '--input-dir', help='dir that contains input files(.txt)', dest='input_dir', default=None, widget="DirChooser")
 
 
-    ### for unlabeled file
+    ### for labeled file
     sub_parser2 = subs.add_parser('labeled', prog='已標註檔案', help='已標註檔案')
 
-    sub_parser2 = sub_parser2.add_argument_group('')
+    sub_parser2 = sub_parser2.add_argument_group('labeled file to excel', 'choose the labeled file which want to be convert to Excel file(s)', gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns': 1
+                                })
+
     sub_parser2.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
+
+    ### for labeled file want to second upload
+    sub_parser2_1 = subs.add_parser('second_upload', prog='標註二次上傳', help='已標註標註二次上傳')
+
+    sub_parser2_1 = sub_parser2_1.add_argument_group('second upload', 'choose the labeled file which want to be second upload (for double check purpose)', gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns': 1
+                                })
+
+    sub_parser2_1.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
 
 
     ### concat files
@@ -896,6 +912,27 @@ def main():
         ### 輸出標記資料excel檔
         output_filename = common_filename.with_suffix(".xlsx")
         to_excel_AI_clerk_labeled_data(df, output_filename)
+
+    elif args.command == 'second_upload':
+        ## 二次上傳時，由於工研院系統的限制，會把他們內部的 SerialID 當成是 TextID
+        ## 因此，這一步的作用就是將 TextID 複製到原本 SerialID 的欄位，
+        ## 再次上傳後下載回來才會是正確的 TextID
+        common_filename = Path(args.input_file)
+        # df = pd.read_json(args.input_file)
+        with open(common_filename) as f:
+            data = json.load(f)
+
+        data2 = {}
+
+        for key, value in data.items():
+            # pprint(data[key])
+            data2.update({data[key]['TextID']: data[key]})
+
+        save_path = Path(common_filename).with_name(common_filename.stem + '_second_upload').with_suffix('.json')
+
+        with open(save_path, 'w', encoding='utf-8') as outfile:
+            json.dump(data2, outfile, ensure_ascii=False, indent=4)
+
     elif args.command == 'concat':
         os_type = platform.system()
         if os_type == 'Windows':
