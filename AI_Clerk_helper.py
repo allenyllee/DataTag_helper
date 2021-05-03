@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Monday, May 3rd 2021, 2:10:13 pm
+# Last Modified: Monday, May 3rd 2021, 4:33:00 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -281,7 +281,7 @@ def parse_args():
     sub_parser2.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
 
     ### for labeled file want to second upload
-    sub_parser2_1 = subs.add_parser('second_upload', prog='標註二次上傳', help='已標註標註二次上傳')
+    sub_parser2_1 = subs.add_parser('second_upload', prog='標註二次上傳', help='已標註檔案二次上傳')
 
     sub_parser2_1 = sub_parser2_1.add_argument_group('second upload', 'choose the labeled file which want to be second upload (for double check purpose)', gooey_options={
                                 'show_border': True,
@@ -291,6 +291,18 @@ def parse_args():
 
     sub_parser2_1.add_argument('-i', '--input_file', help='input filename (json)', dest='input_file', default=None, widget='FileChooser')
 
+    ### for second labeled file convert
+    sub_parser2_2 = subs.add_parser('second_labeled', prog='二次標註轉換', help='二次標註轉換')
+
+    sub_parser2_2 = sub_parser2_2.add_argument_group('second labeled convertion', 'choose the first and second labeled files which wants to be converted to final json', gooey_options={
+                                'show_border': True,
+                                'show_underline': True,
+                                'columns': 1
+                                })
+
+    sub_parser2_2.add_argument('-i1', '--input_file_1', help='input filename (first labeled json)', dest='input_file_1', default=None, widget='FileChooser')
+
+    sub_parser2_2.add_argument('-i2', '--input_file_2', help='input filename (second labeled json)', dest='input_file_2', default=None, widget='FileChooser')
 
     ### concat files
     sub_parser3 = subs.add_parser('concat', prog='合併檔案', help='合併檔案')
@@ -932,6 +944,34 @@ def main():
 
         with open(save_path, 'w', encoding='utf-8') as outfile:
             json.dump(data2, outfile, ensure_ascii=False, indent=4)
+
+    elif args.command == 'second_labeled':
+        ## 二次標註結果下載後，會發現檔案大小是一次標註的兩倍大，
+        ## 這是因為二次標註下載回來的檔案還包含一次標註的檔案，
+        ## 那些沒有 Annotator 的資料，即為一次標註的資料，可以直接丟棄
+        ## 只要留下有 Annotator 的資料，並且 assign 正確的 TextID 上去
+        common_filename_1 = Path(args.input_file_1)
+        common_filename_2 = Path(args.input_file_2)
+        # df = pd.read_json(args.input_file)
+        with open(common_filename_1) as f:
+            data1 = json.load(f)
+
+        with open(common_filename_2) as f:
+            data2 = json.load(f)
+
+        data3 = {}
+
+        for key, value in data2.items():
+            if value['Annotator'] == '':
+                continue
+
+            value['TextID'] = data1[value['TextID']]['TextID']
+            data3.update({key: value})
+
+        save_path = Path(common_filename_2).with_name(common_filename_2.stem + '_second_labeled').with_suffix('.json')
+
+        with open(save_path, 'w', encoding='utf-8') as outfile:
+            json.dump(data3, outfile, ensure_ascii=False, indent=4)
 
     elif args.command == 'concat':
         os_type = platform.system()
