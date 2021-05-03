@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Monday, May 3rd 2021, 4:33:00 pm
+# Last Modified: Monday, May 3rd 2021, 6:03:55 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -931,7 +931,7 @@ def main():
         ## 再次上傳後下載回來才會是正確的 TextID
         common_filename = Path(args.input_file)
         # df = pd.read_json(args.input_file)
-        with open(common_filename) as f:
+        with open(common_filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
         data2 = {}
@@ -953,10 +953,10 @@ def main():
         common_filename_1 = Path(args.input_file_1)
         common_filename_2 = Path(args.input_file_2)
         # df = pd.read_json(args.input_file)
-        with open(common_filename_1) as f:
+        with open(common_filename_1, 'r', encoding='utf-8') as f:
             data1 = json.load(f)
 
-        with open(common_filename_2) as f:
+        with open(common_filename_2, 'r', encoding='utf-8') as f:
             data2 = json.load(f)
 
         data3 = {}
