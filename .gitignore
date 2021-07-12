@@ -5,3 +5,4 @@ dist/
 **/my_db.sqlite
 .history/
 .vscode/settings.json
+.lh/
