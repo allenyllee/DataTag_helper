@@ -2,11 +2,23 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper)
 
-## How to use
 
-### Setup Environments
+![Screenshot-of-AI_Clerk_helper](./assets/Snipaste_2020-06-01_19-59-29.png)
 
-Navigate the directory where you cloned the repo and pip install the dependencies
+
+## How to Build
+
+### Step 1: Clone in container
+
+If you have installed [VSCode](https://code.visualstudio.com/) and [Docker](https://www.docker.com/get-started), just click [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper) and choose "Clone repo in container volume", it'll open a new container with building environments.
+
+### Step 2: Install dependencies
+
+First, navigating to the directory of this repo.
+
+```
+cd /workspace/AI_Clerk_helper
+```
 
 Create conda env
 
@@ -16,9 +28,13 @@ conda create --name AI_Clerk_helper python=3.6
 conda activate AI_Clerk_helper
 ```
 
-must first install wxpython before Gooey to avoid strange error
+> If conda activation failed, just execute:
+> ```
+> conda init bash
+> ```
+> to init bash env
 
-[Installation via pip fails needing pathlib2 · Issue #474 · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/issues/474)
+Install packages
 
 ```shell
 conda install wxpython
@@ -28,15 +44,29 @@ pip install -r project_requirements.txt
 pip install -r requirements.txt
 ```
 
-### Running from .py file
+> must first install wxpython before Gooey to avoid strange error
+>
+> [Installation via pip fails needing pathlib2 · Issue #474 · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/issues/474)
+
+
+> If conda install has permission error, excute:
+>
+> ```
+> sudo chown 1000:1000 -R /opt/conda/
+> ```
+>
+> This will change the owner of conda folder.
+
+
+### Step 3: Execute
 
 ```shell
-python AIClerk_helper.py
+python AI_Clerk_helper.py
 ```
 
-## Building Executable by pyinstaller
+you should see the GUI window popup.
 
-### Install pyinstaller
+### Step 4: Install pyinstaller
 
 [Gooey/Packaging-Gooey.md at master · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/blob/master/docs/packaging/Packaging-Gooey.md)
 
@@ -46,13 +76,12 @@ Packing Gooey into a standalone executable is super straight forward thanks to P
 pip install pyinstaller==3.5
 ```
 
-### Building with .spec file
+### Step 5: Building linux excutable with .spec file
 
 From the command line, run
 
 ```shell
 pyinstaller -F --windowed build-win.spec
-
 ```
 
 - `-F` tells PyInstaller to create a single bundled output file
@@ -60,27 +89,83 @@ pyinstaller -F --windowed build-win.spec
 
 And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-alone executable that you can distribute to your users.
 
-## Building Windows Executable from Linux
+> If you encounter an error:
+>
+> ```
+> FileNotFoundError: [Errno 2] No such file or directory: 'objcopy': 'objcopy'
+> ```
+>
+> you should install dependenies
+>
+> ```
+> apt-get install -y binutils libc6
+> ```
+> see: [FileNotFoundError: [Errno 2] No such file or directory: 'objcopy': 'objcopy' · Issue #3815 · pyinstaller/pyinstaller](https://github.com/pyinstaller/pyinstaller/issues/3815)
 
-### Setup Requirements
+
+### Step 6: Install wine
 
 1. add wine apt repository
 
-   [Ubuntu - WineHQ Wiki](https://wiki.winehq.org/Ubuntu)
+   For [Ubuntu - WineHQ Wiki](https://wiki.winehq.org/Ubuntu):
 
     ```shell
     sudo dpkg --add-architecture i386
+
     wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+
     sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
     ```
 
-2. Install unmet dependence: `faudio`
+    > Install unmet dependence: `faudio` (only needed for unbuntu18.04, because higher version already has libfaudio0 in repository)
+    >
+    > ```shell
+    > sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
+    > sudo apt update
+    > ```
 
-    ```shell
-    sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
+    For [debian 10](https://computingforgeeks.com/how-to-install-wine-on-debian/):
+    ```
+    sudo dpkg --add-architecture i386
+
+    wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+
+    sudo apt-add-repository https://dl.winehq.org/wine-builds/debian/
+
+    wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | sudo apt-key add -
+
+    echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | sudo tee /etc/apt/sources.list.d/wine-obs.list
     ```
 
-3. Install wine 5.9
+    update:
+
+    ```
+    sudo apt update
+    ```
+
+    Notes:
+
+    > check linux distribution:
+    > ```
+    > cat /etc/*-release
+    > ```
+    > see: https://www.cyberciti.biz/faq/find-linux-distribution-name-version-number/
+
+    > If you encounter an error:
+    >
+    > ```
+    > sudo: apt-add-repository: command not found
+    > ```
+    >
+    > install
+    >
+    > ```
+    > sudo apt -y install software-properties-common
+    > ```
+
+
+
+3. Install latest wine
 
     [How to Install Wine Devel 4.8 in Ubuntu 19.04 / 18.04 | UbuntuHandbook](http://ubuntuhandbook.org/index.php/2019/05/nstall-wine-4-8-ubuntu-19-04-18-04/)
 
@@ -100,6 +185,25 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
     wine python-3.6.8-amd64.exe
     ```
 
+    headless install:
+
+    > install xvfb:
+    > ```
+    > sudo apt-get install --fix-missing -y xvfb
+    > ```
+    >
+    > cerate virtual frame buffer:
+    > ```
+    > Xvfb :0 -screen 0 1024x768x16 &
+    > ```
+    >
+    > execute python installer:
+    > ```
+    > DISPLAY=:0.0 wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+    > ```
+    see: [xorg - Run wine totally headless - Super User](https://superuser.com/questions/902175/run-wine-totally-headless)
+
+
 5. install wxpython, gooey, pyinstaller and other requirements
 
     ```shell
@@ -109,7 +213,7 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
     wine pip install pyinstaller==3.5
     ```
 
-6. activate upx compression:
+6. activate upx compression (optional):
 
     [Releases · upx/upx](https://github.com/upx/upx/releases)
 
@@ -125,7 +229,7 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
     - [python - DLL load failure with Python3 (32bit)+PyInstaller+UPX (32bit) under Windows 10 (64bit) - Stack Overflow](https://stackoverflow.com/questions/59034735/dll-load-failure-with-python3-32bitpyinstallerupx-32bit-under-windows-10)
     - [Dependency Walker (depends.exe) Home Page](https://www.dependencywalker.com/)
 
-### Building Executable
+### Step 7: Building Windows Executable from Linux
 
 ```shell
 wine pyinstaller -F --windowed build-win.spec
@@ -139,13 +243,15 @@ debug mode
 wine pyinstaller -F --windowed build-win.spec -d bootloader
 ```
 
-### Running Windows Executable through wine
+### Step 8: Running Windows Executable through wine
 
 ```shell
 wine ./dist/AI_Clerk_helper.exe
 ```
 
-![Screenshot-of-AI_Clerk_helper](./assets/Snipaste_2020-06-01_19-59-29.png)
+
+
+
 
 ## changelog
 
@@ -163,7 +269,7 @@ wine ./dist/AI_Clerk_helper.exe
 
 1. add SerialID column in contents tab
 
-![Screenshot-of-SerialID](./assets/Deepin%20截圖_選取範圍_20210326162722.png)
+    ![Screenshot-of-SerialID](./assets/Deepin%20截圖_選取範圍_20210326162722.png)
 
 
 ### v0.7.1
