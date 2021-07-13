@@ -1,6 +1,6 @@
 # AI Clerk Helper
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/microsoft/vscode)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper)
 
 ## How to use
 
