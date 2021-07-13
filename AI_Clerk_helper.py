@@ -300,7 +300,7 @@ def parse_args():
                                 'columns': 1
                                 })
 
-    sub_parser2_2.add_argument('-i1', '--input_file_1', help='input filename (first labeled json)', dest='input_file_1', default=None, widget='FileChooser')
+    sub_parser2_2.add_argument('-i1', '--input_file_1', nargs='*', help='choose multiple files (first labeled json)', dest='input_file_1', default=None, widget='MultiFileChooser')
 
     sub_parser2_2.add_argument('-i2', '--input_file_2', help='input filename (second labeled json)', dest='input_file_2', default=None, widget='FileChooser')
 
@@ -950,11 +950,15 @@ def main():
         ## 這是因為二次標註下載回來的檔案還包含一次標註的檔案，
         ## 那些沒有 Annotator 的資料，即為一次標註的資料，可以直接丟棄
         ## 只要留下有 Annotator 的資料，並且 assign 正確的 TextID 上去
-        common_filename_1 = Path(args.input_file_1)
+        # print(args.input_file_1)
+        # print(args.input_file_2)
+        common_filename_1 = [Path(path) for path in args.input_file_1]
         common_filename_2 = Path(args.input_file_2)
         # df = pd.read_json(args.input_file)
-        with open(common_filename_1, 'r', encoding='utf-8') as f:
-            data1 = json.load(f)
+        data1 = {}
+        for path in common_filename_1:
+            with open(path, 'r', encoding='utf-8') as f:
+                data1.update(json.load(f))
 
         with open(common_filename_2, 'r', encoding='utf-8') as f:
             data2 = json.load(f)
