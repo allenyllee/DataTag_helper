@@ -255,6 +255,13 @@ wine ./dist/AI_Clerk_helper.exe
 
 ## changelog
 
+### v0.8.1
+
+second labeled json cleaner support input Multiple first labeled file
+
+![choose_multiple_file](./assets/choose_multiple_file.gif)
+
+
 ### v0.8.0
 
 1. add second_upload function
