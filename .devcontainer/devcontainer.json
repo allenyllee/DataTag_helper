@@ -22,14 +22,83 @@
 		"python.linting.flake8Path": "/opt/conda/bin/flake8",
 		"python.linting.pycodestylePath": "/opt/conda/bin/pycodestyle",
 		"python.linting.pydocstylePath": "/opt/conda/bin/pydocstyle",
-		"python.linting.pylintPath": "/opt/conda/bin/pylint"
+		"python.linting.pylintPath": "/opt/conda/bin/pylint",
+		"emeraldwalk.runonsave": {
+			"shell": "bash",
+			"commands": [
+				{
+					"match": ".*",
+					"cmd": "echo '${fileBasename} saved at ${fileDirname}'"
+				},
+				{
+					"match": ".*",
+					"cmd": "cd \"${fileDirname}\" && lock=\"$(git rev-parse --git-dir)\"/runonsave.lock && if [ -n \"$(git status -s)\" ]; then if [ ! -f \"$lock\" ]; then touch \"$lock\" && git stash push -u && git stash apply --index --quiet && if [ -z \"$(diff <(git rev-parse stash@{1}~) <(git rev-parse stash@{0}~))\" ] && [ \"$(git diff --word-diff=porcelain stash@{1} stash@{0} -- . ':(exclude)*.ipynb' | grep -e '^+[^+]\\|^-[^-]' | wc -m)\" -lt 3000 ] && [ \"$(git diff --word-diff=porcelain stash@{1}^3 stash@{0}^3 | grep -e '^+[^+]\\|^-[^-]' | wc -m)\" -lt 3000 ];then git stash drop stash@{1} && rm \"$lock\"; else echo \"don't drop\" && rm \"$lock\"; fi; else echo \"locked!\"; fi; else echo \"No local changes to save\"; fi;"
+				}
+			]
+		},
+		"bracketPairColorizer.excludedLanguages": [],
+		"bracketPairColorizer.showBracketsInRuler": true,
+		"bracketPairColorizer.showBracketsInGutter": true,
+		"bracketPairColorizer.scopeLineCSS": [
+			"borderStyle : solid",
+			"borderWidth : 1px",
+			"borderColor : {color}; opacity: 0.5"
+		],
+		"bracketPairColorizer.rulerPosition": "Full",
+		"bracketPairColorizer.highlightActiveScope": true,
+		"bracketPairColorizer.activeScopeCSS": [
+			"borderStyle : solid",
+			"borderWidth : 1px",
+			"borderColor : {color}; opacity: 0.5",
+			"backgroundColor : {color}"
+		],
+		"bracketPairColorizer.consecutivePairColors": [
+			"()",
+			"[]",
+			"{}",
+			[
+				"<",
+				"</"
+			],
+			[
+				"<",
+				"/>"
+			],
+			[
+				"Gold",
+				"Orchid",
+				"LightSkyBlue"
+			],
+			"Red"
+		],
+		"guides.active.width": 5,
+		"guides.stack.width": 2,
+		"guides.updateDelay": 0.01,
+		"guides.active.gutter": true,
+		"guides.stack.style": "ridge",
+		"guides.active.style": "double",
+		"guides.active.extraIndent": true,
+		"guides.normal.enabled": false,
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
 		"ms-python.vscode-pylance",
-		"mhutchie.git-graph"
+		"mhutchie.git-graph",
+		"emeraldwalk.runonsave",
+		"ebicochineal.select-highlight-cochineal-color",
+		"coenraads.bracket-pair-colorizer",
+		"streetsidesoftware.code-spell-checker",
+		"shyykoserhiy.git-autoconfig",
+		"nhoizey.gremlins",
+		"spywhere.guides",
+		"kisstkondoros.vscode-gutter-preview",
+		"oderwat.indent-rainbow",
+		"ionutvmi.path-autocomplete",
+		"psioniq.psi-header",
+		"shardulm94.trailing-spaces",
+		"njpwerner.autodocstring"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
