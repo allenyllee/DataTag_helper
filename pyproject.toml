@@ -4,3 +4,27 @@ version = "0.8.2"
 description = ""
 authors = ["Allen Lee <allen7575@gmail.com>"]
 license = "MIT"
+extra_dirs = ["assets"]
+
+[[tool.portray.mkdocs.nav]]
+Home = "README.md"
+
+[[tool.portray.mkdocs.nav]]
+Changelog = "CHANGELOG.md"
+
+[[tool.portray.mkdocs.nav]]
+Troubleshooting = "TROUBLESHOOTING.md"
+
+[[tool.portray.mkdocs.nav]]
+    [[tool.portray.mkdocs.nav."Quick Start"]]
+    "Installation" = "docs/quick_start/installation.md"
+
+    [[tool.portray.mkdocs.nav."Quick Start"]]
+    "CLI" = "docs/quick_start/cli.md"
+
+    [[tool.portray.mkdocs.nav."Quick Start"]]
+    "API" = "docs/quick_start/api.md"
+
+    [[tool.portray.mkdocs.nav."Quick Start"]]
+    "Configuration" = "docs/quick_start/configuration.md"
+
