@@ -136,7 +136,14 @@ def patch_gooey_gui_component():
     def Dropdown_newOnCombo(self, event):
         def get_choices(input_file):
             try:
-                new_choices = list(pd.read_excel(input_file , sheet_name='document_label', index_col=0, nrows=0))
+                # specify engine use 'openpyxl' to avoid not found xlrd error
+                new_choices = list(pd.read_excel(
+                    input_file,
+                    sheet_name='document_label',
+                    index_col=0,
+                    nrows=0,
+                    engine='openpyxl'
+                ))
                 message = ''
                 self.setErrorString(message)
                 self.showErrorString(False)
@@ -144,8 +151,10 @@ def patch_gooey_gui_component():
                 # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
                 # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
                 self.GetParent().Layout()
-            except:
-                message = "No sheet named 'document_label'"
+            except Exception as e:
+                # message = "No sheet named 'document_label'"
+                # show actual exception message for easier debug
+                message = repr(e)
                 # print(message)
                 self.setErrorString(message)
                 self.showErrorString(True)
@@ -769,14 +778,14 @@ def split_train_test_to_target(X, y, target):
 
 def concat_files(files_list):
     print(files_list)
-    df_content = pd.read_excel(files_list[0], sheet_name='contents')
-    df_document_label = pd.read_excel(files_list[0], sheet_name='document_label')
-    df_sentence_label = pd.read_excel(files_list[0], sheet_name='sentence_label')
+    df_content = pd.read_excel(files_list[0], sheet_name='contents', engine='openpyxl')
+    df_document_label = pd.read_excel(files_list[0], sheet_name='document_label', engine='openpyxl')
+    df_sentence_label = pd.read_excel(files_list[0], sheet_name='sentence_label', engine='openpyxl')
 
     for filepath in files_list[1:]:
-        df_content = df_content.append(pd.read_excel(filepath, sheet_name='contents'))
-        df_document_label = df_document_label.append(pd.read_excel(filepath, sheet_name='document_label'))
-        df_sentence_label = df_sentence_label.append(pd.read_excel(filepath, sheet_name='sentence_label'))
+        df_content = df_content.append(pd.read_excel(filepath, sheet_name='contents', engine='openpyxl'))
+        df_document_label = df_document_label.append(pd.read_excel(filepath, sheet_name='document_label', engine='openpyxl'))
+        df_sentence_label = df_sentence_label.append(pd.read_excel(filepath, sheet_name='sentence_label', engine='openpyxl'))
 
     ## sort data by TextID
     df_content = df_content.sort_values(by=['TextID'])
@@ -827,7 +836,7 @@ def main():
     if args.command == 'original':
         if args.input_file:
             common_filename = Path(args.input_file)
-            df = pd.read_excel(args.input_file)
+            df = pd.read_excel(args.input_file, engine='openpyxl')
             df['TextID'] = get_TextID(df[["Content"]])
 
             if args.emojilize:
@@ -992,9 +1001,9 @@ def main():
             files_list = args.input_files.split(':')
         concat_files(files_list)
     elif args.command == 'split':
-        # df_content = pd.read_excel(args.input_file, sheet_name='contents')
-        df_document = pd.read_excel(args.input_file, sheet_name='document_label')
-        df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label')
+        # df_content = pd.read_excel(args.input_file, sheet_name='contents', engine='openpyxl')
+        df_document = pd.read_excel(args.input_file, sheet_name='document_label', engine='openpyxl')
+        df_sentence = pd.read_excel(args.input_file, sheet_name='sentence_label', engine='openpyxl')
 
         ## unescape OOXML string
         # df_content = df_content.applymap(lambda x: unescape_OOXML(x) if isinstance(x, str) else x)
