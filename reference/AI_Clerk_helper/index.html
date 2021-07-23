@@ -2260,7 +2260,15 @@
 <span class="normal">1580</span>
 <span class="normal">1581</span>
 <span class="normal">1582</span>
-<span class="normal">1583</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">1583</span>
+<span class="normal">1584</span>
+<span class="normal">1585</span>
+<span class="normal">1586</span>
+<span class="normal">1587</span>
+<span class="normal">1588</span>
+<span class="normal">1589</span>
+<span class="normal">1590</span>
+<span class="normal">1591</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -2384,7 +2392,15 @@
 
 <span class="k">def</span> <span class="nf">patch_gooey_gui_component</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;monkey patch gooey&#39;s gui components, like: Dropdown, FileChooser, GooeyApplication,...etc.</span>
+    <span class="sd">&quot;&quot;&quot;Monkey patch gooey&#39;s gui components, like:</span>
+
+<span class="sd">    Dropdown, FileChooser, GooeyApplication,...etc.</span>
+
+<span class="sd">    To avoid `ImportError: libXxf86vm.so.1` while import,</span>
+
+<span class="sd">    we enclose patch code into a function,</span>
+
+<span class="sd">    and call it when we are going into GUI mode.</span>
 
 <span class="sd">    Returns:</span>
 
@@ -4359,7 +4375,11 @@
 
 <span class="p">)</span>
 </code></pre></div>
-<p>monkey patch gooey's gui components, like: Dropdown, FileChooser, GooeyApplication,...etc.</p>
+<p>Monkey patch gooey's gui components, like:</p>
+<p>Dropdown, FileChooser, GooeyApplication,...etc.
+To avoid <code>ImportError: libXxf86vm.so.1</code> while import,
+we enclose patch code into a function,
+and call it when we are going into GUI mode.</p>
 <p><strong>Returns:</strong></p>
 <table>
 <thead>
@@ -4377,7 +4397,15 @@
 </table>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">patch_gooey_gui_component</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;monkey patch gooey&#39;s gui components, like: Dropdown, FileChooser, GooeyApplication,...etc.</span>
+    <span class="sd">&quot;&quot;&quot;Monkey patch gooey&#39;s gui components, like:</span>
+
+<span class="sd">    Dropdown, FileChooser, GooeyApplication,...etc.</span>
+
+<span class="sd">    To avoid `ImportError: libXxf86vm.so.1` while import,</span>
+
+<span class="sd">    we enclose patch code into a function,</span>
+
+<span class="sd">    and call it when we are going into GUI mode.</span>
 
 <span class="sd">    Returns:</span>
 
