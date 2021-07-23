@@ -3847,28 +3847,22 @@
 </td></tr></table>
 </details>
 <h2 id="variables">Variables</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">ESCAPED_REGEX</span>
+<div class="highlight"><pre><span></span><code><span class="n">ESCAPED_REGEX</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">ILLEGAL_CHARACTERS_RE</span>
+<div class="highlight"><pre><span></span><code><span class="n">ILLEGAL_CHARACTERS_RE</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">MY_DB_FILE</span>
+<div class="highlight"><pre><span></span><code><span class="n">MY_DB_FILE</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">global_args</span>
+<div class="highlight"><pre><span></span><code><span class="n">global_args</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">mydict</span>
+<div class="highlight"><pre><span></span><code><span class="n">mydict</span>
 </code></pre></div>
-
 <h2 id="functions">Functions</h2>
 <h3 id="clean_data">clean_data</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span>
     <span class="n">df</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">clean_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">empty_entries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="o">[</span><span class="n">&quot;Content&quot;</span><span class="o">]</span><span class="p">.</span><span class="nf">isnull</span><span class="p">()</span><span class="w"></span>
@@ -3906,11 +3900,10 @@
 
 </details>
 <h3 id="concat_files">concat_files</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">concat_files</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">concat_files</span><span class="p">(</span>
     <span class="n">files_list</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">concat_files</span><span class="ss">(</span><span class="nv">files_list</span><span class="ss">)</span>:
 
     <span class="nv">print</span><span class="ss">(</span><span class="nv">files_list</span><span class="ss">)</span>
@@ -3968,11 +3961,10 @@
 
 </details>
 <h3 id="emoji_to_text">emoji_to_text</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">emoji_to_text</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emoji_to_text</span><span class="p">(</span>
     <span class="n">df</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">emoji_to_text</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
 
     <span class="nv">df_deemojilized</span> <span class="o">=</span> <span class="nv">df</span>.<span class="nv">copy</span><span class="ss">()</span>
@@ -3992,13 +3984,12 @@
 
 </details>
 <h3 id="extract_dict">extract_dict</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_dict</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_dict</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
     <span class="n">id_column_list</span><span class="p">,</span>
     <span class="n">dict_column</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">extract_dict</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="n">id_column_list</span><span class="p">,</span><span class="w"> </span><span class="n">dict_column</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">df_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="o">[</span><span class="n">id_column_list + [dict_column</span><span class="o">]</span><span class="err">]</span><span class="p">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">id_column_list</span><span class="p">)</span><span class="w"></span>
@@ -4018,11 +4009,10 @@
 
 </details>
 <h3 id="get_textid">get_TextID</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_TextID</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_TextID</span><span class="p">(</span>
     <span class="n">df</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_TextID</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
 
     <span class="k">return</span> <span class="nv">df</span>.<span class="nv">apply</span><span class="ss">(</span><span class="nv">lambda</span> <span class="nv">x</span>: <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">x</span>[<span class="mi">0</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>],<span class="nv">axis</span><span class="o">=</span><span class="mi">1</span><span class="ss">)</span>
@@ -4030,11 +4020,10 @@
 
 </details>
 <h3 id="main">main</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="s s-Atom">def</span> <span class="nf">main</span><span class="p">()</span><span class="s s-Atom">:</span>
 
     <span class="s s-Atom">#</span> <span class="s s-Atom">check</span> <span class="s s-Atom">if</span> <span class="s s-Atom">user</span> <span class="s s-Atom">pass</span> <span class="s s-Atom">any</span> <span class="s s-Atom">argument</span><span class="p">,</span> <span class="s s-Atom">if</span> <span class="s s-Atom">yes</span><span class="p">,</span> <span class="s s-Atom">use</span> <span class="s s-Atom">command</span> <span class="s s-Atom">line</span><span class="p">,</span> <span class="s s-Atom">otherwise</span> <span class="s s-Atom">use</span> <span class="s s-Atom">gooey</span>
@@ -4366,11 +4355,10 @@
 
 </details>
 <h3 id="patch_gooey_gui_component">patch_gooey_gui_component</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">patch_gooey_gui_component</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">patch_gooey_gui_component</span><span class="p">(</span>
 
 <span class="p">)</span>
 </code></pre></div>
-
 <p>monkey patch gooey's gui components, like:</p>
 <p>Dropdown, FileChooser, GooeyApplication,...etc.</p>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">patch_gooey_gui_component</span><span class="p">():</span>
@@ -4664,11 +4652,10 @@
 
 </details>
 <h3 id="remove_illegal_characters">remove_illegal_characters</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">remove_illegal_characters</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">remove_illegal_characters</span><span class="p">(</span>
     <span class="n">dataframe</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">remove_illegal_characters</span><span class="ss">(</span><span class="nv">dataframe</span><span class="ss">)</span>:
 
     # <span class="nv">dataframe</span> <span class="o">=</span> <span class="nv">dataframe</span>.<span class="nv">applymap</span><span class="ss">(</span><span class="nv">lambda</span> <span class="nv">x</span>: <span class="nv">x</span>.<span class="nv">encode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">unicode_escape</span><span class="s1">&#39;</span><span class="ss">)</span>.<span class="nv">decode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">)</span> <span class="k">if</span> <span class="nv">isinstance</span><span class="ss">(</span><span class="nv">x</span>, <span class="nv">str</span><span class="ss">)</span> <span class="k">else</span> <span class="nv">x</span><span class="ss">)</span>
@@ -4680,13 +4667,12 @@
 
 </details>
 <h3 id="reorder_column">reorder_column</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">reorder_column</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reorder_column</span><span class="p">(</span>
     <span class="n">columns_list</span><span class="p">,</span>
     <span class="n">selected_column_name</span><span class="p">,</span>
     <span class="n">insert_before_column_name</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <p>columns_list: the list of columns to be reordered</p>
 <p>selected_column_name: the column name which wants to be inserted to the point before column <code>insert_before_column_name</code>
 insert_before_column_name: the column name which act as fix point relative to the <code>selected_column_name</code></p>
@@ -4733,13 +4719,12 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 </details>
 <h3 id="split_train_test_to_target">split_train_test_to_target</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">split_train_test_to_target</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">split_train_test_to_target</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
     <span class="n">target</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">split_train_test_to_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">sss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StratifiedShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">random_state</span><span class="o">=</span><span class="mi">1234</span><span class="p">)</span><span class="w"></span>
@@ -4787,11 +4772,10 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 </details>
 <h3 id="text_to_emoji">text_to_emoji</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">text_to_emoji</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">text_to_emoji</span><span class="p">(</span>
     <span class="n">df</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">text_to_emoji</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
 
     <span class="nv">df_emojilized</span> <span class="o">=</span> <span class="nv">df</span>.<span class="nv">copy</span><span class="ss">()</span>
@@ -4807,12 +4791,11 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 </details>
 <h3 id="to_ai_clerk_batch_upload_json">to_AI_clerk_batch_upload_json</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">to_AI_clerk_batch_upload_json</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_AI_clerk_batch_upload_json</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">,</span>
     <span class="n">save_path</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">to_AI_clerk_batch_upload_json</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span><span class="w"> </span><span class="n">save_path</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">to_article_dict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
@@ -4856,12 +4839,11 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 </details>
 <h3 id="to_excel_ai_clerk_labeled_data">to_excel_AI_clerk_labeled_data</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">to_excel_AI_clerk_labeled_data</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_excel_AI_clerk_labeled_data</span><span class="p">(</span>
     <span class="n">dataframe</span><span class="p">,</span>
     <span class="n">save_path</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">to_excel_AI_clerk_labeled_data</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
 
     <span class="c1">## unescape OOXML string</span>
@@ -5209,11 +5191,10 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 </details>
 <h3 id="unescape_ooxml">unescape_OOXML</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">unescape_OOXML</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">unescape_OOXML</span><span class="p">(</span>
     <span class="n">string</span>
 <span class="p">)</span>
 </code></pre></div>
-
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="n">def</span> <span class="n">unescape_OOXML</span><span class="p">(</span><span class="k">string</span><span class="p">)</span><span class="o">:</span>
 
     <span class="n">def</span> <span class="n">remove_character</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">:</span>

@@ -453,10 +453,10 @@
 <p><a href="https://github.com/pypa/setuptools/issues/1963">setuptools 45.0.0 may cause PyInstaller 3.3 packaged executable fail to launch · Issue #1963 · pypa/setuptools</a></p>
 <blockquote>
 <p>Fixed by adding a hidden import:</p>
-<p><code>python
-a = Analysis(...,
-            hiddenimports=['pkg_resources.py2_warn'],
-            ...)</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">(</span><span class="o">...</span><span class="p">,</span>
+            <span class="n">hiddenimports</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pkg_resources.py2_warn&#39;</span><span class="p">],</span>
+            <span class="o">...</span><span class="p">)</span>
+</code></pre></div>
 </blockquote>
 </li>
 <li>
@@ -473,21 +473,22 @@ a = Analysis(...,
 <blockquote>
 <p><a href="https://stackoverflow.com/questions/49559770/how-do-you-resolve-hidden-imports-not-found-warnings-in-pyinstaller-for-scipy]">python - How do you resolve 'hidden imports not found!' warnings in pyinstaller for scipy? - Stack Overflow</a></p>
 <p>You need to go into the hook-scipy.py (or create one) and have it look like this:</p>
-<p>```python
-from PyInstaller.utils.hooks import collect_submodules
-from PyInstaller.utils.hooks import collect_data_files
-hiddenimports = collect_submodules('scipy')</p>
-<p>datas = collect_data_files('scipy')
-```</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">PyInstaller.utils.hooks</span> <span class="kn">import</span> <span class="n">collect_submodules</span>
+<span class="kn">from</span> <span class="nn">PyInstaller.utils.hooks</span> <span class="kn">import</span> <span class="n">collect_data_files</span>
+<span class="n">hiddenimports</span> <span class="o">=</span> <span class="n">collect_submodules</span><span class="p">(</span><span class="s1">&#39;scipy&#39;</span><span class="p">)</span>
+
+<span class="n">datas</span> <span class="o">=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;scipy&#39;</span><span class="p">)</span>
+</code></pre></div>
 <p>then go into the hook-sklearn.metrics.cluster.py file and modify it to look like this:</p>
-<p>```python
-from PyInstaller.utils.hooks import collect_data_files</p>
-<p>hiddenimports = ['sklearn.utils.sparsetools._graph_validation',
-                 'sklearn.utils.sparsetools._graph_tools',
-                 'sklearn.utils.lgamma',
-                 'sklearn.utils.weight_vector']</p>
-<p>datas = collect_data_files('sklearn')
-```</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">PyInstaller.utils.hooks</span> <span class="kn">import</span> <span class="n">collect_data_files</span>
+
+<span class="n">hiddenimports</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sklearn.utils.sparsetools._graph_validation&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;sklearn.utils.sparsetools._graph_tools&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;sklearn.utils.lgamma&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;sklearn.utils.weight_vector&#39;</span><span class="p">]</span>
+
+<span class="n">datas</span> <span class="o">=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;sklearn&#39;</span><span class="p">)</span>
+</code></pre></div>
 <hr />
 <p>you can specify hooks file dir used in --additional-hooks-dir in the spec file's hookspath -- <a href="https://stackoverflow.com/users/1851492/allenyllee" title="399 reputation">allenyllee</a></p>
 </blockquote>
@@ -497,33 +498,31 @@ from PyInstaller.utils.hooks import collect_data_files</p>
 <blockquote>
 <p><a href="https://github.com/chriskiehl/Gooey/issues/447">Required arguments shown as optional · Issue #447 · chriskiehl/Gooey</a></p>
 <p>Here is code to reproduce:</p>
-<p>```python
-from gooey import Gooey, GooeyParser
-@Gooey
-def main():
-    p=GooeyParser()
-    p.add_argument('-s',required=True, widget='FileChooser')
-    p.add_argument('-l',widget='DirChooser')
-    p.parse_args()
-if <strong>name</strong>=='<strong>main</strong>':
-    main()</p>
-<p>```</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">gooey</span> <span class="kn">import</span> <span class="n">Gooey</span><span class="p">,</span> <span class="n">GooeyParser</span>
+<span class="nd">@Gooey</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">p</span><span class="o">=</span><span class="n">GooeyParser</span><span class="p">()</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="s1">&#39;FileChooser&#39;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span><span class="n">widget</span><span class="o">=</span><span class="s1">&#39;DirChooser&#39;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
 <p>It still exists on 1.0.3-release as well.</p>
 <p>However, note that the arguments are not treated as optional; it's only the title "optional argument" which bothers you.</p>
 <p>As a workaround, you can create a single argument_group (optionally name it.)</p>
 <p>like this:</p>
-<p>```python
-from gooey import Gooey, GooeyParser
-@Gooey
-def main():
-    p=GooeyParser()
-    g=p.add_argument_group()
-    g.add_argument('-s',required=True, widget='FileChooser')
-    g.add_argument('-l',widget='DirChooser')
-    p.parse_args()
-if <strong>name</strong>=='<strong>main</strong>':
-    main()</p>
-<p>```</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">gooey</span> <span class="kn">import</span> <span class="n">Gooey</span><span class="p">,</span> <span class="n">GooeyParser</span>
+<span class="nd">@Gooey</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">p</span><span class="o">=</span><span class="n">GooeyParser</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">()</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="s1">&#39;FileChooser&#39;</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span><span class="n">widget</span><span class="o">=</span><span class="s1">&#39;DirChooser&#39;</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
 </blockquote>
 <p><a href="https://github.com/chriskiehl/Gooey/issues/368">Required non-positional fields show as optional · Issue #368 · chriskiehl/Gooey</a></p>
 <p><a href="https://github.com/chriskiehl/Gooey/issues/208">Support non-boolean mutually exclusive options · Issue #208 · chriskiehl/Gooey</a></p>
