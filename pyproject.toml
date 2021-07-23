@@ -5,6 +5,7 @@ description = ""
 authors = ["Allen Lee <allen7575@gmail.com>"]
 license = "MIT"
 extra_dirs = ["assets"]
+extra_markdown_extensions = ["pymdownx.superfences", "pymdownx.highlight"]
 
 [[tool.portray.mkdocs.nav]]
 Home = "README.md"

@@ -98,7 +98,8 @@
 		"ionutvmi.path-autocomplete",
 		"psioniq.psi-header",
 		"shardulm94.trailing-spaces",
-		"njpwerner.autodocstring"
+		"njpwerner.autodocstring",
+		"sean10.vscode-markdown-quote"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
