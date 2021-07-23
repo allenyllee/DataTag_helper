@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Monday, May 3rd 2021, 6:15:40 pm
+# Last Modified: Friday, July 23rd 2021, 4:11:08 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -72,160 +72,165 @@ except KeyError:
 global_args = defaultdict(list)
 
 
-import wx
-from gooey.gui.lang.i18n import _
+def patch_gooey_gui_component():
+    """
+    monkey patch gooey's gui components, like:
+    Dropdown, FileChooser, GooeyApplication,...etc.
+    """
+    import wx
+    from gooey.gui.lang.i18n import _
 
-## [Feature request: Allow general callbacks for validation · Issue #293 · chriskiehl/Gooey]
-## (https://github.com/chriskiehl/Gooey/issues/293)
-# from gooey.gui.components.widgets.bases import TextContainer
-# oldGetValue = TextContainer.getValue
+    ## [Feature request: Allow general callbacks for validation · Issue #293 · chriskiehl/Gooey]
+    ## (https://github.com/chriskiehl/Gooey/issues/293)
+    # from gooey.gui.components.widgets.bases import TextContainer
+    # oldGetValue = TextContainer.getValue
 
-# def newGetValue(self):
-#     result = oldGetValue(self)
-#     userValidator = self._options['validator']['callback']
-#     message = self._options['validator']['message']
-#     value = self.getWidgetValue()
-#     validates = userValidator(value)
-#     result['test'] = False
-#     result['error'] = 'test'
-#     return result
+    # def newGetValue(self):
+    #     result = oldGetValue(self)
+    #     userValidator = self._options['validator']['callback']
+    #     message = self._options['validator']['message']
+    #     value = self.getWidgetValue()
+    #     validates = userValidator(value)
+    #     result['test'] = False
+    #     result['error'] = 'test'
+    #     return result
 
-# TextContainer.getValue = newGetValue
+    # TextContainer.getValue = newGetValue
 
-# [Gooey/dropdown.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/dropdown.py)
-from gooey.gui.components.widgets.dropdown import Dropdown
-Dropdown_oldGetWidget = Dropdown.getWidget
+    # [Gooey/dropdown.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/dropdown.py)
+    from gooey.gui.components.widgets.dropdown import Dropdown
+    Dropdown_oldGetWidget = Dropdown.getWidget
 
-# from gooey.gui import formatters
-# def newFormatOutput(self, metadata, value):
-#     print("debug2")
-#     print("metadata", metadata)
-#     print("value", value)
-#     return formatters.dropdown(metadata, value)
+    # from gooey.gui import formatters
+    # def newFormatOutput(self, metadata, value):
+    #     print("debug2")
+    #     print("metadata", metadata)
+    #     print("value", value)
+    #     return formatters.dropdown(metadata, value)
 
-# def newSetValue(self, value):
-#     ## +1 to offset the default placeholder value
-#     index = self._meta['choices'].index(value) + 1
-#     print("debug", self._meta['choices'])
-#     self.widget.SetSelection(index)
+    # def newSetValue(self, value):
+    #     ## +1 to offset the default placeholder value
+    #     index = self._meta['choices'].index(value) + 1
+    #     print("debug", self._meta['choices'])
+    #     self.widget.SetSelection(index)
 
-# def newGetWidgetValue(self):
-#     value = self.widget.GetValue()
-#     # filter out the extra default option that's
-#     # appended during creation
-#     print(value)
-#     if value == _('select_option'):
-#         return None
-#     return value
+    # def newGetWidgetValue(self):
+    #     value = self.widget.GetValue()
+    #     # filter out the extra default option that's
+    #     # appended during creation
+    #     print(value)
+    #     if value == _('select_option'):
+    #         return None
+    #     return value
 
-def Dropdown_newGetWidget(self, parent, *args, **options):
-    widget = Dropdown_oldGetWidget(self, parent, *args, **options)
-    # [wxPython ComboBox & Choice类 - WxPython教程™]
-    # (https://www.yiibai.com/wxpython/wx_combobox_choice_class.html)
-    # [wx.ComboBox — wxPython Phoenix 4.1.1a1 documentation]
-    # (https://wxpython.org/Phoenix/docs/html/wx.ComboBox.html)
-    widget.Bind(wx.EVT_COMBOBOX_DROPDOWN, self.OnCombo)
-    return widget
+    def Dropdown_newGetWidget(self, parent, *args, **options):
+        widget = Dropdown_oldGetWidget(self, parent, *args, **options)
+        # [wxPython ComboBox & Choice类 - WxPython教程™]
+        # (https://www.yiibai.com/wxpython/wx_combobox_choice_class.html)
+        # [wx.ComboBox — wxPython Phoenix 4.1.1a1 documentation]
+        # (https://wxpython.org/Phoenix/docs/html/wx.ComboBox.html)
+        widget.Bind(wx.EVT_COMBOBOX_DROPDOWN, self.OnCombo)
+        return widget
 
-def Dropdown_newOnCombo(self, event):
-    def get_choices(input_file):
+    def Dropdown_newOnCombo(self, event):
+        def get_choices(input_file):
+            try:
+                new_choices = list(pd.read_excel(input_file , sheet_name='document_label', index_col=0, nrows=0))
+                message = ''
+                self.setErrorString(message)
+                self.showErrorString(False)
+                # force refresh parent screen
+                # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
+                # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
+                self.GetParent().Layout()
+            except:
+                message = "No sheet named 'document_label'"
+                # print(message)
+                self.setErrorString(message)
+                self.showErrorString(True)
+                # force refresh parent screen
+                # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
+                # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
+                self.GetParent().Layout()
+                new_choices = []
+
+            return new_choices
+
+        current_input_file = global_args['input_file']
+
         try:
-            new_choices = list(pd.read_excel(input_file , sheet_name='document_label', index_col=0, nrows=0))
-            message = ''
-            self.setErrorString(message)
-            self.showErrorString(False)
-            # force refresh parent screen
-            # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
-            # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
-            self.GetParent().Layout()
+            self.previous_input_file
         except:
-            message = "No sheet named 'document_label'"
-            # print(message)
-            self.setErrorString(message)
-            self.showErrorString(True)
-            # force refresh parent screen
-            # python - Update/Refresh Dynamically–Created WxPython Widgets - Stack Overflow
-            # https://stackoverflow.com/questions/10368948/update-refresh-dynamically-created-wxpython-widgets
-            self.GetParent().Layout()
-            new_choices = []
+            self.previous_input_file = ''
 
-        return new_choices
+        if self.previous_input_file != current_input_file:
+            self.new_choices = get_choices(current_input_file)
+            self.previous_input_file = current_input_file
 
-    current_input_file = global_args['input_file']
-
-    try:
-        self.previous_input_file
-    except:
-        self.previous_input_file = ''
-
-    if self.previous_input_file != current_input_file:
-        self.new_choices = get_choices(current_input_file)
-        self.previous_input_file = current_input_file
-
-    # save self.new_choices into sqlite db for later access
-    mydict['global_choies'] = self.new_choices
-    # [python - Dynamically change the choices in a wx.ComboBox() - Stack Overflow]
-    # (https://stackoverflow.com/questions/682923/dynamically-change-the-choices-in-a-wx-combobox)
-    self.setOptions(self.new_choices)
+        # save self.new_choices into sqlite db for later access
+        mydict['global_choies'] = self.new_choices
+        # [python - Dynamically change the choices in a wx.ComboBox() - Stack Overflow]
+        # (https://stackoverflow.com/questions/682923/dynamically-change-the-choices-in-a-wx-combobox)
+        self.setOptions(self.new_choices)
 
 
-Dropdown.getWidget = Dropdown_newGetWidget
-Dropdown.OnCombo = Dropdown_newOnCombo
-# Dropdown.setValue = newSetValue
-# Dropdown.getWidgetValue = newGetWidgetValue
-# Dropdown.formatOutput = newFormatOutput
+    Dropdown.getWidget = Dropdown_newGetWidget
+    Dropdown.OnCombo = Dropdown_newOnCombo
+    # Dropdown.setValue = newSetValue
+    # Dropdown.getWidgetValue = newGetWidgetValue
+    # Dropdown.formatOutput = newFormatOutput
 
-# [Gooey/choosers.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/choosers.py)
-# [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L65)
-# [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L13)
-# [Gooey/text_input.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/text_input.py#L7)
-# [Gooey/bases.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/bases.py#L170)
-from gooey.gui.components.widgets.core.chooser import FileChooser
-FileChooser_old_init = FileChooser.__init__
+    # [Gooey/choosers.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/choosers.py)
+    # [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L65)
+    # [Gooey/chooser.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/chooser.py#L13)
+    # [Gooey/text_input.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/core/text_input.py#L7)
+    # [Gooey/bases.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/bases.py#L170)
+    from gooey.gui.components.widgets.core.chooser import FileChooser
+    FileChooser_old_init = FileChooser.__init__
 
-## monkey patch __init__
-def FileChooser_new_init(self, parent, *args, **kwargs):
-    FileChooser_old_init(self, parent, *args, **kwargs)
-    # bind event wx.EVT_TEXT to trigger self.OnFileChooser when text change
-    # [wx.TextCtrl — wxPython Phoenix 4.1.1a1 documentation]
-    # (https://wxpython.org/Phoenix/docs/html/wx.TextCtrl.html)
-    # [wxPython - TextCtrl Class - Tutorialspoint]
-    # (https://www.tutorialspoint.com/wxpython/wx_textctrl_class.htm)
-    self.widget.Bind(wx.EVT_TEXT, self.OnFileChooser)
+    ## monkey patch __init__
+    def FileChooser_new_init(self, parent, *args, **kwargs):
+        FileChooser_old_init(self, parent, *args, **kwargs)
+        # bind event wx.EVT_TEXT to trigger self.OnFileChooser when text change
+        # [wx.TextCtrl — wxPython Phoenix 4.1.1a1 documentation]
+        # (https://wxpython.org/Phoenix/docs/html/wx.TextCtrl.html)
+        # [wxPython - TextCtrl Class - Tutorialspoint]
+        # (https://www.tutorialspoint.com/wxpython/wx_textctrl_class.htm)
+        self.widget.Bind(wx.EVT_TEXT, self.OnFileChooser)
 
-## monkey patch OnFileChooser
-def FileChooser_newOnFileChooser(self, event):
-    # read text area value to global_args
-    global_args['input_file'] = self.widget.getValue()
-    # print(global_args)
+    ## monkey patch OnFileChooser
+    def FileChooser_newOnFileChooser(self, event):
+        # read text area value to global_args
+        global_args['input_file'] = self.widget.getValue()
+        # print(global_args)
 
 
-FileChooser.__init__ = FileChooser_new_init
-FileChooser.OnFileChooser = FileChooser_newOnFileChooser
+    FileChooser.__init__ = FileChooser_new_init
+    FileChooser.OnFileChooser = FileChooser_newOnFileChooser
 
-# [Gooey/application.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
-# (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/containers/application.py#L29)
-from gooey.gui.containers.application import GooeyApplication
+    # [Gooey/application.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
+    # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/containers/application.py#L29)
+    from gooey.gui.containers.application import GooeyApplication
 
-## monkey patch onClose
-def newOnClose(self, *args, **kwargs):
-    """Cleanup the top level WxFrame and shutdown the process"""
-    self.Destroy()
-    # print("onClose")
-    # remove db file when close
-    # [sqlite - Python PermissionError: [WinError 32] The process cannot access the file..... but my file is closed - Stack Overflow]
-    # (https://stackoverflow.com/questions/59482990/python-permissionerror-winerror-32-the-process-cannot-access-the-file-bu)
-    mydict.close()
-    os.remove(MY_DB_FILE)
-    sys.exit()
+    ## monkey patch onClose
+    def newOnClose(self, *args, **kwargs):
+        """Cleanup the top level WxFrame and shutdown the process"""
+        self.Destroy()
+        # print("onClose")
+        # remove db file when close
+        # [sqlite - Python PermissionError: [WinError 32] The process cannot access the file..... but my file is closed - Stack Overflow]
+        # (https://stackoverflow.com/questions/59482990/python-permissionerror-winerror-32-the-process-cannot-access-the-file-bu)
+        mydict.close()
+        os.remove(MY_DB_FILE)
+        sys.exit()
 
-GooeyApplication.onClose = newOnClose
+    GooeyApplication.onClose = newOnClose
 
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
@@ -806,6 +811,8 @@ def main():
         ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
         args = parse_args.__closure__[0].cell_contents()
     else:
+        # patch gooey component only when before entering GUI mode
+        patch_gooey_gui_component()
         args = parse_args()
 
     # print(args.command)
