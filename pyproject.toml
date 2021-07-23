@@ -1,0 +1,6 @@
+[tool.portray]
+name = "AI_Clerk_helper"
+version = "0.8.2"
+description = ""
+authors = ["Allen Lee <allen7575@gmail.com>"]
+license = "MIT"

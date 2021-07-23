@@ -27,6 +27,13 @@ conda create --name AI_Clerk_helper python=3.6
 
 conda activate AI_Clerk_helper
 ```
+> If conda install has permission error, excute:
+>
+> ```
+> sudo chown 1000:1000 -R /opt/conda/
+> ```
+>
+> This will change the owner of conda folder.
 
 > If conda activation failed, just execute:
 > ```
@@ -49,13 +56,6 @@ pip install -r requirements.txt
 > [Installation via pip fails needing pathlib2 · Issue #474 · chriskiehl/Gooey](https://github.com/chriskiehl/Gooey/issues/474)
 
 
-> If conda install has permission error, excute:
->
-> ```
-> sudo chown 1000:1000 -R /opt/conda/
-> ```
->
-> This will change the owner of conda folder.
 
 
 ### Step 3: Execute
@@ -98,7 +98,8 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
 > you should install dependenies
 >
 > ```
-> apt-get install -y binutils libc6
+> sudo apt update
+> sudo apt install -y binutils libc6
 > ```
 > see: [FileNotFoundError: [Errno 2] No such file or directory: 'objcopy': 'objcopy' · Issue #3815 · pyinstaller/pyinstaller](https://github.com/pyinstaller/pyinstaller/issues/3815)
 
@@ -254,6 +255,12 @@ wine ./dist/AI_Clerk_helper.exe
 
 
 ## changelog
+
+### v0.8.2
+
+1. fix "Missing optional dependency 'xlrd'." error, jsut use openpyxl. see: https://github.com/pandas-dev/pandas/issues/38424
+
+2. called monkey patch for gooey gui components only when before entering GUI mode (to avoid non-gui import generate "module not found" error)
 
 ### v0.8.1
 
