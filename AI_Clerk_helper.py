@@ -73,7 +73,11 @@ global_args = defaultdict(list)
 
 
 def patch_gooey_gui_component():
-    """monkey patch gooey's gui components, like: Dropdown, FileChooser, GooeyApplication,...etc.
+    """Monkey patch gooey's gui components, like:
+    Dropdown, FileChooser, GooeyApplication,...etc.
+    To avoid `ImportError: libXxf86vm.so.1` while import,
+    we enclose patch code into a function,
+    and call it when we are going into GUI mode.
 
     Returns:
         [type]: [description]
