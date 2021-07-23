@@ -860,65 +860,41 @@ see: <a href="https://github.com/pyinstaller/pyinstaller/issues/3815">FileNotFou
 </blockquote>
 <h3 id="step-6-install-wine">Step 6: Install wine</h3>
 <ol>
-<li>add wine apt repository</li>
-</ol>
+<li>
+<p>add wine apt repository</p>
 <p>For <a href="https://wiki.winehq.org/Ubuntu">Ubuntu - WineHQ Wiki</a>:</p>
-<div class="codehilite"><pre><span></span><code><span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">shell</span>
-<span class="n n-Quoted">sudo dpkg --add-architecture i386</span>
-
-<span class="n n-Quoted">wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</span>
-
-<span class="n n-Quoted">sudo add-apt-repository &#39;deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main&#39;</span>
-<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-
-<span class="o">&gt;</span> <span class="k">Install</span> <span class="n">unmet</span> <span class="n">dependence</span><span class="o">:</span> <span class="n n-Quoted">`faudio`</span> <span class="p">(</span><span class="k">only</span> <span class="n">needed</span> <span class="k">for</span> <span class="n">unbuntu18</span><span class="mf">.04</span><span class="p">,</span> <span class="n">because</span> <span class="n">higher</span> <span class="n">version</span> <span class="n">already</span> <span class="n">has</span> <span class="n">libfaudio0</span> <span class="k">in</span> <span class="n">repository</span><span class="p">)</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">shell</span>
-<span class="n n-Quoted">&gt; sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport</span>
-<span class="n n-Quoted">&gt; sudo apt update</span>
-<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-
-<span class="k">For</span> <span class="err">[</span><span class="n">debian</span> <span class="mi">10</span><span class="err">]</span><span class="p">(</span><span class="n">https</span><span class="o">://</span><span class="n">computingforgeeks</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">how</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="k">install</span><span class="o">-</span><span class="n">wine</span><span class="o">-</span><span class="k">on</span><span class="o">-</span><span class="n">debian</span><span class="o">/</span><span class="p">)</span><span class="o">:</span>
-<span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
-<span class="n n-Quoted">sudo dpkg --add-architecture i386</span>
-
-<span class="n n-Quoted">wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</span>
-
-<span class="n n-Quoted">sudo apt-add-repository https://dl.winehq.org/wine-builds/debian/</span>
-
-<span class="n n-Quoted">wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | sudo apt-key add -</span>
-
-<span class="n n-Quoted">echo &quot;deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./&quot; | sudo tee /etc/apt/sources.list.d/wine-obs.list</span>
-<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-
-<span class="k">update</span><span class="o">:</span>
-
-<span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
-<span class="n n-Quoted">sudo apt update</span>
-<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-
-<span class="n">Notes</span><span class="o">:</span>
-
-<span class="o">&gt;</span> <span class="k">check</span> <span class="n">linux</span> <span class="n">distribution</span><span class="o">:</span>
-<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
-<span class="n n-Quoted">&gt; cat /etc/*-release</span>
-<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-<span class="o">&gt;</span> <span class="n">see</span><span class="o">:</span> <span class="n">https</span><span class="o">://</span><span class="n">www</span><span class="p">.</span><span class="n">cyberciti</span><span class="p">.</span><span class="n">biz</span><span class="o">/</span><span class="n">faq</span><span class="o">/</span><span class="n">find</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">distribution</span><span class="o">-</span><span class="k">name</span><span class="o">-</span><span class="n">version</span><span class="o">-</span><span class="k">number</span><span class="o">/</span>
-
-<span class="o">&gt;</span> <span class="k">If</span> <span class="n">you</span> <span class="n">encounter</span> <span class="n">an</span> <span class="k">error</span><span class="o">:</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
-<span class="n n-Quoted">&gt; sudo: apt-add-repository: command not found</span>
-<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="k">install</span>
-<span class="o">&gt;</span>
-<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
-<span class="n n-Quoted">&gt; sudo apt -y install software-properties-common</span>
-<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
-</code></pre></div>
-
-<ol>
+<p>```shell
+sudo dpkg --add-architecture i386</p>
+<p>wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</p>
+<p>sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
+```</p>
+<blockquote>
+<p>Install unmet dependence: <code>faudio</code> (only needed for unbuntu18.04, because higher version already has libfaudio0 in repository)</p>
+<p><code>shell
+sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport
+sudo apt update</code></p>
+</blockquote>
+<p>For <a href="https://computingforgeeks.com/how-to-install-wine-on-debian/">debian 10</a>:
+```
+sudo dpkg --add-architecture i386</p>
+<p>wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</p>
+<p>sudo apt-add-repository https://dl.winehq.org/wine-builds/debian/</p>
+<p>wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | sudo apt-key add -</p>
+<p>echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | sudo tee /etc/apt/sources.list.d/wine-obs.list
+```</p>
+<p>update:</p>
+<p><code>sudo apt update</code></p>
+<p>Notes:</p>
+<blockquote>
+<p>check linux distribution:
+<code>cat /etc/*-release</code>
+see: https://www.cyberciti.biz/faq/find-linux-distribution-name-version-number/</p>
+<p>If you encounter an error:</p>
+<p><code>sudo: apt-add-repository: command not found</code></p>
+<p>install</p>
+<p><code>sudo apt -y install software-properties-common</code></p>
+</blockquote>
+</li>
 <li>
 <p>Install latest wine</p>
 <p><a href="http://ubuntuhandbook.org/index.php/2019/05/nstall-wine-4-8-ubuntu-19-04-18-04/">How to Install Wine Devel 4.8 in Ubuntu 19.04 / 18.04 | UbuntuHandbook</a></p>
