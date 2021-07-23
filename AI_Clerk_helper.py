@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Friday, July 23rd 2021, 8:41:32 am
+# Last Modified: Friday, July 23rd 2021, 9:00:32 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -73,9 +73,10 @@ global_args = defaultdict(list)
 
 
 def patch_gooey_gui_component():
-    """
-    monkey patch gooey's gui components, like:
-    Dropdown, FileChooser, GooeyApplication,...etc.
+    """monkey patch gooey's gui components, like: Dropdown, FileChooser, GooeyApplication,...etc.
+
+    Returns:
+        [type]: [description]
     """
     import wx
     from gooey.gui.lang.i18n import _
