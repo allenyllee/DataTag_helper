@@ -146,7 +146,7 @@ And that's it. Inside of the `dist/` directory, you'll find a beautiful stand-al
 
 1. add wine apt repository
 
-   For [Ubuntu - WineHQ Wiki](https://wiki.winehq.org/Ubuntu):
+    For [Ubuntu - WineHQ Wiki](https://wiki.winehq.org/Ubuntu):
 
     ```shell
     sudo dpkg --add-architecture i386
