@@ -1,0 +1,1457 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.0">
+    
+    
+      
+        <title>AI_Clerk_helper</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fe914879.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ba0d045b.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="lightgreen">
+  
+    
+    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-clerk-helper" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="AI_Clerk_helper" class="md-header__button md-logo" aria-label="AI_Clerk_helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI_Clerk_helper
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/allenyllee/AI_Clerk_helper/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AI_Clerk_helper
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="AI_Clerk_helper" class="md-nav__button md-logo" aria-label="AI_Clerk_helper" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    AI_Clerk_helper
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/allenyllee/AI_Clerk_helper/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AI_Clerk_helper
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Home
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build" class="md-nav__link">
+    How to Build
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-use-remote-container" class="md-nav__link">
+    Method 1: Use Remote Container
+  </a>
+  
+    <nav class="md-nav" aria-label="Method 1: Use Remote Container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-into-container" class="md-nav__link">
+    Step 1: Clone into container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-build" class="md-nav__link">
+    Step 2: Build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-generate-api-docs" class="md-nav__link">
+    Step 3: Generate API docs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-manually-setup-environments" class="md-nav__link">
+    Method 2: Manually Setup Environments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-install-anaconda" class="md-nav__link">
+    Step 1: Install Anaconda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-install-dependencies" class="md-nav__link">
+    Step 2: Install dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execute" class="md-nav__link">
+    Step 3: Execute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-install-pyinstaller" class="md-nav__link">
+    Step 4: Install pyinstaller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-building-linux-excutable-with-spec-file" class="md-nav__link">
+    Step 5: Building linux excutable with .spec file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-install-wine" class="md-nav__link">
+    Step 6: Install wine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-building-windows-executable-from-linux" class="md-nav__link">
+    Step 7: Building Windows Executable from Linux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-running-windows-executable-through-wine" class="md-nav__link">
+    Step 8: Running Windows Executable through wine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    changelog
+  </a>
+  
+    <nav class="md-nav" aria-label="changelog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v082" class="md-nav__link">
+    v0.8.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v081" class="md-nav__link">
+    v0.8.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v080" class="md-nav__link">
+    v0.8.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v072" class="md-nav__link">
+    v0.7.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v071" class="md-nav__link">
+    v0.7.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v070" class="md-nav__link">
+    v0.7.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v061" class="md-nav__link">
+    v0.6.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v06" class="md-nav__link">
+    v0.6
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v05" class="md-nav__link">
+    v0.5
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    v0.4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v04" class="md-nav__link">
+    v0.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v03" class="md-nav__link">
+    v0.3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+    <nav class="md-nav" aria-label="References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gooey" class="md-nav__link">
+    Gooey
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gooey-options" class="md-nav__link">
+    Gooey Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    examples
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutually_exclusive_group" class="md-nav__link">
+    mutually_exclusive_group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-example" class="md-nav__link">
+    widget example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-update" class="md-nav__link">
+    dynamic update
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/AI_Clerk_helper/" class="md-nav__link">
+        Ai Clerk Helper
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build" class="md-nav__link">
+    How to Build
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-use-remote-container" class="md-nav__link">
+    Method 1: Use Remote Container
+  </a>
+  
+    <nav class="md-nav" aria-label="Method 1: Use Remote Container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-clone-into-container" class="md-nav__link">
+    Step 1: Clone into container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-build" class="md-nav__link">
+    Step 2: Build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-generate-api-docs" class="md-nav__link">
+    Step 3: Generate API docs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-manually-setup-environments" class="md-nav__link">
+    Method 2: Manually Setup Environments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-install-anaconda" class="md-nav__link">
+    Step 1: Install Anaconda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-install-dependencies" class="md-nav__link">
+    Step 2: Install dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execute" class="md-nav__link">
+    Step 3: Execute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-install-pyinstaller" class="md-nav__link">
+    Step 4: Install pyinstaller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-building-linux-excutable-with-spec-file" class="md-nav__link">
+    Step 5: Building linux excutable with .spec file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-install-wine" class="md-nav__link">
+    Step 6: Install wine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-building-windows-executable-from-linux" class="md-nav__link">
+    Step 7: Building Windows Executable from Linux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-running-windows-executable-through-wine" class="md-nav__link">
+    Step 8: Running Windows Executable through wine
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    changelog
+  </a>
+  
+    <nav class="md-nav" aria-label="changelog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v082" class="md-nav__link">
+    v0.8.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v081" class="md-nav__link">
+    v0.8.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v080" class="md-nav__link">
+    v0.8.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v072" class="md-nav__link">
+    v0.7.2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v071" class="md-nav__link">
+    v0.7.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v070" class="md-nav__link">
+    v0.7.0
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v061" class="md-nav__link">
+    v0.6.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v06" class="md-nav__link">
+    v0.6
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v05" class="md-nav__link">
+    v0.5
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    v0.4.1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v04" class="md-nav__link">
+    v0.4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v03" class="md-nav__link">
+    v0.3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+    <nav class="md-nav" aria-label="References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gooey" class="md-nav__link">
+    Gooey
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gooey-options" class="md-nav__link">
+    Gooey Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    examples
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutually_exclusive_group" class="md-nav__link">
+    mutually_exclusive_group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-example" class="md-nav__link">
+    widget example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-update" class="md-nav__link">
+    dynamic update
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/allenyllee/AI_Clerk_helper/edit/main/README.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="ai-clerk-helper">AI Clerk Helper</h1>
+<p><a href="https://open.vscode.dev/allenyllee/AI_Clerk_helper"><img alt="Open in Visual Studio Code" src="https://open.vscode.dev/badges/open-in-vscode.svg" /></a></p>
+<p><img alt="Screenshot-of-AI_Clerk_helper" src="assets/Snipaste_2020-06-01_19-59-29.png" /></p>
+<h2 id="how-to-build">How to Build</h2>
+<h3 id="method-1-use-remote-container">Method 1: Use Remote Container</h3>
+<h4 id="step-1-clone-into-container">Step 1: Clone into container</h4>
+<p>If you have installed <a href="https://code.visualstudio.com/">VSCode</a> and <a href="https://www.docker.com/get-started">Docker</a>, just click <a href="https://open.vscode.dev/allenyllee/AI_Clerk_helper"><img alt="Open in Visual Studio Code" src="https://open.vscode.dev/badges/open-in-vscode.svg" /></a> and choose "Clone repo in container volume", it'll open a new container with building environments.</p>
+<h4 id="step-2-build">Step 2: Build</h4>
+<p>Building linux executable:</p>
+<div class="codehilite"><pre><span></span><code>pyinstaller -F --windowed build-win.spec
+</code></pre></div>
+
+<p>Building Windows executable:</p>
+<div class="codehilite"><pre><span></span><code>wine pyinstaller -F --windowed build-win.spec
+</code></pre></div>
+
+<h4 id="step-3-generate-api-docs">Step 3: Generate API docs</h4>
+<p>Hosing in local</p>
+<div class="codehilite"><pre><span></span><code>portray server
+</code></pre></div>
+
+<h3 id="method-2-manually-setup-environments">Method 2: Manually Setup Environments</h3>
+<h3 id="step-1-install-anaconda">Step 1: Install Anaconda</h3>
+<h3 id="step-2-install-dependencies">Step 2: Install dependencies</h3>
+<p>First, navigating to the directory of this repo.</p>
+<div class="codehilite"><pre><span></span><code>cd /workspace/AI_Clerk_helper
+</code></pre></div>
+
+<p>Create conda env</p>
+<div class="codehilite"><pre><span></span><code>conda create --name AI_Clerk_helper <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.6
+
+conda activate AI_Clerk_helper
+</code></pre></div>
+
+<blockquote>
+<p>If conda install has permission error, excute:</p>
+<p><code>sudo chown 1000:1000 -R /opt/conda/</code></p>
+<p>This will change the owner of conda folder.</p>
+<p>If conda activation failed, just execute:
+<code>conda init bash</code>
+to init bash env</p>
+</blockquote>
+<p>Install packages</p>
+<div class="codehilite"><pre><span></span><code>conda install wxpython
+conda install -c conda-forge gooey
+
+pip install -r project_requirements.txt
+pip install -r requirements.txt
+</code></pre></div>
+
+<blockquote>
+<p>must first install wxpython before Gooey to avoid strange error</p>
+<p><a href="https://github.com/chriskiehl/Gooey/issues/474">Installation via pip fails needing pathlib2 · Issue #474 · chriskiehl/Gooey</a></p>
+</blockquote>
+<h3 id="step-3-execute">Step 3: Execute</h3>
+<div class="codehilite"><pre><span></span><code>python AI_Clerk_helper.py
+</code></pre></div>
+
+<p>you should see the GUI window popup.</p>
+<h3 id="step-4-install-pyinstaller">Step 4: Install pyinstaller</h3>
+<p><a href="https://github.com/chriskiehl/Gooey/blob/master/docs/packaging/Packaging-Gooey.md">Gooey/Packaging-Gooey.md at master · chriskiehl/Gooey</a></p>
+<p>Packing Gooey into a standalone executable is super straight forward thanks to PyInstaller. It is the only dependency you'll need and can be installed via the following.</p>
+<div class="codehilite"><pre><span></span><code>pip install <span class="nv">pyinstaller</span><span class="o">==</span><span class="m">3</span>.5
+</code></pre></div>
+
+<h3 id="step-5-building-linux-excutable-with-spec-file">Step 5: Building linux excutable with .spec file</h3>
+<p>From the command line, run</p>
+<div class="codehilite"><pre><span></span><code>pyinstaller -F --windowed build-win.spec
+</code></pre></div>
+
+<ul>
+<li><code>-F</code> tells PyInstaller to create a single bundled output file</li>
+<li><code>--windowed</code> disables the terminal which would otherwise launch when you opened your app.</li>
+</ul>
+<p>And that's it. Inside of the <code>dist/</code> directory, you'll find a beautiful stand-alone executable that you can distribute to your users.</p>
+<blockquote>
+<p>If you encounter an error:</p>
+<p><code>FileNotFoundError: [Errno 2] No such file or directory: 'objcopy': 'objcopy'</code></p>
+<p>you should install dependenies</p>
+<p><code>sudo apt update
+sudo apt install -y binutils libc6</code>
+see: <a href="https://github.com/pyinstaller/pyinstaller/issues/3815">FileNotFoundError: [Errno 2] No such file or directory: 'objcopy': 'objcopy' · Issue #3815 · pyinstaller/pyinstaller</a></p>
+</blockquote>
+<h3 id="step-6-install-wine">Step 6: Install wine</h3>
+<ol>
+<li>add wine apt repository</li>
+</ol>
+<p>For <a href="https://wiki.winehq.org/Ubuntu">Ubuntu - WineHQ Wiki</a>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">shell</span>
+<span class="n n-Quoted">sudo dpkg --add-architecture i386</span>
+
+<span class="n n-Quoted">wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</span>
+
+<span class="n n-Quoted">sudo add-apt-repository &#39;deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main&#39;</span>
+<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+
+<span class="o">&gt;</span> <span class="k">Install</span> <span class="n">unmet</span> <span class="n">dependence</span><span class="o">:</span> <span class="n n-Quoted">`faudio`</span> <span class="p">(</span><span class="k">only</span> <span class="n">needed</span> <span class="k">for</span> <span class="n">unbuntu18</span><span class="mf">.04</span><span class="p">,</span> <span class="n">because</span> <span class="n">higher</span> <span class="n">version</span> <span class="n">already</span> <span class="n">has</span> <span class="n">libfaudio0</span> <span class="k">in</span> <span class="n">repository</span><span class="p">)</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">shell</span>
+<span class="n n-Quoted">&gt; sudo add-apt-repository ppa:cybermax-dexter/sdl2-backport</span>
+<span class="n n-Quoted">&gt; sudo apt update</span>
+<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+
+<span class="k">For</span> <span class="err">[</span><span class="n">debian</span> <span class="mi">10</span><span class="err">]</span><span class="p">(</span><span class="n">https</span><span class="o">://</span><span class="n">computingforgeeks</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">how</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="k">install</span><span class="o">-</span><span class="n">wine</span><span class="o">-</span><span class="k">on</span><span class="o">-</span><span class="n">debian</span><span class="o">/</span><span class="p">)</span><span class="o">:</span>
+<span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
+<span class="n n-Quoted">sudo dpkg --add-architecture i386</span>
+
+<span class="n n-Quoted">wget -qO - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</span>
+
+<span class="n n-Quoted">sudo apt-add-repository https://dl.winehq.org/wine-builds/debian/</span>
+
+<span class="n n-Quoted">wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | sudo apt-key add -</span>
+
+<span class="n n-Quoted">echo &quot;deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./&quot; | sudo tee /etc/apt/sources.list.d/wine-obs.list</span>
+<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+
+<span class="k">update</span><span class="o">:</span>
+
+<span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
+<span class="n n-Quoted">sudo apt update</span>
+<span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+
+<span class="n">Notes</span><span class="o">:</span>
+
+<span class="o">&gt;</span> <span class="k">check</span> <span class="n">linux</span> <span class="n">distribution</span><span class="o">:</span>
+<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
+<span class="n n-Quoted">&gt; cat /etc/*-release</span>
+<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+<span class="o">&gt;</span> <span class="n">see</span><span class="o">:</span> <span class="n">https</span><span class="o">://</span><span class="n">www</span><span class="p">.</span><span class="n">cyberciti</span><span class="p">.</span><span class="n">biz</span><span class="o">/</span><span class="n">faq</span><span class="o">/</span><span class="n">find</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">distribution</span><span class="o">-</span><span class="k">name</span><span class="o">-</span><span class="n">version</span><span class="o">-</span><span class="k">number</span><span class="o">/</span>
+
+<span class="o">&gt;</span> <span class="k">If</span> <span class="n">you</span> <span class="n">encounter</span> <span class="n">an</span> <span class="k">error</span><span class="o">:</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
+<span class="n n-Quoted">&gt; sudo: apt-add-repository: command not found</span>
+<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="k">install</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n n-Quoted">`</span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted"></span>
+<span class="n n-Quoted">&gt; sudo apt -y install software-properties-common</span>
+<span class="n n-Quoted">&gt; </span><span class="n n-Quoted n-Quoted-Escape">``</span><span class="n n-Quoted">`</span>
+</code></pre></div>
+
+<ol>
+<li>
+<p>Install latest wine</p>
+<p><a href="http://ubuntuhandbook.org/index.php/2019/05/nstall-wine-4-8-ubuntu-19-04-18-04/">How to Install Wine Devel 4.8 in Ubuntu 19.04 / 18.04 | UbuntuHandbook</a></p>
+<p><code>shell
+sudo apt install --install-recommends winehq-devel</code></p>
+</li>
+<li>
+<p>install python in wine</p>
+<p><a href="https://stackoverflow.com/questions/17709813/compiling-py-into-windows-and-mac-executables-on-ubuntu">python - compiling .py into windows AND mac executables on Ubuntu - Stack Overflow</a></p>
+<p>```shell
+wine --version
+winecfg</p>
+<p>wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
+wine python-3.6.8-amd64.exe
+```</p>
+<p>headless install:</p>
+<blockquote>
+<p>install xvfb:
+<code>sudo apt-get install --fix-missing -y xvfb</code></p>
+<p>cerate virtual frame buffer:
+<code>Xvfb :0 -screen 0 1024x768x16 &amp;</code></p>
+<p>execute python installer:
+<code>DISPLAY=:0.0 wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1</code>
+see: <a href="https://superuser.com/questions/902175/run-wine-totally-headless">xorg - Run wine totally headless - Super User</a></p>
+</blockquote>
+</li>
+<li>
+<p>install wxpython, gooey, pyinstaller and other requirements</p>
+<p><code>shell
+wine pip install wxpython
+wine pip install gooey
+wine pip install -r project_requirements.txt
+wine pip install pyinstaller==3.5</code></p>
+</li>
+<li>
+<p>activate upx compression (optional):</p>
+<p><a href="https://github.com/upx/upx/releases">Releases · upx/upx</a></p>
+<p><code>shell
+wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip
+unzip -j "upx-3.96-win64.zip" "upx-3.96-win64/upx.exe" -d "./"</code></p>
+<p>note: upx may cause dll corruption, you may want to disable UPX, see:</p>
+<ul>
+<li><a href="https://github.com/pyinstaller/pyinstaller/issues/3600">Onefile builds not working on Windows 10, Error loading Python dll · Issue #3600 · pyinstaller/pyinstaller</a></li>
+<li><a href="https://stackoverflow.com/questions/38811966/error-when-creating-executable-file-with-pyinstaller">python - Error when creating executable file with pyinstaller - Stack Overflow</a></li>
+<li><a href="https://stackoverflow.com/questions/59034735/dll-load-failure-with-python3-32bitpyinstallerupx-32bit-under-windows-10">python - DLL load failure with Python3 (32bit)+PyInstaller+UPX (32bit) under Windows 10 (64bit) - Stack Overflow</a></li>
+<li><a href="https://www.dependencywalker.com/">Dependency Walker (depends.exe) Home Page</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="step-7-building-windows-executable-from-linux">Step 7: Building Windows Executable from Linux</h3>
+<div class="codehilite"><pre><span></span><code>wine pyinstaller -F --windowed build-win.spec
+</code></pre></div>
+
+<p>debug mode</p>
+<p><a href="https://pyinstaller.readthedocs.io/en/stable/usage.html#how-to-generate">Using PyInstaller — PyInstaller 3.6 documentation</a></p>
+<div class="codehilite"><pre><span></span><code>wine pyinstaller -F --windowed build-win.spec -d bootloader
+</code></pre></div>
+
+<h3 id="step-8-running-windows-executable-through-wine">Step 8: Running Windows Executable through wine</h3>
+<div class="codehilite"><pre><span></span><code>wine ./dist/AI_Clerk_helper.exe
+</code></pre></div>
+
+<h2 id="changelog">changelog</h2>
+<h3 id="v082">v0.8.2</h3>
+<ol>
+<li>
+<p>fix "Missing optional dependency 'xlrd'." error, jsut use openpyxl. see: https://github.com/pandas-dev/pandas/issues/38424</p>
+</li>
+<li>
+<p>called monkey patch for gooey gui components only when before entering GUI mode (to avoid non-gui import generate "module not found" error)</p>
+</li>
+</ol>
+<h3 id="v081">v0.8.1</h3>
+<p>second labeled json cleaner support input Multiple first labeled file</p>
+<p><img alt="choose_multiple_file" src="assets/choose_multiple_file.gif" /></p>
+<h3 id="v080">v0.8.0</h3>
+<ol>
+<li>
+<p>add second_upload function</p>
+<p><img alt="Screenshot-of-second_upload" src="assets/Deepin%20%E6%88%AA%E5%9C%96_AI_Clerk_helper.py_20210503171532.png" /></p>
+</li>
+<li>
+<p>add second labeled json cleaner and converter</p>
+<p><img alt="Screenshot-of-second_labeled" src="assets/Deepin%20%E6%88%AA%E5%9C%96_AI_Clerk_helper.py_20210503171946.png" /></p>
+</li>
+</ol>
+<h3 id="v072">v0.7.2</h3>
+<ol>
+<li>
+<p>add SerialID column in contents tab</p>
+<p><img alt="Screenshot-of-SerialID" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20210326162722.png" /></p>
+</li>
+</ol>
+<h3 id="v071">v0.7.1</h3>
+<ol>
+<li>fix numpy issue</li>
+<li>remove xlrd</li>
+<li>fix KeyError issue</li>
+</ol>
+<h3 id="v070">v0.7.0</h3>
+<ul>
+<li>
+<p>新增批次處理txt檔功能</p>
+<p><img alt="AI_Clerk_helper_v0.7" src="assets/Deepin%20%E6%88%AA%E5%9C%96_AI_Clerk_helper.py_20201214223220.png" /></p>
+<p>注意：第一層的txt會自動忽略，只會加入第二層以下的txt</p>
+<p><img alt="folder_structure" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20201214234918.png" /></p>
+</li>
+<li>
+<p>已標註資料轉換輸出之 excel檔新增多種視圖：</p>
+<p>a. 以標註者為單位，一次呈現多位標著者之選項及句子標註結果
+<img alt="sent_doc_cmp" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214225512.png" /></p>
+<p>b. 以選項為單位，比較多位標註者之結果
+<img alt="doc_label_cmp" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214224606.png" /></p>
+<p>c. 以句子為單位，比較不同標註者結果
+<img alt="sent_label_cmp" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214224717.png" /></p>
+<p>d. 以句子編號為單位，比較不同標註者結果
+<img alt="sent_label_cmp(wide)" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214224838.png" /></p>
+<p>e. 將句子按類別及編號水平展開呈現
+<img alt="sentence_label(wide)" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214225322.png" /></p>
+<p>f. 將句子按類別水平展開呈現
+<img alt="sentence_label" src="assets/Deepin%20%E6%88%AA%E5%9C%96_libreoffice_20201214225227.png" /></p>
+</li>
+<li>
+<p>未標註 excel 檔轉換成json 時，輸出 TextID mapping</p>
+<p>原本的 TextID 是從 excel 中的 Content 全文計算md5 hash得到，
+但是因為excel中可能存在非法字元及表情符號，
+後來輸出的文章會經過移除非法字元及將表情符號轉成文字的處理，
+因此有可能無法還原成原始的全文，造成無法計算得到原始的TextID。
+所以另外計算一個TextID 是透過將全文移除非法字元及表情符號後再計算md5，
+並且輸出處理後的TextID 與原始TextID 的對應表，
+如此當文章同一篇文章經過處理後，因原始 TextID不同而對不上時，
+可透過 TextID mapping 比較處理後的TextID，
+應該就能對回同一篇文章。</p>
+<p><img alt="TextID mapping" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20201214232728.png" /></p>
+</li>
+</ul>
+<h3 id="v061">v0.6.1</h3>
+<ul>
+<li>
+<p>Symptom1: 修復 Windows 下合併檔案出現 openpyxl.utils.exceptions.IllegalCharacterError</p>
+<p>Rootcause: The previous generated excel file contains illegal character _x0008_, which is an OOXML escape character[1].</p>
+<p>Solution: remove these illegal characters before write to excel<a href="[" title="1条消息)openpyxl.utils.exceptions.IllegalCharacterError 错误原因分析及解决办法_村中少年的专栏-CSDN博客](https://blog.csdn.net/javajiawei/article/details/97147219">2</a>.</p>
+</li>
+<li>
+<p>Symptom2: 修復當 json 檔中有 _xHHHH_ 這類字串(以純文字形式出現)時，輸出的 excel 檔會自動轉換成 _xHHHH_ 的 unicode 字元(僅在 Windows 下發生，在 linux 下會將純文字的底線(underscore, _) 再跳脫一次，轉換成 _x005F_x0008_ [1] 儲存到 excel)</p>
+<p>Rootcause: maybe openpyxl bug?</p>
+<p>Solution: this is a workaround. when dataframe read from json file by read_json(), look for _xHHHH_ pattern in this dataframe, and unescape it[3] before write to excel.</p>
+</li>
+<li>
+<p>References</p>
+<p>[1]:<a href="https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.varianttypes.vtbstring?view=openxml-2.8.1">VTBString Class (DocumentFormat.OpenXml.VariantTypes) | Microsoft Docs</a></p>
+<blockquote>
+<p>[ISO/IEC 29500-1 1st Edition]</p>
+<p><strong>bstr (Basic String)</strong></p>
+<p>This element defines a binary basic string variant type, which can store any valid Unicode character. Unicode characters that cannot be directly represented in XML as defined by the XML 1.0 specification, shall be escaped using the Unicode numerical character representation escape character format _xHHHH_, where H represents a hexadecimal character in the character's value. [<em>Example</em>: The Unicode character 8 is not permitted in an XML 1.0 document, so it shall be escaped as _x0008_. <em>end example</em>] To store the literal form of an escape sequence, the initial underscore shall itself be escaped (i.e. stored as _x005F_). [<em>Example</em>: The string literal <em>_x0008_</em> would be stored as <em>_x005F_x0008_</em>. <em>end example</em>]</p>
+<p>The possible values for this element are defined by the W3C XML Schema <em>string</em> datatype.</p>
+<p>进入python命令行模式，输入如下：</p>
+<p>```python</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import sys
+help('openpyxl')</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>```</p>
+<p>可得openpyxl模块的路径如下<code>/usr/local/lib/python2.7/site-packages/openpyxl</code>，查看该目录下的cell子目录中的cell.py文件，定位到具体错误代码为：</p>
+<p>```python
+def check_string(self, value):
+    """Check string coding, length, and line break character"""
+    if value is None:
+        return
+    # convert to unicode string
+    if not isinstance(value, unicode):
+        value = unicode(value, self.encoding)
+    value = unicode(value)
+    # string must never be longer than 32,767 characters
+    # truncate if necessary
+    value = value[:32767]
+    if next(ILLEGAL_CHARACTERS_RE.finditer(value), None):
+        raise IllegalCharacterError
+    return value</p>
+<p>```</p>
+<p>其中<code>ILLEGAL_CHARACTERS_RE</code>的定义在文件的开头，如下：</p>
+<p>```python
+ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')</p>
+<p>```</p>
+<p>这里面的非法字符都是八进制，可以到对应的ASCII表中查看，的确都是不常见的不可显示字符，例如退格，响铃等，在此处被定义为excel中的非法字符。\
+解决上述错误有两种方法，如下：\
+1，既然检测到excel中存在<code>[\000-\010]|[\013-\014]|[\016-\037]</code>这些非法的字符，因此可以将字符串中的非法字符替换掉即可，在重新写入excel即可。如下：</p>
+<p><code>python
+text= ILLEGAL_CHARACTERS_RE.sub(r'', text)</code>
+</p>
+</blockquote>
+<p>[3]:<a href="https://openpyxl.readthedocs.io/en/stable/_modules/openpyxl/utils/escape.html">openpyxl.utils.escape — openpyxl 3.0.5 documentation</a></p>
+<blockquote>
+<p>```python
+def unescape(value):
+    r"""
+    Convert escaped strings to ASCII: <em>x000a</em> == \n
+    """</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">ESCAPED_REGEX</span> <span class="o">=</span> <span class="nv">re</span>.<span class="nv">compile</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">_x([0-9A-Fa-f]{4})_</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+<span class="nv">def</span> <span class="nv">_sub</span><span class="ss">(</span><span class="nv">match</span><span class="ss">)</span>:
+    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="nv">Callback</span> <span class="nv">to</span> <span class="nv">unescape</span> <span class="nv">chars</span>
+    <span class="s2">&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nv">chr</span><span class="ss">(</span><span class="nv">int</span><span class="ss">(</span><span class="nv">match</span>.<span class="nv">group</span><span class="ss">(</span><span class="mi">1</span><span class="ss">)</span>, <span class="mi">16</span><span class="ss">))</span>
+
+<span class="k">if</span> <span class="s2">&quot;</span><span class="s">_x</span><span class="s2">&quot;</span> <span class="nv">in</span> <span class="nv">value</span>:
+    <span class="nv">value</span> <span class="o">=</span> <span class="nv">ESCAPED_REGEX</span>.<span class="nv">sub</span><span class="ss">(</span><span class="nv">_sub</span>, <span class="nv">value</span><span class="ss">)</span>
+
+<span class="k">return</span> <span class="nv">value</span>
+</code></pre></div>
+
+<p>```</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="v06">v0.6</h3>
+<ul>
+<li>
+<p>新增合併檔案功能</p>
+<p><img alt="merge file" src="assets/Deepin%20%E6%88%AA%E5%9C%96_AI_Clerk_helper.py_20200916201632.png" /></p>
+</li>
+</ul>
+<h3 id="v05">v0.5</h3>
+<ul>
+<li>
+<p>新增 train/test 切割功能</p>
+<p><img alt="train test split 1" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200916175230.png" /></p>
+<p><img alt="train test split 2" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200916175730.png" /></p>
+</li>
+</ul>
+<h3 id="v041">v0.4.1</h3>
+<ul>
+<li>修正當某個欄位漏標時，會產生error而停止輸出
+    解法：將漏標的欄位填入nan，方便其他人使用輸出後的檔案做檢查</li>
+</ul>
+<h3 id="v04">v0.4</h3>
+<ol>
+<li>
+<p>新增原文欄位(移除tag 標籤)</p>
+<p><img alt="add Content(remove tag)" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200910203302.png" /></p>
+</li>
+<li>
+<p>多選選項直接以文字格式用逗號分隔儲存在同一格中</p>
+<p><img alt="multiple options" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200910203330.png" /></p>
+</li>
+<li>
+<p>句子與其標註攤平成兩欄(Sent_Label, Sentence)，沒有句子標註的TextID 則此兩欄留空白</p>
+<p><img alt="vertical sent view" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200910203417.png" /></p>
+</li>
+</ol>
+<h3 id="v03">v0.3</h3>
+<ul>
+<li>
+<p>將已標註檔案json 檔下載回來後，轉換成excel檔</p>
+<p>轉換後的 excel 內容分三頁：第一頁是contents，包含作者，標題、內文、標註者等；第二頁是document label，也就是類別標註；第三頁是sentence label 句子標註，因為句子有很多類，每類數量不一，我是將之橫向展開成不同欄</p>
+<p><img alt="convert json to excel" src="assets/Snipaste_2020-07-15_18-37-31.png" /></p>
+</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li>
+<p><a href="https://github.com/pypa/setuptools/issues/1963">setuptools 45.0.0 may cause PyInstaller 3.3 packaged executable fail to launch · Issue #1963 · pypa/setuptools</a></p>
+<blockquote>
+<p>Fixed by adding a hidden import:</p>
+<p><code>python
+a = Analysis(...,
+            hiddenimports=['pkg_resources.py2_warn'],
+            ...)</code></p>
+</blockquote>
+</li>
+<li>
+<p>INTERNAL ERROR: cannot create temporary directory!</p>
+<p><img alt="INTERNAL ERROR: cannot create temporary directory!" src="assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200601201922.png" /></p>
+<p>maybe the problem of pyinstaller under wine...</p>
+<blockquote>
+<p><a href="https://github.com/pyinstaller/pyinstaller/issues/4628">PyInstaller 3.6 breaks WINE compatibility when using onefile · Issue #4628 · pyinstaller/pyinstaller</a></p>
+<p>Just downgrade to pyinstaller 3.5 anything works fine, no matter on Wine or on Windows.</p>
+</blockquote>
+</li>
+<li>
+<p>How do you resolve 'hidden imports not found!' warnings in pyinstaller for scipy?</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/49559770/how-do-you-resolve-hidden-imports-not-found-warnings-in-pyinstaller-for-scipy]">python - How do you resolve 'hidden imports not found!' warnings in pyinstaller for scipy? - Stack Overflow</a></p>
+<p>You need to go into the hook-scipy.py (or create one) and have it look like this:</p>
+<p>```python
+from PyInstaller.utils.hooks import collect_submodules
+from PyInstaller.utils.hooks import collect_data_files
+hiddenimports = collect_submodules('scipy')</p>
+<p>datas = collect_data_files('scipy')
+```</p>
+<p>then go into the hook-sklearn.metrics.cluster.py file and modify it to look like this:</p>
+<p>```python
+from PyInstaller.utils.hooks import collect_data_files</p>
+<p>hiddenimports = ['sklearn.utils.sparsetools._graph_validation',
+                 'sklearn.utils.sparsetools._graph_tools',
+                 'sklearn.utils.lgamma',
+                 'sklearn.utils.weight_vector']</p>
+<p>datas = collect_data_files('sklearn')
+```</p>
+<hr />
+<p>you can specify hooks file dir used in --additional-hooks-dir in the spec file's hookspath -- <a href="https://stackoverflow.com/users/1851492/allenyllee" title="399 reputation">allenyllee</a></p>
+</blockquote>
+</li>
+<li>
+<p>Required arguments shown as optional</p>
+<blockquote>
+<p><a href="https://github.com/chriskiehl/Gooey/issues/447">Required arguments shown as optional · Issue #447 · chriskiehl/Gooey</a></p>
+<p>Here is code to reproduce:</p>
+<p>```python
+from gooey import Gooey, GooeyParser
+@Gooey
+def main():
+    p=GooeyParser()
+    p.add_argument('-s',required=True, widget='FileChooser')
+    p.add_argument('-l',widget='DirChooser')
+    p.parse_args()
+if <strong>name</strong>=='<strong>main</strong>':
+    main()</p>
+<p>```</p>
+<p>It still exists on 1.0.3-release as well.</p>
+<p>However, note that the arguments are not treated as optional; it's only the title "optional argument" which bothers you.</p>
+<p>As a workaround, you can create a single argument_group (optionally name it.)</p>
+<p>like this:</p>
+<p>```python
+from gooey import Gooey, GooeyParser
+@Gooey
+def main():
+    p=GooeyParser()
+    g=p.add_argument_group()
+    g.add_argument('-s',required=True, widget='FileChooser')
+    g.add_argument('-l',widget='DirChooser')
+    p.parse_args()
+if <strong>name</strong>=='<strong>main</strong>':
+    main()</p>
+<p>```</p>
+</blockquote>
+<p><a href="https://github.com/chriskiehl/Gooey/issues/368">Required non-positional fields show as optional · Issue #368 · chriskiehl/Gooey</a></p>
+<p><a href="https://github.com/chriskiehl/Gooey/issues/208">Support non-boolean mutually exclusive options · Issue #208 · chriskiehl/Gooey</a></p>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<h3 id="gooey">Gooey</h3>
+<ul>
+<li><a href="https://github.com/chriskiehl/Gooey">chriskiehl/Gooey: Turn (almost) any Python command line program into a full GUI application with one line</a></li>
+</ul>
+<h3 id="gooey-options">Gooey Options</h3>
+<ul>
+<li><a href="https://github.com/chriskiehl/Gooey/blob/master/docs/Gooey-Options.md">Gooey/Gooey-Options.md at master · chriskiehl/Gooey</a></li>
+</ul>
+<h3 id="examples">examples</h3>
+<ul>
+<li><a href="https://github.com/chriskiehl/GooeyExamples">chriskiehl/GooeyExamples: Example programs to Demonstrate Gooey's functionality</a></li>
+</ul>
+<h3 id="mutually_exclusive_group">mutually_exclusive_group</h3>
+<ul>
+<li>
+<p><a href="https://github.com/chriskiehl/Gooey/blob/66f154decb8cd7d140a702277d8c262c4d8194cc/gooey/tests/integration/programs/all_widgets_subparser.py#L75-L80">Gooey/all_widgets_subparser.py at 66f154decb8cd7d140a702277d8c262c4d8194cc · chriskiehl/Gooey</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/15530117/how-to-define-a-mutually-exclusive-group-of-two-positional-arguments">python - How to define a mutually exclusive group of two positional arguments? - Stack Overflow</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/17909294/python-argparse-mutual-exclusive-group">Python argparse mutual exclusive group - Stack Overflow</a></p>
+</li>
+</ul>
+<h3 id="widget-example">widget example</h3>
+<p>FileChooser, DirChooser, FileSaver, MultiFileChooser, DateChooser, TimeChooser</p>
+<ul>
+<li><a href="https://github.com/chriskiehl/GooeyExamples/blob/d0606a8d543babe1cff5db215d4d37e26888b490/examples/widget_demo.py#L39-L54">GooeyExamples/widget_demo.py at d0606a8d543babe1cff5db215d4d37e26888b490 · chriskiehl/GooeyExamples</a></li>
+</ul>
+<h3 id="dynamic-update">dynamic update</h3>
+<ul>
+<li><a href="https://github.com/chriskiehl/GooeyExamples/blob/master/examples/dynamic_updates.py">GooeyExamples/dynamic_updates.py at master · chriskiehl/GooeyExamples</a></li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="reference/AI_Clerk_helper/" title="Ai Clerk Helper" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Ai Clerk Helper
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Powered by
+        <a href="http://timothycrosley.github.io/portray">portray.</a>
+        You too can
+        <a href="http://timothycrosley.github.io/portray">
+          portray</a>
+        your Python project well using automatic documentation.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.53c85856.min.js", "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.716f8af4.min.js"></script>
+      
+    
+  </body>
+</html>
