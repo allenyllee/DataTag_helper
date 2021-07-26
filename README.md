@@ -47,6 +47,17 @@ portray on_github_pages
 
 > We use [portary](https://github.com/timothycrosley/portray) to generate docs, and you can add [Pymdown Extensions](https://facelessuser.github.io/pymdown-extensions/) to extend Markdown format. For example, you can add `"pymdownx.arithmatex"` into `extra_markdown_extensions` list which under the section `[tool.portray]` of `pyproject.toml` to have the ability to parse LaTeX math equations.
 
+#### Step 4: test pre-commit hook before commit
+
+test for a file:
+```
+pre-commit run --files ./AI_Clerk_helper.py
+```
+
+test for all files:
+```
+pre-commit run --all-files
+```
 
 ### Method 2: Manually Setup Environments
 

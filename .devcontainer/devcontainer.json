@@ -17,6 +17,16 @@
 		"python.languageServer": "Pylance",
 		"python.linting.enabled": true,
 		"python.linting.pylintEnabled": true,
+		"python.linting.mypyEnabled": true,
+		"python.linting.mypyArgs": [
+			"--ignore-missing-imports",
+			"--follow-imports=silent",
+			"--show-column-numbers",
+			"--install-types",
+			"--non-interactive"
+		],
+		"python.linting.flake8Enabled": true,
+		"python.formatting.provider": "black",
 		"python.formatting.autopep8Path": "/opt/conda/bin/autopep8",
 		"python.formatting.yapfPath": "/opt/conda/bin/yapf",
 		"python.linting.flake8Path": "/opt/conda/bin/flake8",
