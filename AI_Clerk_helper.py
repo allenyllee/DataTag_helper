@@ -19,35 +19,34 @@
 # Date      	By	Comments
 # ----------	---	---------------------------------------------------------
 ###
-import json
-from collections import defaultdict
-
-import pandas as pd
-# from sklearn.utils import shuffle
-import emoji
-import hashlib
-# from lib.AIClerk_helper import to_AI_clerk_batch_upload_json
-
-import sys
-# import argparse
-from gooey import Gooey, GooeyParser
-import copy
-from pathlib import Path
-import numpy as np
-from collections import OrderedDict
-from functools import reduce
-import re
-from collections import Counter
-from sklearn.model_selection import StratifiedShuffleSplit
-import os
-import platform
-from openpyxl.styles import Font
-
-
-
 ## Non-ASCII output hangs execution in PyInstaller packaged app · Issue #520 · chriskiehl/Gooey
 ## https://github.com/chriskiehl/Gooey/issues/520
 import codecs
+import copy
+import hashlib
+import json
+import os
+import platform
+import re
+import sys
+from collections import Counter, OrderedDict, defaultdict
+from functools import reduce
+from pathlib import Path
+
+# from sklearn.utils import shuffle
+import emoji
+import numpy as np
+import pandas as pd
+# import argparse
+from gooey import Gooey, GooeyParser
+from openpyxl.styles import Font
+from sklearn.model_selection import StratifiedShuffleSplit
+
+# from lib.AIClerk_helper import to_AI_clerk_batch_upload_json
+
+
+
+
 
 if sys.stdout.encoding != 'UTF-8':
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
@@ -83,13 +82,13 @@ def patch_gooey_gui_component():
         [type]: [description]
     """
     import wx
-    from gooey.gui.lang.i18n import _
-
+    # from gooey.gui.lang.i18n import _
+    ######
     ## [Feature request: Allow general callbacks for validation · Issue #293 · chriskiehl/Gooey]
     ## (https://github.com/chriskiehl/Gooey/issues/293)
     # from gooey.gui.components.widgets.bases import TextContainer
     # oldGetValue = TextContainer.getValue
-
+    #
     # def newGetValue(self):
     #     result = oldGetValue(self)
     #     userValidator = self._options['validator']['callback']
@@ -99,12 +98,13 @@ def patch_gooey_gui_component():
     #     result['test'] = False
     #     result['error'] = 'test'
     #     return result
-
+    #
     # TextContainer.getValue = newGetValue
-
+    ######
     # [Gooey/dropdown.py at 8c88980e12a968430df5cfd0779fab37db287680 · chriskiehl/Gooey]
     # (https://github.com/chriskiehl/Gooey/blob/8c88980e12a968430df5cfd0779fab37db287680/gooey/gui/components/widgets/dropdown.py)
     from gooey.gui.components.widgets.dropdown import Dropdown
+
     Dropdown_oldGetWidget = Dropdown.getWidget
 
     # from gooey.gui import formatters
