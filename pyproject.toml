@@ -29,3 +29,7 @@ Troubleshooting = "TROUBLESHOOTING.md"
     [[tool.portray.mkdocs.nav."Quick Start"]]
     "Configuration" = "docs/quick_start/configuration.md"
 
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
