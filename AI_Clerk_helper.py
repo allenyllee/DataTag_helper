@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Friday, July 23rd 2021, 9:00:32 am
+# Last Modified: Monday, July 26th 2021, 11:08:25 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -176,7 +176,7 @@ def patch_gooey_gui_component():
 
         try:
             self.previous_input_file
-        except:
+        except Exception:
             self.previous_input_file = ""
 
         if self.previous_input_file != current_input_file:
@@ -874,7 +874,7 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     ## remove tags in content
     df_content["Content(remove_tag)"] = df_content["Content"].apply(
-        lambda x: re.sub("(＜(／)?＊(.+?)_\d{1,2}＊＞)", "", x)
+        lambda x: re.sub(r"(＜(／)?＊(.+?)_\d{1,2}＊＞)", "", x)
     )
 
     # write to excel
