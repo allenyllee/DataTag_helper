@@ -2,6 +2,8 @@
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper)
 
+[![](assets/interrogate_badge.svg)](https://github.com/econchick/interrogate)
+
 _________________
 
 [Read Latest Documentation](https://allenyllee.github.io/AI_Clerk_helper/) - [Browse GitHub Code Repository](https://github.com/allenyllee/AI_Clerk_helper/)
