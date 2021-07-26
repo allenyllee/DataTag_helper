@@ -274,6 +274,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#step-4-test-pre-commit-hook-before-commit" class="md-nav__link">
+    Step 4: test pre-commit hook before commit
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -622,6 +629,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#step-4-test-pre-commit-hook-before-commit" class="md-nav__link">
+    Step 4: test pre-commit hook before commit
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -795,6 +809,13 @@
 <blockquote>
 <p>We use <a href="https://github.com/timothycrosley/portray">portary</a> to generate docs, and you can add <a href="https://facelessuser.github.io/pymdown-extensions/">Pymdown Extensions</a> to extend Markdown format. For example, you can add <code>"pymdownx.arithmatex"</code> into <code>extra_markdown_extensions</code> list which under the section <code>[tool.portray]</code> of <code>pyproject.toml</code> to have the ability to parse LaTeX math equations.</p>
 </blockquote>
+<h4 id="step-4-test-pre-commit-hook-before-commit">Step 4: test pre-commit hook before commit</h4>
+<p>test for a file:
+<div class="highlight"><pre><span></span><code>pre-commit run --files ./AI_Clerk_helper.py
+</code></pre></div></p>
+<p>test for all files:
+<div class="highlight"><pre><span></span><code>pre-commit run --all-files
+</code></pre></div></p>
 <h3 id="method-2-manually-setup-environments">Method 2: Manually Setup Environments</h3>
 <h3 id="step-1-install-anaconda">Step 1: Install Anaconda</h3>
 <p>https://www.anaconda.com/products/individual</p>
