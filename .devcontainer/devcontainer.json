@@ -99,7 +99,8 @@
 		"psioniq.psi-header",
 		"shardulm94.trailing-spaces",
 		"njpwerner.autodocstring",
-		"sean10.vscode-markdown-quote"
+		"sean10.vscode-markdown-quote",
+		"cssho.vscode-svgviewer"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
