@@ -1,0 +1,58 @@
+# This is a basic workflow to help you get started with Actions
+
+name: generate doc
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the dev branch
+  push:
+    branches: [ dev ]
+#   pull_request:
+#     branches: [ dev ]
+
+  # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build_docker:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v2
+      
+#       - name: Setup Python
+#         uses: actions/setup-python@v2.2.2
+# #         with:
+# #           # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+# #           python-version: # optional, default is 3.x
+# #           # The target architecture (x86, x64) of the Python interpreter.
+# #           architecture: # optional
+# #           # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+# #           token: # optional, default is ${{ github.token }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .devcontainer/Dockerfile
+#           push: true
+          tags: user/app:latest
+          
+  gen_doc:
+    needs: build_docker
+    runs-on: ubuntu-latest
+    container: user/app:latest
+    steps:
+      # Runs a single command using the runners shell
+      - name: Run portray
+        run: portray on_github_pages
+
+      # Runs a set of commands using the runners shell
+#       - name: Run a multi-line script
+#         run: |
+#           echo Add other actions to build,
+#           echo test, and deploy your project.
