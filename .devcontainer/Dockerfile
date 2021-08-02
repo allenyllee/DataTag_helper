@@ -66,12 +66,12 @@ RUN WINARCH=win64 winetricks \
     corefonts \
     win10
 
-RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 && rm -f /tmp/.X*-lock
 # RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -ac -nolisten tcp -nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
 
 RUN rm python-3.6.8-amd64.exe
 
-RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" wine pip install wxpython gooey pyinstaller==3.5
+RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" wine pip install wxpython gooey pyinstaller==3.5 && rm -f /tmp/.X*-lock
 
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN wine pip install -r /tmp/conda-tmp/project_requirements.txt
