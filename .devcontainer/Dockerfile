@@ -71,7 +71,7 @@ RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24
 
 RUN rm python-3.6.8-amd64.exe
 
-RUN wine pip install wxpython gooey pyinstaller==3.5
+RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" wine pip install wxpython gooey pyinstaller==3.5
 
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN wine pip install -r /tmp/conda-tmp/project_requirements.txt
