@@ -61,10 +61,13 @@ USER vscode
 WORKDIR /home/vscode
 
 RUN winecfg \
-&& wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe \
-&& xvfb-run --auto-servernum wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 \
-&& rm python-3.6.8-amd64.exe \
-&& wine pip install wxpython gooey pyinstaller==3.5
+&& wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
+
+RUN xvfb-run --auto-servernum wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+
+RUN rm python-3.6.8-amd64.exe
+
+RUN wine pip install wxpython gooey pyinstaller==3.5
 
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN wine pip install -r /tmp/conda-tmp/project_requirements.txt
