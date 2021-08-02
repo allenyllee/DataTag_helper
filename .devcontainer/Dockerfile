@@ -63,7 +63,7 @@ WORKDIR /home/vscode
 RUN winecfg \
 && wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
 
-RUN xvfb-run --auto-servernum -e /dev/stdout wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+RUN xvfb-run --server-num=":99" -e /dev/stdout --server-args="-nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
 
 RUN rm python-3.6.8-amd64.exe
 
