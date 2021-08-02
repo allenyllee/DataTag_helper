@@ -42,16 +42,39 @@ jobs:
         with:
           file: .devcontainer/Dockerfile
 #           push: true
-          tags: user/app:latest
+#           tags: user/app:latest
+          tags: user/myimage:latest
+          outputs: type=docker,dest=/tmp/myimage.tar
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: myimage
+          path: /tmp/myimage.tar
           
   gen_doc:
     needs: build_docker
     runs-on: ubuntu-latest
-    container: user/app:latest
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: myimage
+          path: /tmp
+          
+#       - name: Load image and Run portray
+#         run: |
+#           docker load --input /tmp/myimage.tar
+#           docker run 
+          
+      - name: Run test in Docker
+        run: |
+          docker load < /tmp/myimage.tar
+          docker run --rm user/myimage:latest portray on_github_pages
+          
       # Runs a single command using the runners shell
-      - name: Run portray
-        run: portray on_github_pages
+#       - name: Run portray
+#         run: portray on_github_pages
 
       # Runs a set of commands using the runners shell
 #       - name: Run a multi-line script
