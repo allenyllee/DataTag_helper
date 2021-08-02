@@ -62,7 +62,7 @@ WORKDIR /home/vscode
 
 RUN winecfg \
 && wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe \
-&& xvfb-run --auto-servernum --server-args="-screen 0, 1024x768x24" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 \
+&& xvfb-run --auto-servernum wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 \
 && rm python-3.6.8-amd64.exe \
 && wine pip install wxpython gooey pyinstaller==3.5
 
