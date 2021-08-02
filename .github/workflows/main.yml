@@ -16,30 +16,40 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build_docker:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v2
       
-      - name: Setup Python
-        uses: actions/setup-python@v2.2.2
-#         with:
-#           # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-#           python-version: # optional, default is 3.x
-#           # The target architecture (x86, x64) of the Python interpreter.
-#           architecture: # optional
-#           # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
-#           token: # optional, default is ${{ github.token }}
+#       - name: Setup Python
+#         uses: actions/setup-python@v2.2.2
+# #         with:
+# #           # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+# #           python-version: # optional, default is 3.x
+# #           # The target architecture (x86, x64) of the Python interpreter.
+# #           architecture: # optional
+# #           # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+# #           token: # optional, default is ${{ github.token }}
 
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .devcontainer/Dockerfile
+#           push: true
+          tags: user/app:latest
+          
+  gen_doc:
+    needs: build_docker
+    runs-on: ubuntu-latest
+    container: user/app:latest
+    steps:
       # Runs a single command using the runners shell
       - name: Run portray
-        run: |
-          pip install portray
-          portray on_github_pages
+        run: portray on_github_pages
 
       # Runs a set of commands using the runners shell
 #       - name: Run a multi-line script
