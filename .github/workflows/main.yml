@@ -73,7 +73,7 @@ jobs:
       - name: Run test in Docker
         run: |
           docker load < /tmp/myimage.tar
-          docker run --rm --user="vscode" user/myimage:latest "bash --login -c 'pwd;echo \$PATH;env;pip list;conda env'"
+          docker run --rm --user="vscode" user/myimage:latest "/bin/bash --login -c 'pwd;echo \$PATH;env;pip list;conda env list'"
           
       # Runs a single command using the runners shell
 #       - name: Run portray
