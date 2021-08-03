@@ -62,9 +62,11 @@ WORKDIR /home/vscode
 
 RUN wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
 
-RUN WINARCH=win64 winetricks \
-    corefonts \
-    win10
+# RUN WINARCH=win64 winetricks \
+#     corefonts \
+#     win10
+    
+RUN WINARCH=win64 winecfg
 
 RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" sh -c 'wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 && wineserver -w' && rm -f /tmp/.X*-lock
 # RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -ac -nolisten tcp -nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
