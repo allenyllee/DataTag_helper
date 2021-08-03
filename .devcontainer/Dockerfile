@@ -12,25 +12,25 @@ RUN if [ -f "/tmp/conda-tmp/environment.yml" ]; then /opt/conda/bin/conda env up
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-RUN chown 1000:1000 -R /opt/conda/
+# RUN chown 1000:1000 -R /opt/conda/
 
-USER vscode
-WORKDIR /home/vscode
+# USER vscode
+# WORKDIR /home/vscode
 
-RUN conda create --name AI_Clerk_helper python=3.6
+# RUN conda create --name AI_Clerk_helper python=3.6
 
-# Make RUN commands use the new environment:
-SHELL ["conda", "run", "--no-capture-output", "-n", "AI_Clerk_helper", "/bin/bash", "-c"]
+# # Make RUN commands use the new environment:
+# SHELL ["conda", "run", "--no-capture-output", "-n", "AI_Clerk_helper", "/bin/bash", "-c"]
 
-RUN conda install wxpython \
-    && conda install -c conda-forge gooey \
-    && pip3 install pyinstaller==3.5
+# RUN conda install wxpython \
+#     && conda install -c conda-forge gooey \
+#     && pip3 install pyinstaller==3.5
 
-COPY project_requirements.txt /tmp/conda-tmp/
-RUN pip3 install -r /tmp/conda-tmp/project_requirements.txt
+# COPY project_requirements.txt /tmp/conda-tmp/
+# RUN pip3 install -r /tmp/conda-tmp/project_requirements.txt
 
-COPY requirements.txt /tmp/conda-tmp/
-RUN pip3 install -r /tmp/conda-tmp/requirements.txt
+# COPY requirements.txt /tmp/conda-tmp/
+# RUN pip3 install -r /tmp/conda-tmp/requirements.txt
 
 # ########### Stage2 ###########
 # FROM mcr.microsoft.com/vscode/devcontainers/anaconda:0-3 AS Stage2_Wine
