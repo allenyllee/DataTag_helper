@@ -60,23 +60,37 @@ RUN apt update \
 USER vscode
 WORKDIR /home/vscode
 
-RUN wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe
+# Silence all the "fixme: blah blah blah" messages from wine
+# see: https://github.com/benley/docker-wine-python-dotnet/blob/master/Dockerfile
+ENV WINEDEBUG fixme-all
 
-# RUN WINARCH=win64 winetricks \
-#     corefonts \
-#     win10
-    
-# RUN WINARCH=win64 winecfg
-
+# need winetrick to install corefonts to avoid below error
+# #9 0.610 0024:fixme:heap:RtlSetHeapInformation 00000000 1 00000000 0 stub
+# #9 0.691 0040:err:ole:StdMarshalImpl_MarshalInterface Failed to create ifstub, hr 0x80004002
+# #9 0.691 0040:err:ole:CoMarshalInterface Failed to marshal the interface {6d5140c1-7436-11ce-8034-00aa006009fa}, hr 0x80004002
+# #9 0.691 0040:err:ole:apartment_get_local_server_stream Failed: 0x80004002
+# #9 0.722 0024:fixme:ver:GetCurrentPackageId (0032FE94 00000000): stub
+# see: https://askubuntu.com/a/1200679/735872
 RUN WINARCH=win64 winetricks \
     corefonts
 
-RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" sh -c 'wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 && wineserver -w' && rm -f /tmp/.X*-lock
-# RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -ac -nolisten tcp -nolisten unix" wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1
+# [T202710 Xvfb causes _XSERVTransmkdir: ERROR: euid != 0,directory /tmp/.X11-unix will not be created](https://phabricator.wikimedia.org/T202710)
+# symptom: "ERROR: euid != 0,directory /tmp/.X11-unix will not be created."
+# rootcause: Xvfb / Xserver creates a /tmp/.X11-unix/94 unix socket and ensure the parent directory belong to root.
+# solution: By instructing Xvfb to no more listen on a unix socket, it is no more created. That is done by passing `-nolisten unix`
+# $ Xvfb :94 -screen 0 1280x1024x24 -ac -nolisten tcp -nolisten unix
+##
+# if Xvfb shuts down early or fails to clean up after itself, so I like the idea to use `xvfb-run sh -c 'wine <program> && wineserver -w' && rm -f /tmp/.X*-lock`
+# https://github.com/Winetricks/winetricks/issues/1525#issuecomment-740497505
+RUN wget https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe \
+&& xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" \
+sh -c 'wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 && wineserver -w' \
+&& rm -f /tmp/.X*-lock \
+&& rm python-3.6.8-amd64.exe
 
-RUN rm python-3.6.8-amd64.exe
-
-RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" sh -c 'wine pip install wxpython gooey pyinstaller==3.5 && wineserver -w' && rm -f /tmp/.X*-lock
+RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" \
+sh -c 'wine pip install wxpython gooey pyinstaller==3.5 && wineserver -w' \
+&& rm -f /tmp/.X*-lock
 
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN wine pip install -r /tmp/conda-tmp/project_requirements.txt
