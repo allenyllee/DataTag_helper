@@ -64,6 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # see: https://docs.github.com/en/actions/reference/environment-variables
       - name: Checkout repo
         uses: actions/checkout@v2
 
@@ -86,10 +87,14 @@ jobs:
 #       - run: docker image ls
 #       - run: docker run --rm --user="vscode" user/myimage:latest /bin/bash --login -c 'pwd;echo \$PATH;env;pip list;conda env list'
 #       - run: docker run --rm --user="vscode" user/myimage:latest /bin/bash --login -c 'pwd;env;pip list;conda env list;portray on_github_pages'
-      - run: echo $GITHUB_WORKSPACE;cd $GITHUB_WORKSPACE;pwd;ls
+#       - run: echo $GITHUB_WORKSPACE;cd $GITHUB_WORKSPACE;pwd;ls
 #       - run: pwd;ls;cd /;ls;cd /home/runner/work/AI_Clerk_helper;ls;cd /home/runner/work/AI_Clerk_helper/AI_Clerk_helper;ls
 #       - run: docker run --rm --user="vscode" user/myimage:latest conda run --no-capture-output -n AI_Clerk_helper /bin/bash -c "id -u -n;pwd;env;pip list;conda env list;ls;cd /;ls;cd -"
-      - run: docker run --rm --user="vscode" -v $GITHUB_WORKSPACE:/workspaces/AI_Clerk_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/AI_Clerk_helper -n AI_Clerk_helper ls
+      # conda run 
+      # --cwd CWD        Current working directory for command to run in.
+      #                  Defaults to cwd
+      # see: https://github.com/conda/conda/issues/2904#issuecomment-522722761
+#       - run: docker run --rm --user="vscode" -v $GITHUB_WORKSPACE:/workspaces/AI_Clerk_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/AI_Clerk_helper -n AI_Clerk_helper ls
       - run: docker run --rm --user="vscode" -v $GITHUB_WORKSPACE:/workspaces/AI_Clerk_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/AI_Clerk_helper -n AI_Clerk_helper portray on_github_pages
           
       # Runs a single command using the runners shell
