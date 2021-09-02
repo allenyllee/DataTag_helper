@@ -110,7 +110,9 @@
 		"shardulm94.trailing-spaces",
 		"njpwerner.autodocstring",
 		"sean10.vscode-markdown-quote",
-		"cssho.vscode-svgviewer"
+		"cssho.vscode-svgviewer",
+		"usernamehw.errorlens",
+		"adpyke.codesnap"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
