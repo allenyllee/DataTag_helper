@@ -50,13 +50,21 @@ portray on_github_pages
 #### Step 4: test pre-commit hook before commit
 
 test for a file:
-```
+
+```sh
 pre-commit run --files ./AI_Clerk_helper.py
 ```
 
 test for all files:
-```
+
+```sh
 pre-commit run --all-files
+```
+
+If you want to commit without pre-commit checks, just run
+
+```sh
+git commit -m "some messages" --no-verify
 ```
 
 ### Method 2: Manually Setup Environments
