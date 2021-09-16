@@ -37,6 +37,7 @@ from pathlib import Path
 import emoji
 import numpy as np
 import pandas as pd
+from chardet.universaldetector import UniversalDetector
 
 # import argparse
 from gooey import Gooey, GooeyParser
@@ -1137,7 +1138,17 @@ def main(args=None):
                 content_dict["Author"] = ""
                 content_dict["Time"] = ""
 
-                with open(filepath, "r", encoding="utf-8") as f:
+                # guess encoding
+                detector = UniversalDetector()
+                detector.reset()
+                for line in open(filepath, "rb"):
+                    detector.feed(line)
+                    if detector.done:
+                        break
+                detector.close()
+                # print(detector.result)
+
+                with open(filepath, "r", encoding=detector.result["encoding"]) as f:
                     content_dict["Content"] = f.read()
                     text_id = hashlib.md5(
                         content_dict["Content"].encode("utf-8")

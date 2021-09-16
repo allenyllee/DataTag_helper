@@ -304,10 +304,21 @@ wine pyinstaller -F --windowed build-win.spec -d bootloader
 wine ./dist/AI_Clerk_helper.exe
 ```
 
+## Run test
 
+Run test
 
+```sh
+pytest
+```
 
+Run test with print messages
 
+```sh
+pytest -s
+```
+
+How to test with cli? see: [Build and Test a Command Line Interface with Poetry, Python's argparse, and pytest - DEV Community 👩‍💻👨‍💻](https://dev.to/bowmanjd/build-and-test-a-command-line-interface-with-poetry-python-s-argparse-and-pytest-4gab)
 
 ## References
 
