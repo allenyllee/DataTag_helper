@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Friday, September 10th 2021, 2:48:51 pm
+# Last Modified: Thursday, September 16th 2021, 1:40:58 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -1139,6 +1139,10 @@ def main(args=None):
                 content_dict["Time"] = ""
 
                 # guess encoding
+                # Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow
+                # https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin
+                # Usage — chardet 5.0.0dev0 documentation
+                # https://chardet.readthedocs.io/en/latest/usage.html
                 detector = UniversalDetector()
                 detector.reset()
                 for line in open(filepath, "rb"):
