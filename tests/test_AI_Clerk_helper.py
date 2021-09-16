@@ -22,6 +22,7 @@
 
 
 import filecmp
+import os
 import pathlib
 
 from .. import AI_Clerk_helper
@@ -42,6 +43,8 @@ def test_txt_to_json_1():
 
     assert filecmp.cmp(output_path, expect_path)
 
+    os.remove(output_path)
+
 
 def test_txt_to_json_2():
     """
@@ -54,3 +57,5 @@ def test_txt_to_json_2():
     expect_path = test_directory / "expect_result/分類和10篇txt檔(1).json"
 
     assert filecmp.cmp(output_path, expect_path)
+
+    os.remove(output_path)
