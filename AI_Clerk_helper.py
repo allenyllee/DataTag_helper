@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Monday, July 26th 2021, 11:08:25 am
+# Last Modified: Friday, September 10th 2021, 2:48:51 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -254,7 +254,10 @@ def patch_gooey_gui_component():
     tabbed_groups=False,
     default_size=(525, 670),
 )
-def parse_args():
+def parse_args(args=None):
+    if args is None:
+        args = sys.argv[1:]
+
     # parser = argparse.ArgumentParser()
     parser = GooeyParser()
     subs = parser.add_subparsers(help="commands", dest="command")
@@ -415,7 +418,7 @@ def parse_args():
     # parser.add_argument('--type', '-t', choices=getLob())
 
     # args, unknown = parser.parse_known_args()
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     return args
 
@@ -1014,11 +1017,17 @@ def concat_files(files_list):
     return df_content, df_document_label, df_sentence_label
 
 
-def main():
+def main(args=None):
+    # Build and Test a Command Line Interface with Poetry, Python's argparse, and pytest - DEV Community 👩‍💻👨‍💻
+    # https://dev.to/bowmanjd/build-and-test-a-command-line-interface-with-poetry-python-s-argparse-and-pytest-4gab
+    if args:
+        ## How to strip decorators from a function in Python - Stack Overflow
+        ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
+        args = parse_args.__closure__[0].cell_contents(args)
     # check if user pass any argument, if yes, use command line, otherwise use gooey
     ## python - Argparse: Check if any arguments have been passed - Stack Overflow
     ## https://stackoverflow.com/questions/10698468/argparse-check-if-any-arguments-have-been-passed
-    if len(sys.argv) > 1:
+    elif len(sys.argv) > 1:
         ## How to strip decorators from a function in Python - Stack Overflow
         ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
         args = parse_args.__closure__[0].cell_contents()
