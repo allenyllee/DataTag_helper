@@ -53,9 +53,14 @@ RUN apt update \
     && wget -O- -q https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10/Release.key | sudo apt-key add - \
     && echo "deb http://download.opensuse.org/repositories/Emulators:/Wine:/Debian/Debian_10 ./" | sudo tee /etc/apt/sources.list.d/wine-obs.list \
     && apt update \
-    && apt install -y --install-recommends winehq-devel winetricks \
+    && apt install -y --install-recommends winehq-devel \
     && apt install --fix-missing -y xvfb \
     && apt install -y binutils libc6
+
+# fix: E: Package 'winetricks' has no installation candidate
+# https://www.reddit.com/r/linuxquestions/comments/sr4zmz/comment/in0d7ch/?utm_source=share&utm_medium=web2x&context=3
+RUN echo "deb http://deb.debian.org/debian bullseye main contrib non-free" >> /etc/apt/sources.list \
+    && apt update && apt install -y winetricks
 
 USER vscode
 WORKDIR /home/vscode
