@@ -22,7 +22,8 @@ RUN conda create --name AI_Clerk_helper python=3.6
 # Make RUN commands use the new environment:
 SHELL ["conda", "run", "--no-capture-output", "-n", "AI_Clerk_helper", "/bin/bash", "-c"]
 
-RUN conda install wxpython \
+# https://github.com/wxWidgets/Phoenix/issues/2225#issuecomment-1243871941
+RUN conda install -c conda-forge wxpython==4.1.1 \
     && conda install -c conda-forge gooey \
     && pip3 install pyinstaller==3.5
 
@@ -93,8 +94,9 @@ sh -c 'wine python-3.6.8-amd64.exe /quiet InstallAllUsers=1 PrependPath=1 && win
 && rm -f /tmp/.X*-lock \
 && rm python-3.6.8-amd64.exe
 
+# https://github.com/wxWidgets/Phoenix/issues/2225#issuecomment-1243871941
 RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" \
-sh -c 'wine pip install wxpython gooey pyinstaller==3.5 && wineserver -w' \
+sh -c 'wine pip install wxpython==4.1.1 gooey pyinstaller==3.5 && wineserver -w' \
 && rm -f /tmp/.X*-lock
 
 COPY project_requirements.txt /tmp/conda-tmp/
