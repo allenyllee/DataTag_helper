@@ -21,7 +21,7 @@ filepath = '工研院標註檔案_test.json'
 
 with open(filepath) as f:
     data = json.load(f)
-    
+
 pprint(data)
 
 
@@ -33,7 +33,7 @@ data2 = {}
 for key, value in data.items():
     pprint(data[key])
     data2.update({data[key]['TextID']: data[key]})
-    
+
     print("-----------")
 
 
@@ -57,5 +57,5 @@ with open(save_path, 'w', encoding='utf-8') as outfile:
 # In[14]:
 
 
-get_ipython().system('python ../AI_Clerk_helper.py second_upload -i ./工研院標註檔案_test.json')
+get_ipython().system('python ../DataTag_helper.py second_upload -i ./工研院標註檔案_test.json')
 

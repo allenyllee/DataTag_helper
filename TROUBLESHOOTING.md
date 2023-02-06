@@ -124,7 +124,7 @@ and at the end of dockerfile, add
 ```dockerfile
 # Initialize conda in bash config fiiles:
 RUN conda init bash
-RUN echo "conda activate AI_Clerk_helper" >> ~/.bashrc
+RUN echo "conda activate DataTag_helper" >> ~/.bashrc
 ```
 
 this will setup automatic `conda activate myenv` every time when you have login shell.

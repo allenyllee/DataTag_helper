@@ -22,7 +22,7 @@ from pathlib import Path
 
 # with open(filepath) as f:
 #     data = json.load(f)
-    
+
 common_filename_1 = Path('./二次標註轉換測試/正式標註第(221條第1項)_1100331下載.json')
 common_filename_2 = Path('./二次標註轉換測試/二次確認(第221條第1項)_1100429下午十五時下載.json')
 
@@ -32,7 +32,7 @@ with open(common_filename_1) as f:
 
 with open(common_filename_2) as f:
     data2 = json.load(f)
-    
+
 # pprint(data1)
 # pprint(data2)
 
@@ -74,5 +74,5 @@ with open(save_path, 'w', encoding='utf-8') as outfile:
 # In[10]:
 
 
-get_ipython().system('python ../AI_Clerk_helper.py second_labeled -i1 ./二次標註轉換測試/正式標註第\\(221條第1項\\)_1100331下載.json -i2 ./二次標註轉換測試/二次確認\\(第221條第1項\\)_1100429下午十五時下載.json')
+get_ipython().system('python ../DataTag_helper.py second_labeled -i1 ./二次標註轉換測試/正式標註第\\(221條第1項\\)_1100331下載.json -i2 ./二次標註轉換測試/二次確認\\(第221條第1項\\)_1100429下午十五時下載.json')
 

@@ -66,10 +66,10 @@ with open(save_path, 'w', encoding='utf-8') as outfile:
 len(articles_dict['Articles'])
 
 
-# ### cmdline  
+# ### cmdline
 
 # In[17]:
 
 
-get_ipython().system('python ../AI_Clerk_helper.py original -d ./gun_20201102')
+get_ipython().system('python ../DataTag_helper.py original -d ./gun_20201102')
 

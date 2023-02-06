@@ -25,7 +25,7 @@ df0
 
 import sys
 sys.path.append("..")
-from AI_Clerk_helper import to_excel_AI_clerk_labeled_data
+from DataTag_helper import to_excel_AI_clerk_labeled_data
 
 # filepath2 = './A1_labeled.xlsx'
 filepath2 = './工研院標註檔案_test_labeled.xlsx'
@@ -323,7 +323,7 @@ import re
 with open("emoji-variation-sequences.txt", "r") as text_file:
 #     print(text_file.read())
     text = text_file.read()
-    
+
 new_text = re.sub('#.*[\n]', '', text)
 new_text2 = re.sub('(text|emoji) style;', '', new_text)
 new_text3 = re.sub('\s*(FE0E\s*|FE0F\s*)', '', new_text2)

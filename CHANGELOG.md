@@ -17,11 +17,11 @@ second labeled json cleaner support input Multiple first labeled file
 
 1. add second_upload function
 
-    ![Screenshot-of-second_upload](./assets/Deepin%20截圖_AI_Clerk_helper.py_20210503171532.png)
+    ![Screenshot-of-second_upload](./assets/Deepin%20截圖_DataTag_helper.py_20210503171532.png)
 
 2. add second labeled json cleaner and converter
 
-    ![Screenshot-of-second_labeled](./assets/Deepin%20截圖_AI_Clerk_helper.py_20210503171946.png)
+    ![Screenshot-of-second_labeled](./assets/Deepin%20截圖_DataTag_helper.py_20210503171946.png)
 
 ### v0.7.2
 
@@ -40,7 +40,7 @@ second labeled json cleaner support input Multiple first labeled file
 
 - 新增批次處理txt檔功能
 
-    ![AI_Clerk_helper_v0.7](./assets/Deepin%20截圖_AI_Clerk_helper.py_20201214223220.png)
+    ![DataTag_helper_v0.7](./assets/Deepin%20截圖_DataTag_helper.py_20201214223220.png)
 
     注意：第一層的txt會自動忽略，只會加入第二層以下的txt
 
@@ -179,7 +179,7 @@ second labeled json cleaner support input Multiple first labeled file
 
 - 新增合併檔案功能
 
-    ![merge file](./assets/Deepin%20截圖_AI_Clerk_helper.py_20200916201632.png)
+    ![merge file](./assets/Deepin%20截圖_DataTag_helper.py_20200916201632.png)
 
 ### v0.5
 

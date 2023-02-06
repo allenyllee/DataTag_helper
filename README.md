@@ -1,12 +1,12 @@
 # DataTag Helper
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/DataTag_helper)
 
 [![](assets/interrogate_badge.svg)](https://github.com/econchick/interrogate)
 
 _________________
 
-[Read Latest Documentation](https://allenyllee.github.io/AI_Clerk_helper/) - [Browse GitHub Code Repository](https://github.com/allenyllee/AI_Clerk_helper/)
+[Read Latest Documentation](https://allenyllee.github.io/DataTag_helper/) - [Browse GitHub Code Repository](https://github.com/allenyllee/DataTag_helper/)
 
 _________________
 ![Screenshot-of-DataTag_helper](./assets/Snipaste_2020-06-01_19-59-29.png)
@@ -18,7 +18,7 @@ _________________
 
 #### Step 1: Clone into container
 
-If you have installed [VSCode](https://code.visualstudio.com/) and [Docker](https://www.docker.com/get-started), just click [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper) and choose "Clone repo in container volume", it'll open a new container with building environments.
+If you have installed [VSCode](https://code.visualstudio.com/) and [Docker](https://www.docker.com/get-started), just click [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/DataTag_helper) and choose "Clone repo in container volume", it'll open a new container with building environments.
 
 #### Step 2: Build
 
@@ -52,7 +52,7 @@ portray on_github_pages
 test for a file:
 
 ```sh
-pre-commit run --files ./AI_Clerk_helper.py
+pre-commit run --files ./DataTag_helper.py
 ```
 
 test for all files:
@@ -79,15 +79,15 @@ https://www.anaconda.com/products/individual
 Navigating to the directory of this repo.
 
 ```
-cd /workspace/AI_Clerk_helper
+cd /workspace/DataTag_helper
 ```
 
 Create conda env
 
 ```shell
-conda create --name AI_Clerk_helper python=3.6
+conda create --name DataTag_helper python=3.6
 
-conda activate AI_Clerk_helper
+conda activate DataTag_helper
 ```
 > If conda install has permission error, excute:
 >
@@ -123,7 +123,7 @@ pip install -r requirements.txt
 ### Step 3: Execute
 
 ```shell
-python AI_Clerk_helper.py
+python DataTag_helper.py
 ```
 
 you should see the GUI window popup.
