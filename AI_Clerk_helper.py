@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Thursday, September 16th 2021, 1:40:58 pm
+# Last Modified: Thursday, January 1st 1970, 12:00:00 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -250,7 +250,7 @@ def patch_gooey_gui_component():
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
 @Gooey(
-    program_name="AI Clerk helper v0.8.2",
+    program_name="DataTag helper v0.8.3",
     navigation="TABBED",
     tabbed_groups=False,
     default_size=(525, 670),

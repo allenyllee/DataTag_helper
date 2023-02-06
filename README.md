@@ -1,4 +1,4 @@
-# AI Clerk Helper
+# DataTag Helper
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/allenyllee/AI_Clerk_helper)
 
@@ -9,7 +9,7 @@ _________________
 [Read Latest Documentation](https://allenyllee.github.io/AI_Clerk_helper/) - [Browse GitHub Code Repository](https://github.com/allenyllee/AI_Clerk_helper/)
 
 _________________
-![Screenshot-of-AI_Clerk_helper](./assets/Snipaste_2020-06-01_19-59-29.png)
+![Screenshot-of-DataTag_helper](./assets/Snipaste_2020-06-01_19-59-29.png)
 
 
 ## How to Build
@@ -309,7 +309,7 @@ wine pyinstaller -F --windowed build-win.spec -d bootloader
 ### Step 8: Running Windows Executable through wine
 
 ```shell
-wine ./dist/AI_Clerk_helper.exe
+wine ./dist/DataTag_helper.exe
 ```
 
 ## Run test
