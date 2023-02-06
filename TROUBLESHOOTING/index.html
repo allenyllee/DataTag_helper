@@ -632,7 +632,6 @@
             <span class="n">hiddenimports</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pkg_resources.py2_warn&#39;</span><span class="p">],</span>
             <span class="o">...</span><span class="p">)</span>
 </code></pre></div>
-
 </blockquote>
 <h3 id="internal-error-cannot-create-temporary-directory">INTERNAL ERROR: cannot create temporary directory!</h3>
 <p><img alt="INTERNAL ERROR: cannot create temporary directory!" src="../assets/Deepin%20%E6%88%AA%E5%9C%96_%E9%81%B8%E5%8F%96%E7%AF%84%E5%9C%8D_20200601201922.png" /></p>
@@ -651,7 +650,6 @@
 
 <span class="n">datas</span> <span class="o">=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;scipy&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 <p>then go into the hook-sklearn.metrics.cluster.py file and modify it to look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">PyInstaller.utils.hooks</span> <span class="kn">import</span> <span class="n">collect_data_files</span>
 
@@ -662,7 +660,6 @@
 
 <span class="n">datas</span> <span class="o">=</span> <span class="n">collect_data_files</span><span class="p">(</span><span class="s1">&#39;sklearn&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 <hr />
 <p>you can specify hooks file dir used in --additional-hooks-dir in the spec file's hookspath -- <a href="https://stackoverflow.com/users/1851492/allenyllee" title="399 reputation">allenyllee</a></p>
 </blockquote>
@@ -681,7 +678,6 @@
 <span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 <p>It still exists on 1.0.3-release as well.</p>
 <p>However, note that the arguments are not treated as optional; it's only the title "optional argument" which bothers you.</p>
 <p>As a workaround, you can create a single argument_group (optionally name it.)</p>
@@ -697,7 +693,6 @@
 <span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-
 </blockquote>
 <p><a href="https://github.com/chriskiehl/Gooey/issues/368">Required non-positional fields show as optional · Issue #368 · chriskiehl/Gooey</a></p>
 <p><a href="https://github.com/chriskiehl/Gooey/issues/208">Support non-boolean mutually exclusive options · Issue #208 · chriskiehl/Gooey</a></p>
@@ -708,14 +703,12 @@
 <div class="highlight"><pre><span></span><code><span class="c"># Make RUN commands use the new environment:</span>
 <span class="k">SHELL</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;conda&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-n&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myenv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/bin/bash&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-c&quot;</span><span class="p">]</span>
 </code></pre></div>
-
 <p>after <code>conda create</code> and before any <code>conda install</code></p>
 <p>and at the end of dockerfile, add</p>
 <div class="highlight"><pre><span></span><code><span class="c"># Initialize conda in bash config fiiles:</span>
 <span class="k">RUN</span><span class="w"> </span>conda init bash
 <span class="k">RUN</span><span class="w"> </span><span class="nb">echo</span> <span class="s2">&quot;conda activate DataTag_helper&quot;</span> &gt;&gt; ~/.bashrc
 </code></pre></div>
-
 <p>this will setup automatic <code>conda activate myenv</code> every time when you have login shell.</p>
 <h3 id="how-to-use-xvfb-to-execute-command-headlessly-in-dockerfile">How to use xvfb to execute command headlessly in dockerfile</h3>
 <p>see: <a href="https://blog.csdn.net/Nobody_Wang/article/details/60887659">xvfb的安装、配置、运行（Linux）_Nobody_Wang的博客-CSDN博客_xvfb</a></p>
