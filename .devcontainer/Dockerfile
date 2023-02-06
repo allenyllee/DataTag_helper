@@ -18,10 +18,10 @@ RUN chown 1000:1000 -R /opt/conda/
 USER vscode
 WORKDIR /home/vscode
 
-RUN conda create --name AI_Clerk_helper python=3.6
+RUN conda create --name DataTag_helper python=3.6
 
 # Make RUN commands use the new environment:
-SHELL ["conda", "run", "--no-capture-output", "-n", "AI_Clerk_helper", "/bin/bash", "-c"]
+SHELL ["conda", "run", "--no-capture-output", "-n", "DataTag_helper", "/bin/bash", "-c"]
 
 # # https://github.com/wxWidgets/Phoenix/issues/2225#issuecomment-1243871941
 RUN conda install -c conda-forge -y wxpython==4.1.1 \
@@ -125,5 +125,5 @@ COPY --from=stage1_conda /opt/conda /opt/conda
 
 # Initialize conda in bash config fiiles:
 RUN conda init bash
-RUN echo "conda activate AI_Clerk_helper" >> ~/.bashrc
+RUN echo "conda activate DataTag_helper" >> ~/.bashrc
 
