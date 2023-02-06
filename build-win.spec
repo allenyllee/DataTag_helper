@@ -3,8 +3,8 @@ gooey_root = os.path.dirname(gooey.__file__)
 
 block_cipher = None
 
-a = Analysis(['AI_Clerk_helper.py'],  # replace me with the main entry point
-             pathex=['./AI_Clerk_helper.py'], # replace me with the appropriate path
+a = Analysis(['DataTag_helper.py'],  # replace me with the main entry point
+             pathex=['./DataTag_helper.py'], # replace me with the appropriate path
              binaries=[],
              datas=[],
              hiddenimports=['pkg_resources.py2_warn'],
