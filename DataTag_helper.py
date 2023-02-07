@@ -59,18 +59,18 @@ from sqlitedict import SqliteDict
 
 MY_DB_FILE = "./my_db.sqlite"
 
-mydict = SqliteDict(MY_DB_FILE, autocommit=True)
+# mydict = SqliteDict(MY_DB_FILE, autocommit=True)
 
-try:
-    mydict["global_choies"]
-except KeyError:
-    mydict["global_choies"] = []
+# try:
+#     mydict["global_choies"]
+# except KeyError:
+#     mydict["global_choies"] = []
 
 # share args across different event callbacks
 global_args = defaultdict(list)
 
 
-def patch_gooey_gui_component():
+def patch_gooey_gui_component(mydict):
     """Monkey patch gooey's gui components, like:
     Dropdown, FileChooser, GooeyApplication,...etc.
     To avoid `ImportError: libXxf86vm.so.1` while import,
@@ -255,7 +255,7 @@ def patch_gooey_gui_component():
     tabbed_groups=False,
     default_size=(525, 670),
 )
-def parse_args(args=None):
+def parse_args(mydict, args=None):
     if args is None:
         args = sys.argv[1:]
 
@@ -1022,20 +1022,29 @@ def main(args=None):
     # Build and Test a Command Line Interface with Poetry, Python's argparse, and pytest - DEV Community 👩‍💻👨‍💻
     # https://dev.to/bowmanjd/build-and-test-a-command-line-interface-with-poetry-python-s-argparse-and-pytest-4gab
     if args:
+        mydict_test = {"global_choies":[]}
         ## How to strip decorators from a function in Python - Stack Overflow
         ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
-        args = parse_args.__closure__[0].cell_contents(args)
+        args = parse_args.__closure__[0].cell_contents(mydict=mydict_test, args=args)
     # check if user pass any argument, if yes, use command line, otherwise use gooey
     ## python - Argparse: Check if any arguments have been passed - Stack Overflow
     ## https://stackoverflow.com/questions/10698468/argparse-check-if-any-arguments-have-been-passed
-    elif len(sys.argv) > 1:
-        ## How to strip decorators from a function in Python - Stack Overflow
-        ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
-        args = parse_args.__closure__[0].cell_contents()
     else:
-        # patch gooey component only when before entering GUI mode
-        patch_gooey_gui_component()
-        args = parse_args()
+        mydict = SqliteDict(MY_DB_FILE, autocommit=True)
+
+        try:
+            mydict["global_choies"]
+        except KeyError:
+            mydict["global_choies"] = []
+
+        if len(sys.argv) > 1:
+            ## How to strip decorators from a function in Python - Stack Overflow
+            ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
+            args = parse_args.__closure__[0].cell_contents(mydict=mydict)
+        else:
+            # patch gooey component only when before entering GUI mode
+            patch_gooey_gui_component(mydict=mydict)
+            args = parse_args(mydict=mydict)
 
     # print(args.command)
 
