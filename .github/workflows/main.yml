@@ -103,7 +103,7 @@ jobs:
       #                  Defaults to cwd
       # see: https://github.com/conda/conda/issues/2904#issuecomment-522722761
 #       - run: docker run --rm --user="vscode" -v $GITHUB_WORKSPACE:/workspaces/DataTag_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/DataTag_helper -n DataTag_helper ls
-      - run: docker run --rm --user="vscode" -v $GITHUB_WORKSPACE:/workspaces/DataTag_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/DataTag_helper -n DataTag_helper portray on_github_pages
+      - run: docker run --rm --user 1001 -v $GITHUB_WORKSPACE:/workspaces/DataTag_helper user/myimage:latest conda run --no-capture-output --cwd /workspaces/DataTag_helper -n DataTag_helper portray on_github_pages
 
       # Runs a single command using the runners shell
 #       - name: Run portray
