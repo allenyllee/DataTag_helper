@@ -78,7 +78,7 @@ RUN wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/wine
 # because it is system level, to avoid
 # error: could not lock config file /etc/gitconfig: Permission denied
 # put this before change user to vscode
-RUN git config --system --add safe.directory *
+RUN git config --system --add safe.directory '*'
 
 USER vscode
 WORKDIR /home/vscode
