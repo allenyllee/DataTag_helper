@@ -73,8 +73,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # see: https://docs.github.com/en/actions/reference/environment-variables
+      # Fetch all history for all tags and branches
+      # https://github.com/actions/checkout
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Download artifact
         uses: actions/download-artifact@v2
