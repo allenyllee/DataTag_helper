@@ -1,5 +1,13 @@
 ## changelog
 
+### v0.8.4
+
+1. Move SqliteDict into main(), only when using GUI will call it. This is to avoid connecting to the sqlite when test CLI.
+
+### v0.8.3
+
+1. Rename to DataTag_helper
+
 ### v0.8.2
 
 1. fix "Missing optional dependency 'xlrd'." error, jsut use openpyxl. see: https://github.com/pandas-dev/pandas/issues/38424
