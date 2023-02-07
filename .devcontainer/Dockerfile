@@ -73,6 +73,13 @@ RUN wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/wine
     && chmod +x /usr/bin/winetricks \
     && apt install -y cabextract
 
+# To avoid "detected dubious ownership in repository at '/workspaces/DataTag_helper'" error in git actions
+# https://github.com/actions/runner-images/issues/6775#issuecomment-1410270956
+# because it is system level, to avoid
+# error: could not lock config file /etc/gitconfig: Permission denied
+# put this before change user to vscode
+RUN git config --system --add safe.directory *
+
 USER vscode
 WORKDIR /home/vscode
 
@@ -126,7 +133,3 @@ COPY --from=stage1_conda /opt/conda /opt/conda
 # Initialize conda in bash config fiiles:
 RUN conda init bash
 RUN echo "conda activate DataTag_helper" >> ~/.bashrc
-
-# To avoid "detected dubious ownership in repository at '/workspaces/DataTag_helper'" error in git actions
-# https://github.com/actions/runner-images/issues/6775#issuecomment-1410270956
-RUN git config --system --add safe.directory *
