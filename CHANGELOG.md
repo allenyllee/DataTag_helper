@@ -1,5 +1,15 @@
 ## changelog
 
+### v0.8.5
+
+1. Set default selection to the first option, and move input dir that contains .txt to the first option.
+
+    ![](./assets/Snipaste_2023-02-08_18-16-48.png)
+
+2. Rename title to DataTag Helper (標註轉檔小幫手)
+
+
+
 ### v0.8.4
 
 1. Move SqliteDict into main(), only when using GUI will call it. This is to avoid connecting to the sqlite when test CLI.
