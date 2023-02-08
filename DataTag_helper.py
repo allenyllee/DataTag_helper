@@ -272,9 +272,26 @@ def parse_args(mydict, args=None):
         gooey_options={"show_border": True, "show_underline": True, "columns": 1},
     )
 
+    # add default selection option
+    # https://github.com/chriskiehl/Gooey/issues/590#issue-650474511
     mutex_sub_parser1 = sub_parser1_1.add_mutually_exclusive_group(
         required=True,
-        gooey_options={"show_border": True, "show_underline": True, "columns": 1},
+        gooey_options={
+            "show_border": True,
+            "show_underline": True,
+            "columns": 1,
+            'initial_selection': 0
+        },
+    )
+
+    #### input txt files
+    mutex_sub_parser1.add_argument(
+        "-d",
+        "--input-dir",
+        help="dir that contains input files(.txt)",
+        dest="input_dir",
+        default=None,
+        widget="DirChooser",
     )
 
     #### input excel files
@@ -308,16 +325,6 @@ def parse_args(mydict, args=None):
         action="store_true",
     )
     sub_parser1_2.set_defaults(to_excel=False)
-
-    #### input txt files
-    mutex_sub_parser1.add_argument(
-        "-d",
-        "--input-dir",
-        help="dir that contains input files(.txt)",
-        dest="input_dir",
-        default=None,
-        widget="DirChooser",
-    )
 
     ### for labeled file
     sub_parser2 = subs.add_parser("labeled", prog="已標註檔案", help="已標註檔案")
