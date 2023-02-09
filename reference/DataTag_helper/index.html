@@ -2883,7 +2883,95 @@
 <span class="normal">2180</span>
 <span class="normal">2181</span>
 <span class="normal">2182</span>
-<span class="normal">2183</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2183</span>
+<span class="normal">2184</span>
+<span class="normal">2185</span>
+<span class="normal">2186</span>
+<span class="normal">2187</span>
+<span class="normal">2188</span>
+<span class="normal">2189</span>
+<span class="normal">2190</span>
+<span class="normal">2191</span>
+<span class="normal">2192</span>
+<span class="normal">2193</span>
+<span class="normal">2194</span>
+<span class="normal">2195</span>
+<span class="normal">2196</span>
+<span class="normal">2197</span>
+<span class="normal">2198</span>
+<span class="normal">2199</span>
+<span class="normal">2200</span>
+<span class="normal">2201</span>
+<span class="normal">2202</span>
+<span class="normal">2203</span>
+<span class="normal">2204</span>
+<span class="normal">2205</span>
+<span class="normal">2206</span>
+<span class="normal">2207</span>
+<span class="normal">2208</span>
+<span class="normal">2209</span>
+<span class="normal">2210</span>
+<span class="normal">2211</span>
+<span class="normal">2212</span>
+<span class="normal">2213</span>
+<span class="normal">2214</span>
+<span class="normal">2215</span>
+<span class="normal">2216</span>
+<span class="normal">2217</span>
+<span class="normal">2218</span>
+<span class="normal">2219</span>
+<span class="normal">2220</span>
+<span class="normal">2221</span>
+<span class="normal">2222</span>
+<span class="normal">2223</span>
+<span class="normal">2224</span>
+<span class="normal">2225</span>
+<span class="normal">2226</span>
+<span class="normal">2227</span>
+<span class="normal">2228</span>
+<span class="normal">2229</span>
+<span class="normal">2230</span>
+<span class="normal">2231</span>
+<span class="normal">2232</span>
+<span class="normal">2233</span>
+<span class="normal">2234</span>
+<span class="normal">2235</span>
+<span class="normal">2236</span>
+<span class="normal">2237</span>
+<span class="normal">2238</span>
+<span class="normal">2239</span>
+<span class="normal">2240</span>
+<span class="normal">2241</span>
+<span class="normal">2242</span>
+<span class="normal">2243</span>
+<span class="normal">2244</span>
+<span class="normal">2245</span>
+<span class="normal">2246</span>
+<span class="normal">2247</span>
+<span class="normal">2248</span>
+<span class="normal">2249</span>
+<span class="normal">2250</span>
+<span class="normal">2251</span>
+<span class="normal">2252</span>
+<span class="normal">2253</span>
+<span class="normal">2254</span>
+<span class="normal">2255</span>
+<span class="normal">2256</span>
+<span class="normal">2257</span>
+<span class="normal">2258</span>
+<span class="normal">2259</span>
+<span class="normal">2260</span>
+<span class="normal">2261</span>
+<span class="normal">2262</span>
+<span class="normal">2263</span>
+<span class="normal">2264</span>
+<span class="normal">2265</span>
+<span class="normal">2266</span>
+<span class="normal">2267</span>
+<span class="normal">2268</span>
+<span class="normal">2269</span>
+<span class="normal">2270</span>
+<span class="normal">2271</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -2970,6 +3058,14 @@
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedShuffleSplit</span>
 
 <span class="c1"># from lib.AIClerk_helper import to_AI_clerk_batch_upload_json</span>
+
+<span class="kn">from</span> <span class="nn">docx</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">import</span> <span class="nn">pdfplumber</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">encoding</span> <span class="o">!=</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">:</span>
 
@@ -3315,7 +3411,7 @@
 
 <span class="nd">@Gooey</span><span class="p">(</span>
 
-    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;DataTag Helper (標註轉檔小幫手) v0.8.6&quot;</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;DataTag Helper (標註轉檔小幫手) v0.8.7&quot;</span><span class="p">,</span>
 
     <span class="n">navigation</span><span class="o">=</span><span class="s2">&quot;TABBED&quot;</span><span class="p">,</span>
 
@@ -4797,8 +4893,6 @@
 
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input path:&quot;</span><span class="p">,</span> <span class="n">common_path</span><span class="p">)</span>
 
-            <span class="n">filename_pattern</span> <span class="o">=</span> <span class="s2">&quot;*/**/*.txt&quot;</span>
-
             <span class="n">save_path</span> <span class="o">=</span> <span class="p">(</span>
 
                 <span class="n">Path</span><span class="p">(</span><span class="n">common_path</span><span class="p">)</span><span class="o">.</span><span class="n">with_name</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">common_path</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
@@ -4809,9 +4903,23 @@
 
             <span class="n">glob_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">common_path</span><span class="p">)</span>
 
-            <span class="n">filepathes</span> <span class="o">=</span> <span class="n">glob_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filename_pattern</span><span class="p">)</span>
+            <span class="n">filename_pattern</span> <span class="o">=</span> <span class="s1">&#39;*/**/*.&#39;</span>
 
-            <span class="n">articles_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+            <span class="n">ext_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;txt&#39;</span><span class="p">,</span> <span class="s1">&#39;docx&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">]</span>
+
+            <span class="n">filepathes</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">ext_list</span><span class="p">:</span>
+
+                <span class="n">filename_pattern_ext</span> <span class="o">=</span> <span class="n">filename_pattern</span> <span class="o">+</span> <span class="n">ext</span>
+
+                <span class="n">filepathes</span> <span class="o">+=</span> <span class="n">glob_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filename_pattern_ext</span><span class="p">)</span>
+
+            <span class="n">filepathes</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">filepathes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+            <span class="c1"># print(filepathes)</span>
+
+            <span class="n">articles_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filepathes</span><span class="p">:</span>
 
@@ -4825,47 +4933,115 @@
 
                 <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-                <span class="c1"># guess encoding</span>
+                <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 
-                <span class="c1"># Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow</span>
+                <span class="n">content_hash</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-                <span class="c1"># https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin</span>
+                <span class="k">try</span><span class="p">:</span>
 
-                <span class="c1"># Usage — chardet 5.0.0dev0 documentation</span>
+                    <span class="c1"># read .txt first</span>
 
-                <span class="c1"># https://chardet.readthedocs.io/en/latest/usage.html</span>
+                    <span class="c1"># guess encoding</span>
 
-                <span class="n">detector</span> <span class="o">=</span> <span class="n">UniversalDetector</span><span class="p">()</span>
+                    <span class="c1"># Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow</span>
 
-                <span class="n">detector</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                    <span class="c1"># https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin</span>
 
-                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">):</span>
+                    <span class="c1"># Usage — chardet 5.0.0dev0 documentation</span>
 
-                    <span class="n">detector</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="c1"># https://chardet.readthedocs.io/en/latest/usage.html</span>
 
-                    <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+                    <span class="n">detector</span> <span class="o">=</span> <span class="n">UniversalDetector</span><span class="p">()</span>
 
-                        <span class="k">break</span>
+                    <span class="n">detector</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-                <span class="n">detector</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">):</span>
 
-                <span class="c1"># print(detector.result)</span>
+                        <span class="n">detector</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">detector</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
 
-                    <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                            <span class="k">break</span>
 
-                    <span class="n">text_id</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+                    <span class="n">detector</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-                        <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                    <span class="c1"># print(detector.result)</span>
 
-                    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">detector</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 
-                <span class="n">articles_dict</span><span class="p">[</span><span class="s2">&quot;Articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
+                        <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+                        <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+
+                            <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+
+                <span class="k">except</span><span class="p">:</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+
+                        <span class="c1"># read .docx</span>
+
+                        <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+                        <span class="n">finalText</span> <span class="o">=</span> <span class="p">[]</span>
+
+                        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+
+                            <span class="n">finalText</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+                        <span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
+
+                        <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+
+                    <span class="k">except</span><span class="p">:</span>
+
+                        <span class="k">try</span><span class="p">:</span>
+
+                            <span class="c1"># read .pdf</span>
+
+                            <span class="n">finalText</span> <span class="o">=</span> <span class="p">[]</span>
+
+                            <span class="k">with</span> <span class="n">pdfplumber</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
+
+                                <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pdf</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+
+                                    <span class="n">finalText</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">())</span>
+
+                                    <span class="c1"># print(first_page.extract_text())</span>
+
+                            <span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
+
+                            <span class="c1"># print(content_dict[&#39;Content&#39;])</span>
+
+                            <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+
+                        <span class="k">except</span><span class="p">:</span>
+
+                            <span class="k">pass</span>
+
+                <span class="c1"># articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
+
+                <span class="n">text_id</span> <span class="o">=</span> <span class="n">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">content_hash</span>
+
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
+
+                <span class="k">except</span><span class="p">:</span>
+
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
+
+            <span class="c1"># print(list(articles_dict[&#39;Articles&#39;].keys()))</span>
 
             <span class="c1"># read into dataframe will automatically sort by index</span>
 
-            <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">)</span>
+            <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+
+            <span class="c1"># print(dataframe)</span>
 
             <span class="c1"># because articles_dict[&#39;Articles&#39;] use text_id as key to update,</span>
 
@@ -5495,8 +5671,6 @@
 
 <span class="s s-Atom">            print(&quot;input path:&quot;, common_path)</span>
 
-<span class="s s-Atom">            filename_pattern = &quot;*/**/*.txt&quot;</span>
-
 <span class="s s-Atom">            save_path = (</span>
 
 <span class="s s-Atom">                Path(common_path).with_name(Path(common_path).stem).with_suffix(&quot;.json&quot;)</span>
@@ -5507,9 +5681,23 @@
 
 <span class="s s-Atom">            glob_path = Path(common_path)</span>
 
-<span class="s s-Atom">            filepathes = glob_path.glob(filename_pattern)</span>
+<span class="s s-Atom">            filename_pattern = &#39;*/**/*.&#39;</span>
 
-<span class="s s-Atom">            articles_dict = defaultdict(dict)</span>
+<span class="s s-Atom">            ext_list = [&#39;txt&#39;, &#39;docx&#39;, &#39;pdf&#39;]</span>
+
+<span class="s s-Atom">            filepathes = []</span>
+
+<span class="s s-Atom">            for ext in ext_list:</span>
+
+<span class="s s-Atom">                filename_pattern_ext = filename_pattern + ext</span>
+
+<span class="s s-Atom">                filepathes += glob_path.glob(filename_pattern_ext)</span>
+
+<span class="s s-Atom">            filepathes = natsorted(filepathes, key=str)</span>
+
+<span class="s s-Atom">            # print(filepathes)</span>
+
+<span class="s s-Atom">            articles_dict = OrderedDict()</span>
 
 <span class="s s-Atom">            for filepath in filepathes:</span>
 
@@ -5523,47 +5711,115 @@
 
 <span class="s s-Atom">                content_dict[&quot;Time&quot;] = &quot;&quot;</span>
 
-<span class="s s-Atom">                # guess encoding</span>
+<span class="s s-Atom">                title_hsah = hashlib.md5(content_dict[&#39;</span><span class="nv">Title</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
 
-<span class="s s-Atom">                # Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow</span>
+<span class="s s-Atom">                content_hash = &quot;&quot;</span>
 
-<span class="s s-Atom">                # https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin</span>
+<span class="s s-Atom">                try:</span>
 
-<span class="s s-Atom">                # Usage — chardet 5.0.0dev0 documentation</span>
+<span class="s s-Atom">                    # read .txt first</span>
 
-<span class="s s-Atom">                # https://chardet.readthedocs.io/en/latest/usage.html</span>
+<span class="s s-Atom">                    # guess encoding</span>
 
-<span class="s s-Atom">                detector = UniversalDetector()</span>
+<span class="s s-Atom">                    # Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow</span>
 
-<span class="s s-Atom">                detector.reset()</span>
+<span class="s s-Atom">                    # https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin</span>
 
-<span class="s s-Atom">                for line in open(filepath, &quot;rb&quot;):</span>
+<span class="s s-Atom">                    # Usage — chardet 5.0.0dev0 documentation</span>
 
-<span class="s s-Atom">                    detector.feed(line)</span>
+<span class="s s-Atom">                    # https://chardet.readthedocs.io/en/latest/usage.html</span>
 
-<span class="s s-Atom">                    if detector.done:</span>
+<span class="s s-Atom">                    detector = UniversalDetector()</span>
 
-<span class="s s-Atom">                        break</span>
+<span class="s s-Atom">                    detector.reset()</span>
 
-<span class="s s-Atom">                detector.close()</span>
+<span class="s s-Atom">                    for line in open(filepath, &quot;rb&quot;):</span>
 
-<span class="s s-Atom">                # print(detector.result)</span>
+<span class="s s-Atom">                        detector.feed(line)</span>
 
-<span class="s s-Atom">                with open(filepath, &quot;r&quot;, encoding=detector.result[&quot;encoding&quot;]) as f:</span>
+<span class="s s-Atom">                        if detector.done:</span>
 
-<span class="s s-Atom">                    content_dict[&quot;Content&quot;] = f.read()</span>
+<span class="s s-Atom">                            break</span>
 
-<span class="s s-Atom">                    text_id = hashlib.md5(</span>
+<span class="s s-Atom">                    detector.close()</span>
 
-<span class="s s-Atom">                        content_dict[&quot;Content&quot;].encode(&quot;utf-8&quot;)</span>
+<span class="s s-Atom">                    # print(detector.result)</span>
 
-<span class="s s-Atom">                    ).hexdigest()[:10]</span>
+<span class="s s-Atom">                    with open(filepath, &quot;r&quot;, encoding=detector.result[&quot;encoding&quot;]) as f:</span>
 
-<span class="s s-Atom">                articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
+<span class="s s-Atom">                        content_dict[&quot;Content&quot;] = f.read()</span>
+
+<span class="s s-Atom">                        content_hash = hashlib.md5(</span>
+
+<span class="s s-Atom">                            content_dict[&quot;Content&quot;].encode(&quot;utf-8&quot;)</span>
+
+<span class="s s-Atom">                        ).hexdigest()[:10]</span>
+
+<span class="s s-Atom">                except:</span>
+
+<span class="s s-Atom">                    try:</span>
+
+<span class="s s-Atom">                        # read .docx</span>
+
+<span class="s s-Atom">                        doc = Document(filepath)</span>
+
+<span class="s s-Atom">                        finalText = []</span>
+
+<span class="s s-Atom">                        for line in doc.paragraphs:</span>
+
+<span class="s s-Atom">                            finalText.append(line.text)</span>
+
+<span class="s s-Atom">                        content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;] = &#39;\n&#39;.join(finalText)</span>
+
+<span class="s s-Atom">                        content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
+
+<span class="s s-Atom">                    except:</span>
+
+<span class="s s-Atom">                        try:</span>
+
+<span class="s s-Atom">                            # read .pdf</span>
+
+<span class="s s-Atom">                            finalText = []</span>
+
+<span class="s s-Atom">                            with pdfplumber.open(filepath) as pdf:</span>
+
+<span class="s s-Atom">                                for page in pdf.pages:</span>
+
+<span class="s s-Atom">                                    finalText.append(page.extract_text())</span>
+
+<span class="s s-Atom">                                    # print(first_page.extract_text())</span>
+
+<span class="s s-Atom">                            content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;] = &#39;\n&#39;.join(finalText)</span>
+
+<span class="s s-Atom">                            # print(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;])</span>
+
+<span class="s s-Atom">                            content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
+
+<span class="s s-Atom">                        except:</span>
+
+<span class="s s-Atom">                            pass</span>
+
+<span class="s s-Atom">                # articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
+
+<span class="s s-Atom">                text_id = title_hsah + &quot;-&quot; + content_hash</span>
+
+<span class="s s-Atom">                try:</span>
+
+<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].update({text_id: content_dict})</span>
+
+<span class="s s-Atom">                except:</span>
+
+<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;] = {}</span>
+
+<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].update({text_id: content_dict})</span>
+
+<span class="s s-Atom">            # print(list(articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].keys()))</span>
 
 <span class="s s-Atom">            # read into dataframe will automatically sort by index</span>
 
-<span class="s s-Atom">            dataframe = pd.DataFrame.from_dict(articles_dict)</span>
+<span class="s s-Atom">            dataframe = pd.DataFrame.from_dict(articles_dict).loc[list(articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].keys())]</span>
+
+<span class="s s-Atom">            # print(dataframe)</span>
 
 <span class="s s-Atom">            # because articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;] use text_id as key to update,</span>
 
