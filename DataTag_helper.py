@@ -1166,6 +1166,9 @@ def main(args=None):
                 content_dict["Author"] = ""
                 content_dict["Time"] = ""
 
+                title_hsah = hashlib.md5(content_dict['Title'].encode('utf-8')).hexdigest()[:10]
+                content_hash = ""
+
                 try:
                     # read .txt first
                     # guess encoding
@@ -1184,7 +1187,7 @@ def main(args=None):
 
                     with open(filepath, "r", encoding=detector.result["encoding"]) as f:
                         content_dict["Content"] = f.read()
-                        text_id = hashlib.md5(
+                        content_hash = hashlib.md5(
                             content_dict["Content"].encode("utf-8")
                         ).hexdigest()[:10]
                 except:
@@ -1195,6 +1198,7 @@ def main(args=None):
                         for line in doc.paragraphs:
                             finalText.append(line.text)
                         content_dict['Content'] = '\n'.join(finalText)
+                        content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                     except:
                         try:
                             # read .pdf
@@ -1205,12 +1209,13 @@ def main(args=None):
                                     # print(first_page.extract_text())
                             content_dict['Content'] = '\n'.join(finalText)
                             # print(content_dict['Content'])
-                            text_id = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+                            content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                         except:
                             pass
 
                 # articles_dict["Articles"].update({text_id: content_dict})
 
+                text_id = title_hsah + "-" + content_hash
                 try:
                     articles_dict['Articles'].update({text_id: content_dict})
                 except:
