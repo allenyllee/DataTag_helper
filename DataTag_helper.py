@@ -1149,7 +1149,7 @@ def main(args=None):
 
             for filepath in filepathes:
                 content_dict = {}
-                content_dict["Title"] = filepath.stem
+                content_dict["Title"] = str(filepath.relative_to(common_path))
                 content_dict["Content"] = ""
                 content_dict["Author"] = ""
                 content_dict["Time"] = ""
