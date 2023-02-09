@@ -48,6 +48,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from docx import Document
 from natsort import natsorted
 from collections import OrderedDict
+import pdfplumber
 
 if sys.stdout.encoding != "UTF-8":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.buffer, "strict")
@@ -1146,7 +1147,7 @@ def main(args=None):
             glob_path = Path(common_path)
 
             filename_pattern = '*/**/*.'
-            ext_list = ['txt', 'docx']
+            ext_list = ['txt', 'docx', 'pdf']
             filepathes = []
 
             for ext in ext_list:
@@ -1194,9 +1195,19 @@ def main(args=None):
                         for line in doc.paragraphs:
                             finalText.append(line.text)
                         content_dict['Content'] = '\n'.join(finalText)
-                        text_id = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                     except:
-                        pass
+                        try:
+                            # read .pdf
+                            finalText = []
+                            with pdfplumber.open(filepath) as pdf:
+                                for page in pdf.pages:
+                                    finalText.append(page.extract_text())
+                                    # print(first_page.extract_text())
+                            content_dict['Content'] = '\n'.join(finalText)
+                            # print(content_dict['Content'])
+                            text_id = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+                        except:
+                            pass
 
                 # articles_dict["Articles"].update({text_id: content_dict})
 
