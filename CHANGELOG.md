@@ -1,5 +1,11 @@
 ## changelog
 
+### v0.8.6
+
+1. exported title in json file use relative path
+
+    ![](./assets/Snipaste_2023-02-09_10-08-42.png)
+
 ### v0.8.5
 
 1. Set default selection to the first option, and move input dir that contains .txt to the first option.

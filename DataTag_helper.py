@@ -250,7 +250,7 @@ def patch_gooey_gui_component(mydict):
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
 @Gooey(
-    program_name="DataTag Helper (標註轉檔小幫手) v0.8.5",
+    program_name="DataTag Helper (標註轉檔小幫手) v0.8.6",
     navigation="TABBED",
     tabbed_groups=False,
     default_size=(525, 670),
