@@ -35,6 +35,9 @@ RUN pip3 install -r /tmp/conda-tmp/project_requirements.txt
 COPY requirements.txt /tmp/conda-tmp/
 RUN pip3 install -r /tmp/conda-tmp/requirements.txt
 
+# enable jupyter notebook
+RUN pip3 install -U ipykernel
+
 ########### Stage2 ###########
 FROM mcr.microsoft.com/devcontainers/miniconda:0-3 AS stage2_wine
 
