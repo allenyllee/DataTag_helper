@@ -127,6 +127,9 @@ RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24
 sh -c 'wine pip install wxpython==4.1.1 gooey pyinstaller==3.5 && wineserver -w' \
 && rm -f /tmp/.X*-lock
 
+# upgrade pip
+RUN wine pip install --user --upgrade pip
+
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN wine pip install -r /tmp/conda-tmp/project_requirements.txt
 
