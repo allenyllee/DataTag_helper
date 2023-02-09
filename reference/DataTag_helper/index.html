@@ -2869,7 +2869,21 @@
 <span class="normal">2166</span>
 <span class="normal">2167</span>
 <span class="normal">2168</span>
-<span class="normal">2169</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2169</span>
+<span class="normal">2170</span>
+<span class="normal">2171</span>
+<span class="normal">2172</span>
+<span class="normal">2173</span>
+<span class="normal">2174</span>
+<span class="normal">2175</span>
+<span class="normal">2176</span>
+<span class="normal">2177</span>
+<span class="normal">2178</span>
+<span class="normal">2179</span>
+<span class="normal">2180</span>
+<span class="normal">2181</span>
+<span class="normal">2182</span>
+<span class="normal">2183</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -3301,7 +3315,7 @@
 
 <span class="nd">@Gooey</span><span class="p">(</span>
 
-    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;標註轉檔小幫手 v0.8.4&quot;</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;DataTag Helper (標註轉檔小幫手) v0.8.5&quot;</span><span class="p">,</span>
 
     <span class="n">navigation</span><span class="o">=</span><span class="s2">&quot;TABBED&quot;</span><span class="p">,</span>
 
@@ -3337,11 +3351,43 @@
 
     <span class="p">)</span>
 
+    <span class="c1"># add default selection option</span>
+
+    <span class="c1"># https://github.com/chriskiehl/Gooey/issues/590#issue-650474511</span>
+
     <span class="n">mutex_sub_parser1</span> <span class="o">=</span> <span class="n">sub_parser1_1</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">(</span>
 
         <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 
-        <span class="n">gooey_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;show_border&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;show_underline&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+        <span class="n">gooey_options</span><span class="o">=</span><span class="p">{</span>
+
+            <span class="s2">&quot;show_border&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+
+            <span class="s2">&quot;show_underline&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+
+            <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+
+            <span class="s1">&#39;initial_selection&#39;</span><span class="p">:</span> <span class="mi">0</span>
+
+        <span class="p">},</span>
+
+    <span class="p">)</span>
+
+    <span class="c1">#### input txt files</span>
+
+    <span class="n">mutex_sub_parser1</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+
+        <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+
+        <span class="s2">&quot;--input-dir&quot;</span><span class="p">,</span>
+
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;dir that contains input files(.txt)&quot;</span><span class="p">,</span>
+
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;input_dir&quot;</span><span class="p">,</span>
+
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+
+        <span class="n">widget</span><span class="o">=</span><span class="s2">&quot;DirChooser&quot;</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -3400,24 +3446,6 @@
     <span class="p">)</span>
 
     <span class="n">sub_parser1_2</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">to_excel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="c1">#### input txt files</span>
-
-    <span class="n">mutex_sub_parser1</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-
-        <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
-
-        <span class="s2">&quot;--input-dir&quot;</span><span class="p">,</span>
-
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;dir that contains input files(.txt)&quot;</span><span class="p">,</span>
-
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;input_dir&quot;</span><span class="p">,</span>
-
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-
-        <span class="n">widget</span><span class="o">=</span><span class="s2">&quot;DirChooser&quot;</span><span class="p">,</span>
-
-    <span class="p">)</span>
 
     <span class="c1">### for labeled file</span>
 
