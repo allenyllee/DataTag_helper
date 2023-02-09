@@ -45,7 +45,9 @@ from openpyxl.styles import Font
 from sklearn.model_selection import StratifiedShuffleSplit
 
 # from lib.AIClerk_helper import to_AI_clerk_batch_upload_json
-
+from docx import Document
+from natsort import natsorted
+from collections import OrderedDict
 
 if sys.stdout.encoding != "UTF-8":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.buffer, "strict")
@@ -1136,16 +1138,25 @@ def main(args=None):
             common_path = Path(args.input_dir)
             print("input path:", common_path)
 
-            filename_pattern = "*/**/*.txt"
             save_path = (
                 Path(common_path).with_name(Path(common_path).stem).with_suffix(".json")
             )
             print("output path:", save_path)
 
             glob_path = Path(common_path)
-            filepathes = glob_path.glob(filename_pattern)
 
-            articles_dict = defaultdict(dict)
+            filename_pattern = '*/**/*.'
+            ext_list = ['txt', 'docx']
+            filepathes = []
+
+            for ext in ext_list:
+                filename_pattern_ext = filename_pattern + ext
+                filepathes += glob_path.glob(filename_pattern_ext)
+
+            filepathes = natsorted(filepathes, key=str)
+            # print(filepathes)
+
+            articles_dict = OrderedDict()
 
             for filepath in filepathes:
                 content_dict = {}
@@ -1154,30 +1165,52 @@ def main(args=None):
                 content_dict["Author"] = ""
                 content_dict["Time"] = ""
 
-                # guess encoding
-                # Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow
-                # https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin
-                # Usage — chardet 5.0.0dev0 documentation
-                # https://chardet.readthedocs.io/en/latest/usage.html
-                detector = UniversalDetector()
-                detector.reset()
-                for line in open(filepath, "rb"):
-                    detector.feed(line)
-                    if detector.done:
-                        break
-                detector.close()
-                # print(detector.result)
+                try:
+                    # read .txt first
+                    # guess encoding
+                    # Is there a Python library function which attempts to guess the character-encoding of some bytes? - Stack Overflow
+                    # https://stackoverflow.com/questions/269060/is-there-a-python-library-function-which-attempts-to-guess-the-character-encodin
+                    # Usage — chardet 5.0.0dev0 documentation
+                    # https://chardet.readthedocs.io/en/latest/usage.html
+                    detector = UniversalDetector()
+                    detector.reset()
+                    for line in open(filepath, "rb"):
+                        detector.feed(line)
+                        if detector.done:
+                            break
+                    detector.close()
+                    # print(detector.result)
 
-                with open(filepath, "r", encoding=detector.result["encoding"]) as f:
-                    content_dict["Content"] = f.read()
-                    text_id = hashlib.md5(
-                        content_dict["Content"].encode("utf-8")
-                    ).hexdigest()[:10]
+                    with open(filepath, "r", encoding=detector.result["encoding"]) as f:
+                        content_dict["Content"] = f.read()
+                        text_id = hashlib.md5(
+                            content_dict["Content"].encode("utf-8")
+                        ).hexdigest()[:10]
+                except:
+                    try:
+                        # read .docx
+                        doc = Document(filepath)
+                        finalText = []
+                        for line in doc.paragraphs:
+                            finalText.append(line.text)
+                        content_dict['Content'] = '\n'.join(finalText)
+                        text_id = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+                    except:
+                        pass
 
-                articles_dict["Articles"].update({text_id: content_dict})
+                # articles_dict["Articles"].update({text_id: content_dict})
+
+                try:
+                    articles_dict['Articles'].update({text_id: content_dict})
+                except:
+                    articles_dict['Articles'] = {}
+                    articles_dict['Articles'].update({text_id: content_dict})
+
+            # print(list(articles_dict['Articles'].keys()))
 
             # read into dataframe will automatically sort by index
-            dataframe = pd.DataFrame.from_dict(articles_dict)
+            dataframe = pd.DataFrame.from_dict(articles_dict).loc[list(articles_dict['Articles'].keys())]
+            # print(dataframe)
 
             # because articles_dict['Articles'] use text_id as key to update,
             # if there were duplicate text_id, it'll replace by later items.
