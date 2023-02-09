@@ -1,6 +1,6 @@
 [tool.portray]
 name = "DataTag_helper"
-version = "0.8.6"
+version = "0.8.7"
 description = ""
 authors = ["Allen Lee <allen7575@gmail.com>"]
 license = "MIT"

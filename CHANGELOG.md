@@ -1,5 +1,11 @@
 ## changelog
 
+### v0.8.7
+
+1. add .docx support
+2. add .pdf support
+3. Support duplicate content by using title_hash - content_hash as TextID
+
 ### v0.8.6
 
 1. exported title in json file use relative path
