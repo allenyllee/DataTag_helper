@@ -105,3 +105,49 @@ def test_excel_to_json_1():
 
     os.remove(output_path)
     os.remove(output_path2)
+
+
+def test_excel_to_json_2():
+    """
+    test excel to json function for excel欄位測試2.xlsx
+    """
+    print("test_directory", test_directory)
+    test_file_path = test_directory / "input_data/excel轉檔測試/excel欄位測試2.xlsx"
+    DataTag_helper.main(["original", "-i", str(test_file_path)])
+    output_path = test_directory / "input_data/excel轉檔測試/excel欄位測試2_demojilized.json"
+    output_path2 = test_directory / "input_data/excel轉檔測試/excel欄位測試2_TextID_mapping.xlsx"
+    expect_path = test_directory / "expect_result/excel轉檔測試/excel欄位測試2_demojilized.json"
+    expect_path2 = test_directory / "expect_result/excel轉檔測試/excel欄位測試2_TextID_mapping.xlsx"
+
+    assert filecmp.cmp(output_path, expect_path)
+
+    # check mapping id
+    output_df = pd.read_excel(output_path2, index_col=0, engine="openpyxl")
+    expect_df = pd.read_excel(expect_path2, index_col=0, engine="openpyxl")
+
+    diff_bool = output_df != expect_df
+    difference_output_df = output_df[diff_bool].dropna(how='all')
+    difference_expect_df = expect_df[diff_bool].dropna(how='all')
+    diff_index = difference_output_df.index
+    print(diff_index)
+
+    if len(difference_output_df) != 0:
+        with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', 1000):
+            print(diff_bool)
+            print("difference in output_df")
+            print(difference_output_df)
+            print("difference in expect_df")
+            print(difference_expect_df)
+            print("diff TextID:")
+            print(output_df.loc[diff_index])
+            # diff = difflib.ndiff(difference_output_df['content'].iloc[0], difference_expect_df['content'].iloc[0])
+            # delta = ''.join(x[2:] for x in diff if x.startswith('- '))
+            # print(delta)
+
+
+    assert len(difference_output_df) == 0
+
+
+    os.remove(output_path)
+    os.remove(output_path2)
+

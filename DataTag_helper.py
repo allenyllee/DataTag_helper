@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Thursday, February 9th 2023, 3:56:23 pm
+# Last Modified: Thursday, January 1st 1970, 12:00:00 am
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -512,10 +512,16 @@ def clean_data(df):
         df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + "/" + x.Gender, axis=1)
     except:
         try:
-            df_cleaned["Author"] = df_cleaned["Author"]
+            df_cleaned["Author"] = df_cleaned["Poster"]
         except:
             df_cleaned["Author"] = None
 
+
+    try:
+        df_cleaned['Date'] = df_cleaned['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
+        df_cleaned['Time'] = df_cleaned['Time'].apply(lambda x: x.strftime('%H:%M:%S'))
+    except:
+        pass
 
     try:
         df_cleaned["Time"] = df_cleaned.apply(
@@ -1085,6 +1091,12 @@ def main(args=None):
         if args.input_file:
             common_filename = Path(args.input_file)
             df = pd.read_excel(args.input_file, engine="openpyxl")
+
+            df.columns = df.columns.str.capitalize()
+            # print(df.columns)
+
+            df.dropna(subset=['Content'], inplace=True)
+
             df["TextID"] = get_TextID(df[["Content"]])
 
             if args.emojilize:
