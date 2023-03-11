@@ -2971,7 +2971,51 @@
 <span class="normal">2268</span>
 <span class="normal">2269</span>
 <span class="normal">2270</span>
-<span class="normal">2271</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2271</span>
+<span class="normal">2272</span>
+<span class="normal">2273</span>
+<span class="normal">2274</span>
+<span class="normal">2275</span>
+<span class="normal">2276</span>
+<span class="normal">2277</span>
+<span class="normal">2278</span>
+<span class="normal">2279</span>
+<span class="normal">2280</span>
+<span class="normal">2281</span>
+<span class="normal">2282</span>
+<span class="normal">2283</span>
+<span class="normal">2284</span>
+<span class="normal">2285</span>
+<span class="normal">2286</span>
+<span class="normal">2287</span>
+<span class="normal">2288</span>
+<span class="normal">2289</span>
+<span class="normal">2290</span>
+<span class="normal">2291</span>
+<span class="normal">2292</span>
+<span class="normal">2293</span>
+<span class="normal">2294</span>
+<span class="normal">2295</span>
+<span class="normal">2296</span>
+<span class="normal">2297</span>
+<span class="normal">2298</span>
+<span class="normal">2299</span>
+<span class="normal">2300</span>
+<span class="normal">2301</span>
+<span class="normal">2302</span>
+<span class="normal">2303</span>
+<span class="normal">2304</span>
+<span class="normal">2305</span>
+<span class="normal">2306</span>
+<span class="normal">2307</span>
+<span class="normal">2308</span>
+<span class="normal">2309</span>
+<span class="normal">2310</span>
+<span class="normal">2311</span>
+<span class="normal">2312</span>
+<span class="normal">2313</span>
+<span class="normal">2314</span>
+<span class="normal">2315</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -3833,13 +3877,51 @@
 
     <span class="n">df_cleaned</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;TextID&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Poster</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">Gender</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
 
-    <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Poster</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">Gender</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Time</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="k">except</span><span class="p">:</span>
 
-    <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Poster&quot;</span><span class="p">]</span>
+
+        <span class="k">except</span><span class="p">:</span>
+
+            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">))</span>
+
+    <span class="k">except</span><span class="p">:</span>
+
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Time</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Date</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+
+            <span class="p">)</span>
+
+        <span class="k">except</span><span class="p">:</span>
+
+            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">df_cleaned</span>
 
@@ -4771,6 +4853,12 @@
 
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;openpyxl&quot;</span><span class="p">)</span>
 
+            <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+
+            <span class="c1"># print(df.columns)</span>
+
+            <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
             <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_TextID</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Content&quot;</span><span class="p">]])</span>
 
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">emojilize</span><span class="p">:</span>
@@ -5288,13 +5376,51 @@
 
 <span class="w">    </span><span class="n">df_cleaned</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">sort_values</span><span class="p">(</span><span class="ss">&quot;TextID&quot;</span><span class="p">).</span><span class="n">reset_index</span><span class="p">(</span><span class="k">drop</span><span class="o">=</span><span class="k">True</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Poster</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Gender</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Poster</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Gender</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Date</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Time</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Poster&quot;</span><span class="o">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Date&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Date&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-%d&#39;</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Time&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Time&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">    </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">pass</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Date</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Time</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Date</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">None</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">df_cleaned</span><span class="w"></span>
 </code></pre></div>
@@ -5548,6 +5674,12 @@
 <span class="s s-Atom">            common_filename = Path(args.input_file)</span>
 
 <span class="s s-Atom">            df = pd.read_excel(args.input_file, engine=&quot;openpyxl&quot;)</span>
+
+<span class="s s-Atom">            df.columns = df.columns.str.capitalize()</span>
+
+<span class="s s-Atom">            # print(df.columns)</span>
+
+<span class="s s-Atom">            df.dropna(subset=[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;], inplace=True)</span>
 
 <span class="s s-Atom">            df[&quot;TextID&quot;] = get_TextID(df[[&quot;Content&quot;]])</span>
 
