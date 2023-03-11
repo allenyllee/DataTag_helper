@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Thursday, January 1st 1970, 12:00:00 am
+# Last Modified: Thursday, February 9th 2023, 3:56:23 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -508,10 +508,26 @@ def clean_data(df):
     # print(df_cleaned.head())
     df_cleaned = df_cleaned.sort_values("TextID").reset_index(drop=True)
 
-    df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + "/" + x.Gender, axis=1)
-    df_cleaned["Time"] = df_cleaned.apply(
-        lambda x: str(x.Date) + "/" + str(x.Time), axis=1
-    )
+    try:
+        df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + "/" + x.Gender, axis=1)
+    except:
+        try:
+            df_cleaned["Author"] = df_cleaned["Author"]
+        except:
+            df_cleaned["Author"] = None
+
+
+    try:
+        df_cleaned["Time"] = df_cleaned.apply(
+            lambda x: str(x.Date) + "/" + str(x.Time), axis=1
+        )
+    except:
+        try:
+            df_cleaned["Time"] = df_cleaned.apply(
+                lambda x: str(x.Date), axis=1
+            )
+        except:
+            df_cleaned["Time"] = None
 
     return df_cleaned
 
