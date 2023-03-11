@@ -1,5 +1,32 @@
 ## changelog
 
+### v0.8.8
+
+1. add excel to json support
+
+    ![excel_column](./assets/excel_column.png)
+
+    Title 就是文章標題，
+    Poster 為發文者，
+    Gender 發文者為性別，
+    Date 為日期(年月日)，
+    Time 為時間(時分秒)，
+    Content 為文章內容
+
+    轉出來的 json 檔，會變成四個欄位：
+    Title, Content, Author, Time
+
+    Poster 跟 Gender 會合併為 Author
+    Date 跟 Time 會合併為 Time
+
+    如下所示：
+    ```json
+    "Title": "Irure incididunt ipsum velit anim amet occaecat elit esse cillum amet excepteur.",
+    "Content": "Ex veniam ad cupidatat nostrud excepteur in ipsum. Cupidatat Lorem duis ipsum laboris sit ex sunt ea dolore cupidatat sint consectetur duis. Dolor dolore esse ullamco excepteur consectetur eiusmod sit. Irure reprehenderit pariatur et laboris. Dolor incididunt nulla voluptate magna enim duis occaecat mollit dolor Lorem enim anim pariatur.",
+    "Author": "匿名/女",
+    "Time": "2019-07-02/16:45:17"
+    ```
+
 ### v0.8.7
 
 1. add .docx support
