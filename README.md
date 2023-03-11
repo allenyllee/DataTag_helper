@@ -326,6 +326,13 @@ Run test with print messages
 pytest -s
 ```
 
+Run single test function
+
+```sh
+pytest test_DataTag_helper.py::test_txt_to_json_2
+```
+
+
 How to test with cli? see: [Build and Test a Command Line Interface with Poetry, Python's argparse, and pytest - DEV Community 👩‍💻👨‍💻](https://dev.to/bowmanjd/build-and-test-a-command-line-interface-with-poetry-python-s-argparse-and-pytest-4gab)
 
 ## References
