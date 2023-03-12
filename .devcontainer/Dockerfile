@@ -26,8 +26,7 @@ SHELL ["conda", "run", "--no-capture-output", "-n", "DataTag_helper", "/bin/bash
 # # https://github.com/wxWidgets/Phoenix/issues/2225#issuecomment-1243871941
 RUN conda install -c conda-forge -y wxpython==4.1.1 \
     && pip3 install psutil==5.9.3 \
-    && pip3 install gooey \
-    && pip3 install pyinstaller==3.5
+    && pip3 install gooey
 
 COPY project_requirements.txt /tmp/conda-tmp/
 RUN pip3 install -r /tmp/conda-tmp/project_requirements.txt
@@ -60,7 +59,7 @@ RUN apt update \
     && wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key \
     && wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources \
     && apt update \
-    && apt install -y --install-recommends winehq-devel \
+    && apt install -y --install-recommends winehq-devel=8.3~bullseye-1 \
     && apt install --fix-missing -y xvfb \
     && apt install -y binutils libc6
 
@@ -124,7 +123,7 @@ sh -c 'wine pip install psutil==5.9.3 && wineserver -w' \
 
 # https://github.com/wxWidgets/Phoenix/issues/2225#issuecomment-1243871941
 RUN xvfb-run --server-num=99 -e /dev/stdout --server-args="-screen 0 1024x768x24 -nolisten unix" \
-sh -c 'wine pip install wxpython==4.1.1 gooey pyinstaller==3.5 && wineserver -w' \
+sh -c 'wine pip install wxpython==4.1.1 gooey && wineserver -w' \
 && rm -f /tmp/.X*-lock
 
 # upgrade pip

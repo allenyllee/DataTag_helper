@@ -9,3 +9,4 @@ chardet>=4.0.0
 python-docx>=0.8.11
 natsort>=8.2.0
 pdfplumber>=0.6.0
+pyinstaller==4.10
