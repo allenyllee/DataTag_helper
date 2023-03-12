@@ -1,5 +1,10 @@
 ## changelog
 
+### v0.8.9
+
+1. Support duplicate content by using title_hash - content_hash as TextID in excel file
+
+
 ### v0.8.8
 
 1. add excel to json support
