@@ -262,6 +262,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v088" class="md-nav__link">
+    v0.8.8
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v087" class="md-nav__link">
     v0.8.7
   </a>
@@ -578,6 +585,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v088" class="md-nav__link">
+    v0.8.8
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v087" class="md-nav__link">
     v0.8.7
   </a>
@@ -721,6 +735,29 @@
                   <h1>Changelog</h1>
                 
                 <h2 id="changelog">changelog</h2>
+<h3 id="v088">v0.8.8</h3>
+<ol>
+<li>
+<p>add excel to json support</p>
+<p><img alt="excel_column" src="../assets/excel_column.png" /></p>
+<p>Title 就是文章標題，
+Poster 為發文者，
+Gender 發文者為性別，
+Date 為日期(年月日)，
+Time 為時間(時分秒)，
+Content 為文章內容</p>
+<p>轉出來的 json 檔，會變成四個欄位：
+Title, Content, Author, Time</p>
+<p>Poster 跟 Gender 會合併為 Author
+Date 跟 Time 會合併為 Time</p>
+<p>如下所示：
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;Title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Irure incididunt ipsum velit anim amet occaecat elit esse cillum amet excepteur.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;Content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ex veniam ad cupidatat nostrud excepteur in ipsum. Cupidatat Lorem duis ipsum laboris sit ex sunt ea dolore cupidatat sint consectetur duis. Dolor dolore esse ullamco excepteur consectetur eiusmod sit. Irure reprehenderit pariatur et laboris. Dolor incididunt nulla voluptate magna enim duis occaecat mollit dolor Lorem enim anim pariatur.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;Author&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;匿名/女&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;Time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2019-07-02/16:45:17&quot;</span><span class="w"></span>
+</code></pre></div></p>
+</li>
+</ol>
 <h3 id="v087">v0.8.7</h3>
 <ol>
 <li>add .docx support</li>
