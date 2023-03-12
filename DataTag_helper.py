@@ -483,8 +483,16 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
 
 
 def get_TextID(df):
+    def hash_plus(df):
+        title_hsah = hashlib.md5(df['Title'].encode('utf-8')).hexdigest()[:10]
+        content_hash = hashlib.md5(
+            df["Content"].encode("utf-8")
+        ).hexdigest()[:10]
+
+        return  title_hsah + "-" + content_hash
+
     return df.apply(
-        lambda x: hashlib.md5(x[0].encode("utf-8")).hexdigest()[:10], axis=1
+        lambda x: hash_plus(x), axis=1
     )
 
 
@@ -1097,7 +1105,7 @@ def main(args=None):
 
             df.dropna(subset=['Content'], inplace=True)
 
-            df["TextID"] = get_TextID(df[["Content"]])
+            df["TextID"] = get_TextID(df[["Title", "Content"]])
 
             if args.emojilize:
                 # df = clean_data(df)
@@ -1135,7 +1143,7 @@ def main(args=None):
             df_remove_emoji_text = df_remove_emoji_text.applymap(
                 lambda x: pattern2.sub("%", x) if isinstance(x, str) else x
             )
-            df["TextID(processed)"] = get_TextID(df_remove_emoji_text[["Content"]])
+            df["TextID(processed)"] = get_TextID(df_remove_emoji_text[["Title", "Content"]])
 
             if args.to_excel:
                 output_filename = new_filename.with_suffix(".xlsx")
