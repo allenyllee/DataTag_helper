@@ -3021,13 +3021,7 @@
 <span class="normal">2318</span>
 <span class="normal">2319</span>
 <span class="normal">2320</span>
-<span class="normal">2321</span>
-<span class="normal">2322</span>
-<span class="normal">2323</span>
-<span class="normal">2324</span>
-<span class="normal">2325</span>
-<span class="normal">2326</span>
-<span class="normal">2327</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2321</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -3853,23 +3847,15 @@
 
 <span class="k">def</span> <span class="nf">get_TextID</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">hash_plus</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 
-        <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
 
-        <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 
-        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
-
-        <span class="k">return</span>  <span class="n">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">content_hash</span>
-
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-
-        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">hash_plus</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">content_hash</span>
 
 <span class="c1"># ### 清理資料格式</span>
 
@@ -4883,7 +4869,7 @@
 
             <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_TextID</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Content&quot;</span><span class="p">]])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_TextID</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">emojilize</span><span class="p">:</span>
 
@@ -4949,7 +4935,7 @@
 
             <span class="p">)</span>
 
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID(processed)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_TextID</span><span class="p">(</span><span class="n">df_remove_emoji_text</span><span class="p">[[</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Content&quot;</span><span class="p">]])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID(processed)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_remove_emoji_text</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_TextID</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">to_excel</span><span class="p">:</span>
 
@@ -5045,9 +5031,9 @@
 
                 <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-                <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+                <span class="c1"># title_hsah = hashlib.md5(content_dict[&#39;Title&#39;].encode(&#39;utf-8&#39;)).hexdigest()[:10]</span>
 
-                <span class="n">content_hash</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="c1"># content_hash = &quot;&quot;</span>
 
                 <span class="k">try</span><span class="p">:</span>
 
@@ -5083,11 +5069,11 @@
 
                         <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-                        <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+                        <span class="c1"># content_hash = hashlib.md5(</span>
 
-                            <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                        <span class="c1">#     content_dict[&quot;Content&quot;].encode(&quot;utf-8&quot;)</span>
 
-                        <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+                        <span class="c1"># ).hexdigest()[:10]</span>
 
                 <span class="k">except</span><span class="p">:</span>
 
@@ -5105,7 +5091,7 @@
 
                         <span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
 
-                        <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+                        <span class="c1"># content_hash = hashlib.md5(content_dict[&#39;Content&#39;].encode(&#39;utf-8&#39;)).hexdigest()[:10]</span>
 
                     <span class="k">except</span><span class="p">:</span>
 
@@ -5127,7 +5113,7 @@
 
                             <span class="c1"># print(content_dict[&#39;Content&#39;])</span>
 
-                            <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+                            <span class="c1"># content_hash = hashlib.md5(content_dict[&#39;Content&#39;].encode(&#39;utf-8&#39;)).hexdigest()[:10]</span>
 
                         <span class="k">except</span><span class="p">:</span>
 
@@ -5135,7 +5121,9 @@
 
                 <span class="c1"># articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
 
-                <span class="n">text_id</span> <span class="o">=</span> <span class="n">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">content_hash</span>
+                <span class="c1"># text_id = title_hsah + &quot;-&quot; + content_hash</span>
+
+                <span class="n">text_id</span> <span class="o">=</span> <span class="n">get_TextID</span><span class="p">(</span><span class="n">content_dict</span><span class="p">)</span>
 
                 <span class="k">try</span><span class="p">:</span>
 
@@ -5614,23 +5602,15 @@
 </code></pre></div>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_TextID</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
 
-    <span class="nv">def</span> <span class="nv">hash_plus</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
+    <span class="nv">title_hsah</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">df</span>[<span class="s1">&#39;</span><span class="s">Title</span><span class="s1">&#39;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
 
-        <span class="nv">title_hsah</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">df</span>[<span class="s1">&#39;</span><span class="s">Title</span><span class="s1">&#39;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
+    <span class="nv">content_hash</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span>
 
-        <span class="nv">content_hash</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span>
+        <span class="nv">df</span>[<span class="s2">&quot;</span><span class="s">Content</span><span class="s2">&quot;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span>
 
-            <span class="nv">df</span>[<span class="s2">&quot;</span><span class="s">Content</span><span class="s2">&quot;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span>
+    <span class="ss">)</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
 
-        <span class="ss">)</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
-
-        <span class="k">return</span>  <span class="nv">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">-</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">content_hash</span>
-
-    <span class="k">return</span> <span class="nv">df</span>.<span class="nv">apply</span><span class="ss">(</span>
-
-        <span class="nv">lambda</span> <span class="nv">x</span>: <span class="nv">hash_plus</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>, <span class="nv">axis</span><span class="o">=</span><span class="mi">1</span>
-
-    <span class="ss">)</span>
+    <span class="k">return</span> <span class="nv">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">-</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">content_hash</span>
 </code></pre></div>
 
 </details>
@@ -5717,7 +5697,7 @@
 
 <span class="s s-Atom">            df.dropna(subset=[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;], inplace=True)</span>
 
-<span class="s s-Atom">            df[&quot;TextID&quot;] = get_TextID(df[[&quot;Title&quot;, &quot;Content&quot;]])</span>
+<span class="s s-Atom">            df[&quot;TextID&quot;] = df.apply(get_TextID, axis=1)</span>
 
 <span class="s s-Atom">            if args.emojilize:</span>
 
@@ -5783,7 +5763,7 @@
 
 <span class="s s-Atom">            )</span>
 
-<span class="s s-Atom">            df[&quot;TextID(processed)&quot;] = get_TextID(df_remove_emoji_text[[&quot;Title&quot;, &quot;Content&quot;]])</span>
+<span class="s s-Atom">            df[&quot;TextID(processed)&quot;] = df_remove_emoji_text.apply(get_TextID, axis=1)</span>
 
 <span class="s s-Atom">            if args.to_excel:</span>
 
@@ -5879,9 +5859,9 @@
 
 <span class="s s-Atom">                content_dict[&quot;Time&quot;] = &quot;&quot;</span>
 
-<span class="s s-Atom">                title_hsah = hashlib.md5(content_dict[&#39;</span><span class="nv">Title</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
+<span class="s s-Atom">                # title_hsah = hashlib.md5(content_dict[&#39;</span><span class="nv">Title</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
 
-<span class="s s-Atom">                content_hash = &quot;&quot;</span>
+<span class="s s-Atom">                # content_hash = &quot;&quot;</span>
 
 <span class="s s-Atom">                try:</span>
 
@@ -5917,11 +5897,11 @@
 
 <span class="s s-Atom">                        content_dict[&quot;Content&quot;] = f.read()</span>
 
-<span class="s s-Atom">                        content_hash = hashlib.md5(</span>
+<span class="s s-Atom">                        # content_hash = hashlib.md5(</span>
 
-<span class="s s-Atom">                            content_dict[&quot;Content&quot;].encode(&quot;utf-8&quot;)</span>
+<span class="s s-Atom">                        #     content_dict[&quot;Content&quot;].encode(&quot;utf-8&quot;)</span>
 
-<span class="s s-Atom">                        ).hexdigest()[:10]</span>
+<span class="s s-Atom">                        # ).hexdigest()[:10]</span>
 
 <span class="s s-Atom">                except:</span>
 
@@ -5939,7 +5919,7 @@
 
 <span class="s s-Atom">                        content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;] = &#39;\n&#39;.join(finalText)</span>
 
-<span class="s s-Atom">                        content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
+<span class="s s-Atom">                        # content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
 
 <span class="s s-Atom">                    except:</span>
 
@@ -5961,7 +5941,7 @@
 
 <span class="s s-Atom">                            # print(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;])</span>
 
-<span class="s s-Atom">                            content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
+<span class="s s-Atom">                            # content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
 
 <span class="s s-Atom">                        except:</span>
 
@@ -5969,7 +5949,9 @@
 
 <span class="s s-Atom">                # articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
 
-<span class="s s-Atom">                text_id = title_hsah + &quot;-&quot; + content_hash</span>
+<span class="s s-Atom">                # text_id = title_hsah + &quot;-&quot; + content_hash</span>
+
+<span class="s s-Atom">                text_id = get_TextID(content_dict)</span>
 
 <span class="s s-Atom">                try:</span>
 
