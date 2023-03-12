@@ -483,17 +483,12 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
 
 
 def get_TextID(df):
-    def hash_plus(df):
-        title_hsah = hashlib.md5(df['Title'].encode('utf-8')).hexdigest()[:10]
-        content_hash = hashlib.md5(
-            df["Content"].encode("utf-8")
-        ).hexdigest()[:10]
+    title_hsah = hashlib.md5(df['Title'].encode('utf-8')).hexdigest()[:10]
+    content_hash = hashlib.md5(
+        df["Content"].encode("utf-8")
+    ).hexdigest()[:10]
 
-        return  title_hsah + "-" + content_hash
-
-    return df.apply(
-        lambda x: hash_plus(x), axis=1
-    )
+    return title_hsah + "-" + content_hash
 
 
 # ### 清理資料格式
@@ -1105,7 +1100,7 @@ def main(args=None):
 
             df.dropna(subset=['Content'], inplace=True)
 
-            df["TextID"] = get_TextID(df[["Title", "Content"]])
+            df["TextID"] = df.apply(get_TextID, axis=1)
 
             if args.emojilize:
                 # df = clean_data(df)
@@ -1143,7 +1138,7 @@ def main(args=None):
             df_remove_emoji_text = df_remove_emoji_text.applymap(
                 lambda x: pattern2.sub("%", x) if isinstance(x, str) else x
             )
-            df["TextID(processed)"] = get_TextID(df_remove_emoji_text[["Title", "Content"]])
+            df["TextID(processed)"] = df_remove_emoji_text.apply(get_TextID, axis=1)
 
             if args.to_excel:
                 output_filename = new_filename.with_suffix(".xlsx")
@@ -1202,8 +1197,8 @@ def main(args=None):
                 content_dict["Author"] = ""
                 content_dict["Time"] = ""
 
-                title_hsah = hashlib.md5(content_dict['Title'].encode('utf-8')).hexdigest()[:10]
-                content_hash = ""
+                # title_hsah = hashlib.md5(content_dict['Title'].encode('utf-8')).hexdigest()[:10]
+                # content_hash = ""
 
                 try:
                     # read .txt first
@@ -1223,9 +1218,9 @@ def main(args=None):
 
                     with open(filepath, "r", encoding=detector.result["encoding"]) as f:
                         content_dict["Content"] = f.read()
-                        content_hash = hashlib.md5(
-                            content_dict["Content"].encode("utf-8")
-                        ).hexdigest()[:10]
+                        # content_hash = hashlib.md5(
+                        #     content_dict["Content"].encode("utf-8")
+                        # ).hexdigest()[:10]
                 except:
                     try:
                         # read .docx
@@ -1234,7 +1229,7 @@ def main(args=None):
                         for line in doc.paragraphs:
                             finalText.append(line.text)
                         content_dict['Content'] = '\n'.join(finalText)
-                        content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+                        # content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                     except:
                         try:
                             # read .pdf
@@ -1245,13 +1240,15 @@ def main(args=None):
                                     # print(first_page.extract_text())
                             content_dict['Content'] = '\n'.join(finalText)
                             # print(content_dict['Content'])
-                            content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
+                            # content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                         except:
                             pass
 
                 # articles_dict["Articles"].update({text_id: content_dict})
 
-                text_id = title_hsah + "-" + content_hash
+                # text_id = title_hsah + "-" + content_hash
+                text_id = get_TextID(content_dict)
+
                 try:
                     articles_dict['Articles'].update({text_id: content_dict})
                 except:
