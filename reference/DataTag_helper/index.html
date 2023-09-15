@@ -3053,7 +3053,9 @@
 <span class="normal">2350</span>
 <span class="normal">2351</span>
 <span class="normal">2352</span>
-<span class="normal">2353</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2353</span>
+<span class="normal">2354</span>
+<span class="normal">2355</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -3129,25 +3131,23 @@
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+<span class="kn">import</span> <span class="nn">pdfplumber</span>
+
 <span class="kn">from</span> <span class="nn">chardet.universaldetector</span> <span class="kn">import</span> <span class="n">UniversalDetector</span>
-
-<span class="c1"># import argparse</span>
-
-<span class="kn">from</span> <span class="nn">gooey</span> <span class="kn">import</span> <span class="n">Gooey</span><span class="p">,</span> <span class="n">GooeyParser</span>
-
-<span class="kn">from</span> <span class="nn">openpyxl.styles</span> <span class="kn">import</span> <span class="n">Font</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedShuffleSplit</span>
 
 <span class="c1"># from lib.AIClerk_helper import to_AI_clerk_batch_upload_json</span>
 
 <span class="kn">from</span> <span class="nn">docx</span> <span class="kn">import</span> <span class="n">Document</span>
 
+<span class="c1"># import argparse</span>
+
+<span class="kn">from</span> <span class="nn">gooey</span> <span class="kn">import</span> <span class="n">Gooey</span><span class="p">,</span> <span class="n">GooeyParser</span>
+
 <span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">openpyxl.styles</span> <span class="kn">import</span> <span class="n">Font</span>
 
-<span class="kn">import</span> <span class="nn">pdfplumber</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedShuffleSplit</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">encoding</span> <span class="o">!=</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">:</span>
 
@@ -3545,7 +3545,7 @@
 
             <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 
-            <span class="s1">&#39;initial_selection&#39;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="s2">&quot;initial_selection&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
 
         <span class="p">},</span>
 
@@ -3879,13 +3879,9 @@
 
 <span class="k">def</span> <span class="nf">get_TextID</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 
-    <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">title_hsah</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 
-    <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
-
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
-
-    <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">content_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">content_hash</span>
 
@@ -3921,7 +3917,11 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Poster</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">Gender</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Poster</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">Gender</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="p">)</span>
 
     <span class="k">except</span><span class="p">:</span>
 
@@ -3935,9 +3935,9 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">))</span>
 
-        <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">))</span>
+        <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">))</span>
 
     <span class="k">except</span><span class="p">:</span>
 
@@ -3955,11 +3955,7 @@
 
         <span class="k">try</span><span class="p">:</span>
 
-            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-
-                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Date</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-
-            <span class="p">)</span>
+            <span class="n">df_cleaned</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Date</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">except</span><span class="p">:</span>
 
@@ -4279,7 +4275,11 @@
 
     <span class="c1">########### extract document label #############</span>
 
-    <span class="n">df_document_label</span><span class="p">,</span> <span class="n">document_label_option_columns_list</span> <span class="o">=</span> <span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;Summary&quot;</span><span class="p">)</span>
+    <span class="n">df_document_label</span><span class="p">,</span> <span class="n">document_label_option_columns_list</span> <span class="o">=</span> <span class="n">extract_dict_of_list</span><span class="p">(</span>
+
+        <span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;Summary&quot;</span>
+
+    <span class="p">)</span>
 
     <span class="c1">########### extract ArticleTag #############</span>
 
@@ -4705,7 +4705,7 @@
 
         <span class="n">df_sent_doc_cmp</span><span class="p">,</span>
 
-        <span class="n">df_article_tag</span>
+        <span class="n">df_article_tag</span><span class="p">,</span>
 
     <span class="p">)</span>
 
@@ -4863,7 +4863,7 @@
 
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
 
-        <span class="n">mydict_test</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;global_choies&quot;</span><span class="p">:[]}</span>
+        <span class="n">mydict_test</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;global_choies&quot;</span><span class="p">:</span> <span class="p">[]}</span>
 
         <span class="c1">## How to strip decorators from a function in Python - Stack Overflow</span>
 
@@ -4931,7 +4931,7 @@
 
             <span class="c1"># print(df.columns)</span>
 
-            <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_TextID</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -5065,9 +5065,9 @@
 
             <span class="n">glob_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">common_path</span><span class="p">)</span>
 
-            <span class="n">filename_pattern</span> <span class="o">=</span> <span class="s1">&#39;*/**/*.&#39;</span>
+            <span class="n">filename_pattern</span> <span class="o">=</span> <span class="s2">&quot;*/**/*.&quot;</span>
 
-            <span class="n">ext_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;txt&#39;</span><span class="p">,</span> <span class="s1">&#39;docx&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">]</span>
+            <span class="n">ext_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="s2">&quot;docx&quot;</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">]</span>
 
             <span class="n">filepathes</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -5153,7 +5153,7 @@
 
                             <span class="n">finalText</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
-                        <span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
+                        <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
 
                         <span class="c1"># content_hash = hashlib.md5(content_dict[&#39;Content&#39;].encode(&#39;utf-8&#39;)).hexdigest()[:10]</span>
 
@@ -5173,7 +5173,7 @@
 
                                     <span class="c1"># print(first_page.extract_text())</span>
 
-                            <span class="n">content_dict</span><span class="p">[</span><span class="s1">&#39;Content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
+                            <span class="n">content_dict</span><span class="p">[</span><span class="s2">&quot;Content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">finalText</span><span class="p">)</span>
 
                             <span class="c1"># print(content_dict[&#39;Content&#39;])</span>
 
@@ -5191,19 +5191,23 @@
 
                 <span class="k">try</span><span class="p">:</span>
 
-                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s2">&quot;Articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
 
                 <span class="k">except</span><span class="p">:</span>
 
-                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s2">&quot;Articles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-                    <span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
+                    <span class="n">articles_dict</span><span class="p">[</span><span class="s2">&quot;Articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">text_id</span><span class="p">:</span> <span class="n">content_dict</span><span class="p">})</span>
 
             <span class="c1"># print(list(articles_dict[&#39;Articles&#39;].keys()))</span>
 
             <span class="c1"># read into dataframe will automatically sort by index</span>
 
-            <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">[</span><span class="s1">&#39;Articles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+            <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+
+                <span class="nb">list</span><span class="p">(</span><span class="n">articles_dict</span><span class="p">[</span><span class="s2">&quot;Articles&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+            <span class="p">]</span>
 
             <span class="c1"># print(dataframe)</span>
 
@@ -5454,7 +5458,11 @@
 
 <span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Poster</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Gender</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Author&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Poster</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="ss">&quot;/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">Gender</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
 
@@ -5468,9 +5476,9 @@
 
 <span class="w">    </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Date&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Date&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-%d&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Date&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Date&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="ss">&quot;%Y-%m-%d&quot;</span><span class="p">))</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Time&#39;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&#39;Time&#39;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="ss">&quot;%H:%M:%S&quot;</span><span class="p">))</span><span class="w"></span>
 
 <span class="w">    </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
 
@@ -5488,11 +5496,7 @@
 
 <span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
-
-<span class="w">                </span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Date</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
-
-<span class="w">            </span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="n">df_cleaned</span><span class="o">[</span><span class="n">&quot;Time&quot;</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_cleaned</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="nl">x</span><span class="p">:</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nc">Date</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="ow">except</span><span class="err">:</span><span class="w"></span>
 
@@ -5666,13 +5670,9 @@
 </code></pre></div>
 <details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="nv">def</span> <span class="nv">get_TextID</span><span class="ss">(</span><span class="nv">df</span><span class="ss">)</span>:
 
-    <span class="nv">title_hsah</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">df</span>[<span class="s1">&#39;</span><span class="s">Title</span><span class="s1">&#39;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">utf-8</span><span class="s1">&#39;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
+    <span class="nv">title_hsah</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">df</span>[<span class="s2">&quot;</span><span class="s">Title</span><span class="s2">&quot;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
 
-    <span class="nv">content_hash</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span>
-
-        <span class="nv">df</span>[<span class="s2">&quot;</span><span class="s">Content</span><span class="s2">&quot;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">)</span>
-
-    <span class="ss">)</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
+    <span class="nv">content_hash</span> <span class="o">=</span> <span class="nv">hashlib</span>.<span class="nv">md5</span><span class="ss">(</span><span class="nv">df</span>[<span class="s2">&quot;</span><span class="s">Content</span><span class="s2">&quot;</span>].<span class="nv">encode</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">utf-8</span><span class="s2">&quot;</span><span class="ss">))</span>.<span class="nv">hexdigest</span><span class="ss">()</span>[:<span class="mi">10</span>]
 
     <span class="k">return</span> <span class="nv">title_hsah</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="s">-</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nv">content_hash</span>
 </code></pre></div>
@@ -5691,7 +5691,7 @@
 
 <span class="s s-Atom">    if args:</span>
 
-<span class="s s-Atom">        mydict_test = {&quot;global_choies&quot;:[]}</span>
+<span class="s s-Atom">        mydict_test = {&quot;global_choies&quot;: []}</span>
 
 <span class="s s-Atom">        ## How to strip decorators from a function in Python - Stack Overflow</span>
 
@@ -5759,7 +5759,7 @@
 
 <span class="s s-Atom">            # print(df.columns)</span>
 
-<span class="s s-Atom">            df.dropna(subset=[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;], inplace=True)</span>
+<span class="s s-Atom">            df.dropna(subset=[&quot;Content&quot;], inplace=True)</span>
 
 <span class="s s-Atom">            df[&quot;TextID&quot;] = df.apply(get_TextID, axis=1)</span>
 
@@ -5893,9 +5893,9 @@
 
 <span class="s s-Atom">            glob_path = Path(common_path)</span>
 
-<span class="s s-Atom">            filename_pattern = &#39;*/**/*.&#39;</span>
+<span class="s s-Atom">            filename_pattern = &quot;*/**/*.&quot;</span>
 
-<span class="s s-Atom">            ext_list = [&#39;txt&#39;, &#39;docx&#39;, &#39;pdf&#39;]</span>
+<span class="s s-Atom">            ext_list = [&quot;txt&quot;, &quot;docx&quot;, &quot;pdf&quot;]</span>
 
 <span class="s s-Atom">            filepathes = []</span>
 
@@ -5981,7 +5981,7 @@
 
 <span class="s s-Atom">                            finalText.append(line.text)</span>
 
-<span class="s s-Atom">                        content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;] = &#39;\n&#39;.join(finalText)</span>
+<span class="s s-Atom">                        content_dict[&quot;Content&quot;] = &quot;\n&quot;.join(finalText)</span>
 
 <span class="s s-Atom">                        # content_hash = hashlib.md5(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;].encode(&#39;utf</span><span class="o">-</span><span class="mi">8</span><span class="s s-Atom">&#39;)).hexdigest()[:10]</span>
 
@@ -6001,7 +6001,7 @@
 
 <span class="s s-Atom">                                    # print(first_page.extract_text())</span>
 
-<span class="s s-Atom">                            content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;] = &#39;\n&#39;.join(finalText)</span>
+<span class="s s-Atom">                            content_dict[&quot;Content&quot;] = &quot;\n&quot;.join(finalText)</span>
 
 <span class="s s-Atom">                            # print(content_dict[&#39;</span><span class="nv">Content</span><span class="s s-Atom">&#39;])</span>
 
@@ -6019,19 +6019,23 @@
 
 <span class="s s-Atom">                try:</span>
 
-<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].update({text_id: content_dict})</span>
+<span class="s s-Atom">                    articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
 
 <span class="s s-Atom">                except:</span>
 
-<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;] = {}</span>
+<span class="s s-Atom">                    articles_dict[&quot;Articles&quot;] = {}</span>
 
-<span class="s s-Atom">                    articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].update({text_id: content_dict})</span>
+<span class="s s-Atom">                    articles_dict[&quot;Articles&quot;].update({text_id: content_dict})</span>
 
 <span class="s s-Atom">            # print(list(articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].keys()))</span>
 
 <span class="s s-Atom">            # read into dataframe will automatically sort by index</span>
 
-<span class="s s-Atom">            dataframe = pd.DataFrame.from_dict(articles_dict).loc[list(articles_dict[&#39;</span><span class="nv">Articles</span><span class="s s-Atom">&#39;].keys())]</span>
+<span class="s s-Atom">            dataframe = pd.DataFrame.from_dict(articles_dict).loc[</span>
+
+<span class="s s-Atom">                list(articles_dict[&quot;Articles&quot;].keys())</span>
+
+<span class="s s-Atom">            ]</span>
 
 <span class="s s-Atom">            # print(dataframe)</span>
 
@@ -6923,7 +6927,11 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 <span class="w">    </span><span class="c1">########### extract document label #############</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label</span><span class="p">,</span><span class="w"> </span><span class="n">document_label_option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Summary&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">df_document_label</span><span class="p">,</span><span class="w"> </span><span class="n">document_label_option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict_of_list</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Summary&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">########### extract ArticleTag #############</span><span class="w"></span>
 
@@ -7349,7 +7357,7 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 <span class="w">        </span><span class="n">df_sent_doc_cmp</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_article_tag</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_article_tag</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">    </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
