@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Friday, September 15th 2023, 2:38:33 pm
+# Last Modified: Friday, September 15th 2023, 2:57:01 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -253,7 +253,7 @@ def patch_gooey_gui_component(mydict):
 
 # navigation option must be upper cased 'TABBED', instead of 'Tabbed'
 @Gooey(
-    program_name="DataTag Helper (標註轉檔小幫手) v0.8.9",
+    program_name="DataTag Helper (標註轉檔小幫手) v0.9.0",
     navigation="TABBED",
     tabbed_groups=False,
     default_size=(525, 670),

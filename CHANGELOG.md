@@ -1,5 +1,9 @@
 ## changelog
 
+### v0.9.0
+
+1. Support ArticleTag column
+
 ### v0.8.9
 
 1. Support duplicate content by using title_hash - content_hash as TextID in excel file
