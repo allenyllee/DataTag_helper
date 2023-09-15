@@ -3021,7 +3021,39 @@
 <span class="normal">2318</span>
 <span class="normal">2319</span>
 <span class="normal">2320</span>
-<span class="normal">2321</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
+<span class="normal">2321</span>
+<span class="normal">2322</span>
+<span class="normal">2323</span>
+<span class="normal">2324</span>
+<span class="normal">2325</span>
+<span class="normal">2326</span>
+<span class="normal">2327</span>
+<span class="normal">2328</span>
+<span class="normal">2329</span>
+<span class="normal">2330</span>
+<span class="normal">2331</span>
+<span class="normal">2332</span>
+<span class="normal">2333</span>
+<span class="normal">2334</span>
+<span class="normal">2335</span>
+<span class="normal">2336</span>
+<span class="normal">2337</span>
+<span class="normal">2338</span>
+<span class="normal">2339</span>
+<span class="normal">2340</span>
+<span class="normal">2341</span>
+<span class="normal">2342</span>
+<span class="normal">2343</span>
+<span class="normal">2344</span>
+<span class="normal">2345</span>
+<span class="normal">2346</span>
+<span class="normal">2347</span>
+<span class="normal">2348</span>
+<span class="normal">2349</span>
+<span class="normal">2350</span>
+<span class="normal">2351</span>
+<span class="normal">2352</span>
+<span class="normal">2353</span></pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># -*- coding:utf-8 -*-</span>
 
@@ -3037,7 +3069,7 @@
 
 <span class="c1"># -----</span>
 
-<span class="c1"># Last Modified: Thursday, January 1st 1970, 12:00:00 am</span>
+<span class="c1"># Last Modified: Friday, September 15th 2023, 2:57:01 pm</span>
 
 <span class="c1"># Modified By: Allenyl(allen7575@gmail.com)</span>
 
@@ -3461,7 +3493,7 @@
 
 <span class="nd">@Gooey</span><span class="p">(</span>
 
-    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;DataTag Helper (標註轉檔小幫手) v0.8.9&quot;</span><span class="p">,</span>
+    <span class="n">program_name</span><span class="o">=</span><span class="s2">&quot;DataTag Helper (標註轉檔小幫手) v0.9.0&quot;</span><span class="p">,</span>
 
     <span class="n">navigation</span><span class="o">=</span><span class="s2">&quot;TABBED&quot;</span><span class="p">,</span>
 
@@ -4169,79 +4201,101 @@
 
     <span class="n">df2</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">columns_list</span><span class="p">]</span>
 
-    <span class="c1">########### extract document label #############</span>
+    <span class="k">def</span> <span class="nf">extract_dict_of_list</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
 
-    <span class="n">df_document_label</span> <span class="o">=</span> <span class="n">extract_dict</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">],</span> <span class="s2">&quot;Summary&quot;</span><span class="p">)</span>
+        <span class="n">df_dict_of_list</span> <span class="o">=</span> <span class="n">extract_dict</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">],</span> <span class="n">column_name</span><span class="p">)</span>
 
-    <span class="c1">## reduce multi-selection option into string</span>
+        <span class="c1">## reduce multi-selection option into string</span>
 
-    <span class="k">def</span> <span class="nf">multi_selection_to_string</span><span class="p">(</span><span class="n">option_columns</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">multi_selection_to_string</span><span class="p">(</span><span class="n">option_columns</span><span class="p">):</span>
 
-        <span class="c1"># print(option_columns)</span>
+            <span class="c1"># print(option_columns)</span>
 
-        <span class="n">option_columns_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">option_columns</span><span class="p">))</span>
+            <span class="n">option_columns_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">option_columns</span><span class="p">))</span>
 
-        <span class="c1"># check if option_columns_list is empty or [&#39;&#39;]</span>
+            <span class="c1"># check if option_columns_list is empty or [&#39;&#39;]</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-
-            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">option_columns_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-
-            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-
-        <span class="k">else</span><span class="p">:</span>
-
-            <span class="n">result</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">option_columns_list</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-
-                <span class="c1"># print(list(option_columns))</span>
-
-                <span class="c1"># print(len(option_columns_list))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
                 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-        <span class="k">return</span> <span class="n">result</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">option_columns_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
 
-    <span class="c1">### use ordered set to keep columns order</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="n">od</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">df_document_label</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
 
-    <span class="n">option_columns_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">option_columns_list</span><span class="p">)</span>
 
-    <span class="n">df_document_label_tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
 
-    <span class="n">df_document_label_tmp</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_document_label</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span>
+                    <span class="c1"># print(list(option_columns))</span>
 
-    <span class="n">df_document_label_tmp</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_document_label</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span>
+                    <span class="c1"># print(len(option_columns_list))</span>
 
-    <span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;TextID&quot;</span><span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Annotator&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
 
-    <span class="c1">### flatten all option columns</span>
+        <span class="c1">### use ordered set to keep columns order</span>
 
-    <span class="k">for</span> <span class="n">option_column</span> <span class="ow">in</span> <span class="n">option_columns_list</span><span class="p">:</span>
+        <span class="n">od</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">df_dict_of_list</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">())</span>
 
-        <span class="n">df_document_label_tmp</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_document_label</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">option_columns_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="n">df_dict_of_list_tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">)</span>
+
+        <span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dict_of_list</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span>
+
+        <span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dict_of_list</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span>
+
+        <span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;TextID&quot;</span><span class="p">)</span>
+
+        <span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Annotator&quot;</span><span class="p">)</span>
+
+        <span class="c1">### flatten all option columns</span>
+
+        <span class="k">for</span> <span class="n">option_column</span> <span class="ow">in</span> <span class="n">option_columns_list</span><span class="p">:</span>
+
+            <span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dict_of_list</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+
+            <span class="p">)</span>
+
+        <span class="n">df_dict_of_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+
+            <span class="n">dataframe</span><span class="p">[[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">]],</span>
+
+            <span class="n">df_dict_of_list_tmp</span><span class="p">,</span>
+
+            <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+
+            <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">],</span>
 
         <span class="p">)</span>
 
-    <span class="n">df_document_label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">df_dict_of_list</span><span class="p">,</span> <span class="n">option_columns_list</span>
 
-        <span class="n">df2</span><span class="p">[[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">]],</span>
+    <span class="c1">########### extract document label #############</span>
 
-        <span class="n">df_document_label_tmp</span><span class="p">,</span>
+    <span class="n">df_document_label</span><span class="p">,</span> <span class="n">document_label_option_columns_list</span> <span class="o">=</span> <span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;Summary&quot;</span><span class="p">)</span>
 
-        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="c1">########### extract ArticleTag #############</span>
 
-        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span> <span class="s2">&quot;Annotator&quot;</span><span class="p">],</span>
+    <span class="n">df_article_tag</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">df_article_tag</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;ArticleTag&quot;</span><span class="p">)</span>
+
+        <span class="c1"># print(df_article_tag)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">pass</span>
 
     <span class="c1">########## create doc label compare view ##########</span>
 
@@ -4249,7 +4303,7 @@
 
         <span class="n">df_document_label</span><span class="p">,</span>
 
-        <span class="n">values</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="n">document_label_option_columns_list</span><span class="p">,</span>
 
         <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">],</span>
 
@@ -4541,6 +4595,10 @@
 
     <span class="n">drop_columns_list</span> <span class="o">=</span> <span class="n">reorder_column</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">,</span> <span class="s2">&quot;TermTab&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">df_article_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">drop_columns_list</span> <span class="o">=</span> <span class="n">reorder_column</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">,</span> <span class="s2">&quot;ArticleTag&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">)</span>
 
     <span class="c1">## explicit copy to avoid SettingWithCopyWarning warning</span>
@@ -4590,6 +4648,10 @@
         <span class="n">df_document_label</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;document_label&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="n">df_sentence_label</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;sentence_label&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">df_article_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">df_article_tag</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;article_tag&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">ws</span> <span class="ow">in</span> <span class="n">writer</span><span class="o">.</span><span class="n">sheets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
 
@@ -4642,6 +4704,8 @@
         <span class="n">df_sent_label_cmp_wide</span><span class="p">,</span>
 
         <span class="n">df_sent_doc_cmp</span><span class="p">,</span>
+
+        <span class="n">df_article_tag</span>
 
     <span class="p">)</span>
 
@@ -6781,79 +6845,101 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 <span class="w">    </span><span class="n">df2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df1</span><span class="p">[</span><span class="n">columns_list</span><span class="p">]</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">########### extract document label #############</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span><span class="w"> </span><span class="n">column_name</span><span class="p">):</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;Summary&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_dict_of_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">column_name</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">## reduce multi-selection option into string</span><span class="w"></span>
+<span class="w">        </span><span class="c1">## reduce multi-selection option into string</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">option_columns</span><span class="p">):</span><span class="w"></span>
+<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">option_columns</span><span class="p">):</span><span class="w"></span>
 
-<span class="w">        </span><span class="c1"># print(option_columns)</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># print(option_columns)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">option_columns</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">y</span><span class="p">:</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">notnull</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="w"> </span><span class="n">option_columns</span><span class="p">))</span><span class="w"></span>
 
-<span class="w">        </span><span class="c1"># check if option_columns_list is empty or [&#39;&#39;]</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># check if option_columns_list is empty or [&#39;&#39;]</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">elif</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">else</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="w"></span>
-
-<span class="w">                </span><span class="c1"># print(list(option_columns))</span><span class="w"></span>
-
-<span class="w">                </span><span class="c1"># print(len(option_columns_list))</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="w"></span>
 
 <span class="w">                </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="w"></span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="w"></span>
+<span class="w">            </span><span class="k">elif</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">### use ordered set to keep columns order</span><span class="w"></span>
+<span class="w">                </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">od</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">df_document_label</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">())</span><span class="w"></span>
+<span class="w">            </span><span class="k">else</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"></span>
+<span class="w">                </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;, &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">:</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label_tmp</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_document_label</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">                    </span><span class="c1"># print(list(option_columns))</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label_tmp</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_document_label</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">                    </span><span class="c1"># print(len(option_columns_list))</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;TextID&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">                    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Annotator&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="w"></span>
 
-<span class="w">    </span><span class="c1">### flatten all option columns</span><span class="w"></span>
+<span class="w">        </span><span class="c1">### use ordered set to keep columns order</span><span class="w"></span>
 
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">option_column</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">od</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">df_dict_of_list</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">())</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_document_label_tmp</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_document_label</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="n">option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">(</span><span class="n">od</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"></span>
 
-<span class="w">            </span><span class="n">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+<span class="w">        </span><span class="n">df_dict_of_list_tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_dict_of_list</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_dict_of_list</span><span class="p">[</span><span class="s2">&quot;Annotator&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;TextID&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">option_columns_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Annotator&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">### flatten all option columns</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">option_column</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">option_columns_list</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_dict_of_list_tmp</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_dict_of_list</span><span class="p">[</span><span class="n">option_column</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="n">multi_selection_to_string</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">            </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_dict_of_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">dataframe</span><span class="p">[[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">]],</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_dict_of_list_tmp</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">],</span><span class="w"></span>
 
 <span class="w">        </span><span class="p">)</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">df_document_label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">df_dict_of_list</span><span class="p">,</span><span class="w"> </span><span class="n">option_columns_list</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df2</span><span class="p">[[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">]],</span><span class="w"></span>
+<span class="w">    </span><span class="c1">########### extract document label #############</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">df_document_label_tmp</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">df_document_label</span><span class="p">,</span><span class="w"> </span><span class="n">document_label_option_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Summary&quot;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">########### extract ArticleTag #############</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Annotator&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="n">df_article_tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">None</span><span class="w"></span>
 
-<span class="w">    </span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">try</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_article_tag</span><span class="p">,</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extract_dict_of_list</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ArticleTag&quot;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1"># print(df_article_tag)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">except</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">e</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">pass</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">########## create doc label compare view ##########</span><span class="w"></span>
 
@@ -6861,7 +6947,7 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 <span class="w">        </span><span class="n">df_document_label</span><span class="p">,</span><span class="w"></span>
 
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="n">option_columns_list</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="n">document_label_option_columns_list</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;TextID&quot;</span><span class="p">],</span><span class="w"></span>
 
@@ -7153,6 +7239,10 @@ insert_before_column_name: the column name which act as fix point relative to th
 
 <span class="w">    </span><span class="n">drop_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reorder_column</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;TermTab&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span><span class="w"></span>
 
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">df_article_tag</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">drop_columns_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">reorder_column</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ArticleTag&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span><span class="w"></span>
+
 <span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="n">drop_columns_list</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">## explicit copy to avoid SettingWithCopyWarning warning</span><span class="w"></span>
@@ -7202,6 +7292,10 @@ insert_before_column_name: the column name which act as fix point relative to th
 <span class="w">        </span><span class="n">df_document_label</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span><span class="w"> </span><span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;document_label&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">df_sentence_label</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span><span class="w"> </span><span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;sentence_label&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">df_article_tag</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">None</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">df_article_tag</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span><span class="w"> </span><span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;article_tag&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">ws</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">writer</span><span class="o">.</span><span class="n">sheets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span><span class="w"></span>
 
@@ -7254,6 +7348,8 @@ insert_before_column_name: the column name which act as fix point relative to th
 <span class="w">        </span><span class="n">df_sent_label_cmp_wide</span><span class="p">,</span><span class="w"></span>
 
 <span class="w">        </span><span class="n">df_sent_doc_cmp</span><span class="p">,</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">df_article_tag</span><span class="w"></span>
 
 <span class="w">    </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
