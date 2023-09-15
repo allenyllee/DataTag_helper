@@ -921,6 +921,8 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
     ########## extract content ##########
     drop_columns_list = reorder_column(columns_list, "Summary", np.inf)
     drop_columns_list = reorder_column(drop_columns_list, "TermTab", np.inf)
+    if df_article_tag is not None:
+        drop_columns_list = reorder_column(drop_columns_list, "ArticleTag", np.inf)
     print(drop_columns_list)
 
     ## explicit copy to avoid SettingWithCopyWarning warning
