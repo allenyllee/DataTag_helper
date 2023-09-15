@@ -37,18 +37,17 @@ from pathlib import Path
 import emoji
 import numpy as np
 import pandas as pd
+import pdfplumber
 from chardet.universaldetector import UniversalDetector
-
-# import argparse
-from gooey import Gooey, GooeyParser
-from openpyxl.styles import Font
-from sklearn.model_selection import StratifiedShuffleSplit
 
 # from lib.AIClerk_helper import to_AI_clerk_batch_upload_json
 from docx import Document
+
+# import argparse
+from gooey import Gooey, GooeyParser
 from natsort import natsorted
-from collections import OrderedDict
-import pdfplumber
+from openpyxl.styles import Font
+from sklearn.model_selection import StratifiedShuffleSplit
 
 if sys.stdout.encoding != "UTF-8":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.buffer, "strict")
@@ -283,7 +282,7 @@ def parse_args(mydict, args=None):
             "show_border": True,
             "show_underline": True,
             "columns": 1,
-            'initial_selection': 0
+            "initial_selection": 0,
         },
     )
 
@@ -483,10 +482,8 @@ def to_AI_clerk_batch_upload_json(dataframe, save_path):
 
 
 def get_TextID(df):
-    title_hsah = hashlib.md5(df['Title'].encode('utf-8')).hexdigest()[:10]
-    content_hash = hashlib.md5(
-        df["Content"].encode("utf-8")
-    ).hexdigest()[:10]
+    title_hsah = hashlib.md5(df["Title"].encode("utf-8")).hexdigest()[:10]
+    content_hash = hashlib.md5(df["Content"].encode("utf-8")).hexdigest()[:10]
 
     return title_hsah + "-" + content_hash
 
@@ -512,17 +509,18 @@ def clean_data(df):
     df_cleaned = df_cleaned.sort_values("TextID").reset_index(drop=True)
 
     try:
-        df_cleaned["Author"] = df_cleaned.apply(lambda x: x.Poster + "/" + x.Gender, axis=1)
+        df_cleaned["Author"] = df_cleaned.apply(
+            lambda x: x.Poster + "/" + x.Gender, axis=1
+        )
     except:
         try:
             df_cleaned["Author"] = df_cleaned["Poster"]
         except:
             df_cleaned["Author"] = None
 
-
     try:
-        df_cleaned['Date'] = df_cleaned['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
-        df_cleaned['Time'] = df_cleaned['Time'].apply(lambda x: x.strftime('%H:%M:%S'))
+        df_cleaned["Date"] = df_cleaned["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
+        df_cleaned["Time"] = df_cleaned["Time"].apply(lambda x: x.strftime("%H:%M:%S"))
     except:
         pass
 
@@ -532,9 +530,7 @@ def clean_data(df):
         )
     except:
         try:
-            df_cleaned["Time"] = df_cleaned.apply(
-                lambda x: str(x.Date), axis=1
-            )
+            df_cleaned["Time"] = df_cleaned.apply(lambda x: str(x.Date), axis=1)
         except:
             df_cleaned["Time"] = None
 
@@ -691,7 +687,6 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     df2 = df1[columns_list]
 
-
     def extract_dict_of_list(dataframe, column_name):
         df_dict_of_list = extract_dict(dataframe, ["TextID", "Annotator"], column_name)
 
@@ -740,7 +735,9 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
         return df_dict_of_list, option_columns_list
 
     ########### extract document label #############
-    df_document_label, document_label_option_columns_list = extract_dict_of_list(df2, "Summary")
+    df_document_label, document_label_option_columns_list = extract_dict_of_list(
+        df2, "Summary"
+    )
 
     ########### extract ArticleTag #############
     df_article_tag = None
@@ -981,7 +978,7 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
         df_sent_label_cmp_long,
         df_sent_label_cmp_wide,
         df_sent_doc_cmp,
-        df_article_tag
+        df_article_tag,
     )
 
 
@@ -1077,7 +1074,7 @@ def main(args=None):
     # Build and Test a Command Line Interface with Poetry, Python's argparse, and pytest - DEV Community 👩‍💻👨‍💻
     # https://dev.to/bowmanjd/build-and-test-a-command-line-interface-with-poetry-python-s-argparse-and-pytest-4gab
     if args:
-        mydict_test = {"global_choies":[]}
+        mydict_test = {"global_choies": []}
         ## How to strip decorators from a function in Python - Stack Overflow
         ## https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python
         args = parse_args.__closure__[0].cell_contents(mydict=mydict_test, args=args)
@@ -1118,7 +1115,7 @@ def main(args=None):
             df.columns = df.columns.str.capitalize()
             # print(df.columns)
 
-            df.dropna(subset=['Content'], inplace=True)
+            df.dropna(subset=["Content"], inplace=True)
 
             df["TextID"] = df.apply(get_TextID, axis=1)
 
@@ -1197,8 +1194,8 @@ def main(args=None):
 
             glob_path = Path(common_path)
 
-            filename_pattern = '*/**/*.'
-            ext_list = ['txt', 'docx', 'pdf']
+            filename_pattern = "*/**/*."
+            ext_list = ["txt", "docx", "pdf"]
             filepathes = []
 
             for ext in ext_list:
@@ -1248,7 +1245,7 @@ def main(args=None):
                         finalText = []
                         for line in doc.paragraphs:
                             finalText.append(line.text)
-                        content_dict['Content'] = '\n'.join(finalText)
+                        content_dict["Content"] = "\n".join(finalText)
                         # content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                     except:
                         try:
@@ -1258,7 +1255,7 @@ def main(args=None):
                                 for page in pdf.pages:
                                     finalText.append(page.extract_text())
                                     # print(first_page.extract_text())
-                            content_dict['Content'] = '\n'.join(finalText)
+                            content_dict["Content"] = "\n".join(finalText)
                             # print(content_dict['Content'])
                             # content_hash = hashlib.md5(content_dict['Content'].encode('utf-8')).hexdigest()[:10]
                         except:
@@ -1270,15 +1267,17 @@ def main(args=None):
                 text_id = get_TextID(content_dict)
 
                 try:
-                    articles_dict['Articles'].update({text_id: content_dict})
+                    articles_dict["Articles"].update({text_id: content_dict})
                 except:
-                    articles_dict['Articles'] = {}
-                    articles_dict['Articles'].update({text_id: content_dict})
+                    articles_dict["Articles"] = {}
+                    articles_dict["Articles"].update({text_id: content_dict})
 
             # print(list(articles_dict['Articles'].keys()))
 
             # read into dataframe will automatically sort by index
-            dataframe = pd.DataFrame.from_dict(articles_dict).loc[list(articles_dict['Articles'].keys())]
+            dataframe = pd.DataFrame.from_dict(articles_dict).loc[
+                list(articles_dict["Articles"].keys())
+            ]
             # print(dataframe)
 
             # because articles_dict['Articles'] use text_id as key to update,
