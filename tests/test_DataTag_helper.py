@@ -7,7 +7,7 @@
 # Created Date: Friday, September 10th 2021, 10:02:16 am
 # Author: Allenyl(allen7575@gmail.com)
 # -----
-# Last Modified: Thursday, January 1st 1970, 12:00:00 am
+# Last Modified: Friday, September 15th 2023, 2:45:18 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2021 Allenyl Copyright, Allenyl Company
@@ -151,3 +151,81 @@ def test_excel_to_json_2():
     os.remove(output_path)
     os.remove(output_path2)
 
+
+def test_json_to_excel_1():
+    """
+    test json to excel function for json轉excel檔 without article_tag
+    """
+    print("test_directory", test_directory)
+    test_file_path = test_directory / "input_data/已標註json轉excel檔/without_article_tag_example.json"
+    DataTag_helper.main(["labeled", "-i", str(test_file_path)])
+    output_path = test_directory / "input_data/已標註json轉excel檔/without_article_tag_example.xlsx"
+    expect_path = test_directory / "expect_result/without_article_tag_example.xlsx"
+
+    output_df = pd.read_excel(output_path, sheet_name=None, engine="openpyxl")
+    expect_df = pd.read_excel(expect_path, sheet_name=None, engine="openpyxl")
+
+    sheet_list = ['sent_doc_cmp', 'doc_label_cmp', 'sent_label_cmp(long)',
+                  'sent_label_cmp(wide)', 'sentence_label(wide)', 'contents',
+                  'document_label', 'sentence_label']
+
+    for sheet_name in sheet_list:
+        # print(output_df[sheet_name].shape)
+        # print(expect_df[sheet_name].shape)
+        diff_bool = output_df[sheet_name] != expect_df[sheet_name]
+        difference_output_df = output_df[sheet_name][diff_bool].dropna(how='all')
+        difference_expect_df = expect_df[sheet_name][diff_bool].dropna(how='all')
+        diff_index = difference_output_df.index
+
+        if len(difference_output_df) != 0:
+            print(sheet_name)
+            print("difference in output_df")
+            print(difference_output_df)
+            print("difference in expect_df")
+            print(difference_expect_df)
+            print(output_df[sheet_name]['TextID'][diff_index])
+
+        assert len(difference_output_df) == 0
+
+    # assert filecmp.cmp(output_path, expect_path)
+
+    os.remove(output_path)
+
+def test_json_to_excel_2():
+    """
+    test json to excel function for json轉excel檔 with article_tag
+    """
+    print("test_directory", test_directory)
+    test_file_path = test_directory / "input_data/已標註json轉excel檔/article_tag_example.json"
+    DataTag_helper.main(["labeled", "-i", str(test_file_path)])
+    output_path = test_directory / "input_data/已標註json轉excel檔/article_tag_example.xlsx"
+    expect_path = test_directory / "expect_result/article_tag_example.xlsx"
+
+    output_df = pd.read_excel(output_path, sheet_name=None, engine="openpyxl")
+    expect_df = pd.read_excel(expect_path, sheet_name=None, engine="openpyxl")
+
+    sheet_list = ['sent_doc_cmp', 'doc_label_cmp', 'sent_label_cmp(long)',
+                  'sent_label_cmp(wide)', 'sentence_label(wide)', 'contents',
+                  'document_label', 'sentence_label', 'article_tag']
+
+    for sheet_name in sheet_list:
+        # print(output_df[sheet_name].shape)
+        # print(expect_df[sheet_name].shape)
+        diff_bool = output_df[sheet_name] != expect_df[sheet_name]
+        difference_output_df = output_df[sheet_name][diff_bool].dropna(how='all')
+        difference_expect_df = expect_df[sheet_name][diff_bool].dropna(how='all')
+        diff_index = difference_output_df.index
+
+        if len(difference_output_df) != 0:
+            print(sheet_name)
+            print("difference in output_df")
+            print(difference_output_df)
+            print("difference in expect_df")
+            print(difference_expect_df)
+            print(output_df[sheet_name]['TextID'][diff_index])
+
+        assert len(difference_output_df) == 0
+
+    # assert filecmp.cmp(output_path, expect_path)
+
+    os.remove(output_path)

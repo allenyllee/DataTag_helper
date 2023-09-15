@@ -6,7 +6,7 @@
 # Created Date: Monday, May 4th 2020, 3:06:41 pm
 # Author: Allenyl(allen7575@gmail.com>)
 # -----
-# Last Modified: Thursday, January 1st 1970, 12:00:00 am
+# Last Modified: Friday, September 15th 2023, 2:38:33 pm
 # Modified By: Allenyl(allen7575@gmail.com)
 # -----
 # Copyright 2018 - 2020 Allenyl Copyright, Allenyl Company
@@ -691,55 +691,70 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
 
     df2 = df1[columns_list]
 
-    ########### extract document label #############
-    df_document_label = extract_dict(df2, ["TextID", "Annotator"], "Summary")
 
-    ## reduce multi-selection option into string
-    def multi_selection_to_string(option_columns):
-        # print(option_columns)
-        option_columns_list = list(filter(lambda y: pd.notnull(y), option_columns))
+    def extract_dict_of_list(dataframe, column_name):
+        df_dict_of_list = extract_dict(dataframe, ["TextID", "Annotator"], column_name)
 
-        # check if option_columns_list is empty or ['']
-        if len(option_columns_list) == 0:
-            result = np.nan
-        elif len(option_columns_list) == 1 and option_columns_list[0] == "":
-            result = np.nan
-        else:
-            result = reduce(lambda a, b: a + ", " + b, option_columns_list)
-            if result == "":
-                # print(list(option_columns))
-                # print(len(option_columns_list))
+        ## reduce multi-selection option into string
+        def multi_selection_to_string(option_columns):
+            # print(option_columns)
+            option_columns_list = list(filter(lambda y: pd.notnull(y), option_columns))
+
+            # check if option_columns_list is empty or ['']
+            if len(option_columns_list) == 0:
                 result = np.nan
+            elif len(option_columns_list) == 1 and option_columns_list[0] == "":
+                result = np.nan
+            else:
+                result = reduce(lambda a, b: a + ", " + b, option_columns_list)
+                if result == "":
+                    # print(list(option_columns))
+                    # print(len(option_columns_list))
+                    result = np.nan
 
-        return result
+            return result
 
-    ### use ordered set to keep columns order
-    od = OrderedDict(df_document_label.columns.to_flat_index())
-    option_columns_list = list(od.keys())
+        ### use ordered set to keep columns order
+        od = OrderedDict(df_dict_of_list.columns.to_flat_index())
+        option_columns_list = list(od.keys())
 
-    df_document_label_tmp = pd.DataFrame(columns=option_columns_list)
-    df_document_label_tmp["TextID"] = df_document_label["TextID"]
-    df_document_label_tmp["Annotator"] = df_document_label["Annotator"]
-    option_columns_list.remove("TextID")
-    option_columns_list.remove("Annotator")
+        df_dict_of_list_tmp = pd.DataFrame(columns=option_columns_list)
+        df_dict_of_list_tmp["TextID"] = df_dict_of_list["TextID"]
+        df_dict_of_list_tmp["Annotator"] = df_dict_of_list["Annotator"]
+        option_columns_list.remove("TextID")
+        option_columns_list.remove("Annotator")
 
-    ### flatten all option columns
-    for option_column in option_columns_list:
-        df_document_label_tmp[option_column] = df_document_label[option_column].apply(
-            lambda x: multi_selection_to_string(x), axis=1
+        ### flatten all option columns
+        for option_column in option_columns_list:
+            df_dict_of_list_tmp[option_column] = df_dict_of_list[option_column].apply(
+                lambda x: multi_selection_to_string(x), axis=1
+            )
+
+        df_dict_of_list = pd.merge(
+            dataframe[["TextID", "Annotator"]],
+            df_dict_of_list_tmp,
+            how="left",
+            on=["TextID", "Annotator"],
         )
 
-    df_document_label = pd.merge(
-        df2[["TextID", "Annotator"]],
-        df_document_label_tmp,
-        how="left",
-        on=["TextID", "Annotator"],
-    )
+        return df_dict_of_list, option_columns_list
+
+    ########### extract document label #############
+    df_document_label, document_label_option_columns_list = extract_dict_of_list(df2, "Summary")
+
+    ########### extract ArticleTag #############
+    df_article_tag = None
+    try:
+        df_article_tag, _ = extract_dict_of_list(df2, "ArticleTag")
+        # print(df_article_tag)
+    except Exception as e:
+        print(str(e))
+        pass
 
     ########## create doc label compare view ##########
     df_doc_label_cmp = pd.pivot_table(
         df_document_label,
-        values=option_columns_list,
+        values=document_label_option_columns_list,
         index=["TextID"],
         columns=["Annotator"],
         aggfunc=lambda x: x.iloc[0],
@@ -934,6 +949,8 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
         df_content.to_excel(writer, sheet_name="contents", index=False)
         df_document_label.to_excel(writer, sheet_name="document_label", index=False)
         df_sentence_label.to_excel(writer, sheet_name="sentence_label", index=False)
+        if df_article_tag is not None:
+            df_article_tag.to_excel(writer, sheet_name="article_tag", index=False)
 
         for ws in writer.sheets.values():
             """
@@ -962,6 +979,7 @@ def to_excel_AI_clerk_labeled_data(dataframe, save_path):
         df_sent_label_cmp_long,
         df_sent_label_cmp_wide,
         df_sent_doc_cmp,
+        df_article_tag
     )
 
 

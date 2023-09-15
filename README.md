@@ -329,7 +329,7 @@ pytest -s
 Run single test function
 
 ```sh
-pytest test_DataTag_helper.py::test_txt_to_json_2
+pytest -s tests/test_DataTag_helper.py::test_json_to_excel_1
 ```
 
 
